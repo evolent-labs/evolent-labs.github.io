@@ -1,0 +1,17 @@
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3vw;
+}
+
+.avatar {
+    height: 170px;
+    width: 170px;
+    border-radius: 50%;
+}
+
+.name {
+    font-size: 18px;
+    font-weight: bold;
+}
