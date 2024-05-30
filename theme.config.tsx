@@ -2,7 +2,7 @@ import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
 
 const config: DocsThemeConfig = {
-  logo: <span>Void Development</span>,
+  logo: <span>Evolent</span>,
   project: {
     link: 'https://github.com/Void-Developments',
   },
@@ -11,7 +11,7 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/Void-Developments/voiddevelopments.github.io',
   footer: {
-    text: 'Void Development',
+    text: 'Evolent',
   },
 }
 
