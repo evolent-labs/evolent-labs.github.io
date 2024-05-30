@@ -1,0 +1,56 @@
+import { Steps, Tabs, Tab } from 'nextra-theme-docs';
+import { Callout, Warn } from 'nextra/components';
+import { FaGithub, FaTag } from 'react-icons/fa';
+
+# Evolent Skills
+<div style={{ display: 'flex', gap: '10px', margin: '20px 0' }}>
+  <a href="https://github.com/evolent-labs/evolent_skills" target="_blank" style={{ padding: '5px 10px', border: '2px solid #AFC1FF', color: '#AFC1FF', borderRadius: '5px', textDecoration: 'none', background: 'none' }}>View on GitHub</a>
+  <a href="https://github.com/evolent-labs/evolent_skills/releases" target="_blank" style={{ padding: '5px 10px', border: '2px solid #AFC1FF', color: '#AFC1FF', borderRadius: '5px', textDecoration: 'none', background: 'none' }}>View Releases</a>
+</div>
+Evolent Skills is an advanced script for managing player skills in your FiveM server, supporting both QBCore and ESX frameworks.
+
+<Callout type="warning" emoji="⚠️">
+    This script is still not fully stable. Use at your own risk.
+</Callout>
+
+## Installation
+
+<Steps>
+    ### Step 1: Install Dependencies
+    - Ensure you have [ox_lib](https://github.com/overextended/ox_lib) installed.
+
+    ### Step 2: Download Evolent Skills
+    - You can either download a [release](https://github.com/evolent-labs/releases) or clone the source code.
+
+    ```bash
+    git clone https://github.com/evolent-labs/evolent_skills.git
+    cd evolent_skills
+    pnpm i
+    pnpm run build
+    ```
+    ### Step 3: Configuration
+    - Configure the config.lua file according to your server's needs. Below is an example configuration.
+    ```lua
+    return {
+        ---@type 'qb'|'esx'
+        Framework = 'qb',  -- Choose your framework
+
+        --- @type table<string, Skill>
+        Skills = {
+            driving = {  -- Skill identifier
+                label = 'Driving',  -- Skill label
+                baseXp = 120,  -- XP needed to achieve level 2
+                nextLevelMultiplier = 1.1,  -- Multiplier for each level
+                maxLevel = 100,  -- Max skill level
+                icon = 'fas fa-car',  -- Icon from FontAwesome
+                color = '#AFC1FF'  -- Color used in the UI
+            },
+        }
+    }
+    ```
+    ### Step 4: Starting the Script
+    - Add evolent_skills to your server's resource list and start the script.
+    ```bash
+    ensure evolent_skills
+    ```
+</Steps>
