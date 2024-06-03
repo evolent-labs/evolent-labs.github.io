@@ -1,0 +1,49 @@
+# Client Exports
+
+## getSkillLevel
+
+Gets the current level of a player's skill.
+
+```lua
+exports.evolent_skills:getSkillLevel(skill)
+```
+- skill: `string`
+
+**Example:**
+```lua
+local skillLevel = exports.evolent_skills:getSkillLevel('driving')
+if skillLevel > 10 then
+    print('Player is above level 10!')
+end
+```
+
+## getSkillXp
+
+Gets the current XP of a player's skill.
+
+```lua
+exports.evolent_skills:getSkillXp(skill)
+```
+- skill: `string`
+
+**Example:**
+```lua
+local skillXp = exports.evolent_skills:getSkillXp('shooting')
+print(skillXp) -- 182
+```
+
+## getAllSkills
+
+Gets all skills and their levels for a player.
+
+```lua
+exports.evolent_skills:getAllSkills()
+```
+
+**Example:**
+```lua
+local skills = exports.evolent_skills:getAllSkills()
+for skillName, skillData in pairs(skills) do
+    print(skillName, skillData.level, skillData.xp)
+end
+```
