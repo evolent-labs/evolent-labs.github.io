@@ -1,0 +1,192 @@
+# Evolent Boosting
+
+This is out of the box config example.
+
+```lua
+Config = {
+    Framework = 'ox',                                          -- ox_core, qbox, qb, esx
+    Notify = 'ox_lib',                                         -- ox_lib
+    Target = 'ox_target',                                      -- ox_target
+    ShowText = 'ox_lib',                                       -- ox_lib
+    Dispatch = "fd_dispatch",                                  -- fd_dispatch
+    AvailableContracts = 6,                                    -- Max amount of available contracts per reset
+    DefaultAvatarUrl = 'https://i.ibb.co/jPtqTj3m/Vector.png', -- Default profile avatar url
+    AppName = 'EVOLENTBOOSTING',                               -- UI Application name
+    AppLogoUrl = 'https://i.ibb.co/jPtqTj3m/Vector.png',       -- UI Application logo url
+    ResetTime = 60,                                            -- How often resets happen for available contracts in minutes
+    EloPerLevel = 250,                                         -- ELO PER LEVEL
+    EnableActionSFX = true,                                    -- Enables SFX for boosting actions
+    MarketGeneration = 60,                                     -- Adds new contracts to the market every X minutes
+    GeneratedContractsByMarket = 10,                           -- How many contracts will be generated each period
+    TransactionAccount = 'cash',                               -- Account to which player will receive money reward
+    MoneyRewards = {                                           -- Don't touch this (used for validation)
+        cash = true,
+        black_money = true,
+        bank = true,
+        money = true
+    },
+    LogService = '',       -- fmsdk
+    QuickKeyBind = "H",    -- Quick key bind for current boosting progress
+    LatentBudget = 100000, -- DO NOT TOUCH THIS IF YOU DON'T KNOW WHY IT IS THERE
+    HighTierHacks = {      -- High Tier Hacks range
+        min = 5,
+        max = 15
+    },
+    BaseCoolDown = 6000,       -- Base cooldown for tracker position
+    AdditionalCoolDown = 3000, -- Additional cooldown for tracker position
+    Classes = {
+        {
+            label = 'D',
+            requiredLevel = 1,
+            elo = { min = 70, max = 100 },
+            rep = { min = 70, max = 100 },
+            duration = 40,
+            chance = 100,
+            cars = {
+                { model = 'emperor',    label = 'EMPEROR' },
+                { model = 'premier',    label = 'PREMIER' },
+                { model = 'intruder',   label = 'INTRUDER' },
+                { model = 'stanier',    label = 'STANIER' },
+                { model = 'dilettante', label = 'DILETTANTE' },
+                { model = 'primo',      label = 'PRIMO' },
+                { model = 'picador',    label = 'PICADOR' }
+            },
+            itemRewards = {
+                money = { min = 100, max = 300 },
+                black_money = { min = 1000, max = 3000 }
+            },
+            -- marketOnly = false,
+            -- requiredCops = 4,
+            -- overwriteBidding = 16,
+            -- maxPerReset = 90,
+        },
+        {
+            label = 'C',
+            requiredLevel = 2,
+            elo = { min = 50, max = 70 },
+            rep = { min = 50, max = 70 },
+            duration = 40,
+            chance = 100,
+            cars = {
+                { model = 'rumpo',      label = 'RUMPO VAN' },
+                { model = 'buccaneer',  label = 'BUCCANEER' },
+                { model = 'chino',      label = 'CHINO' },
+                { model = 'washington', label = 'WASHINGTON' },
+                { model = 'virgo',      label = 'VIRGO' },
+                { model = 'premier',    label = 'PREMIER' },
+                { model = 'minivan',    label = 'MINIVAN' },
+                { model = 'pigalle',    label = 'PIGALLE' },
+                { model = 'fagaloa',    label = 'FAGALOA' },
+                { model = 'schafter2',  label = 'SCHAFTER' }
+            },
+            itemRewards = {
+                money = { min = 300, max = 500 },
+                black_money = { min = 3000, max = 8000 }
+            }
+        },
+        {
+            label = 'B',
+            requiredLevel = 3,
+            elo = { min = 30, max = 50 },
+            rep = { min = 30, max = 50 },
+            duration = 40,
+            chance = 100,
+            cars = {
+                { model = 'sultan',       label = 'SULTAN' },
+                { model = 'buffalo',      label = 'BUFFALO' },
+                { model = 'kuruma',       label = 'KURUMA' },
+                { model = 'futo',         label = 'FUTO' },
+                { model = 'feltzer2',     label = 'FELTZER' },
+                { model = 'comet2',       label = 'COMET' },
+                { model = 'ninef',        label = '9F' },
+                { model = 'carbonizzare', label = 'CARBONIZZARE' },
+                { model = 'kuruma',       label = 'KURUMA' }
+            },
+            itemRewards = {
+                money = { min = 500, max = 1000 },
+                black_money = { min = 8000, max = 15000 }
+            }
+        },
+        {
+            label = 'A',
+            requiredLevel = 4,
+            elo = { min = 20, max = 30 },
+            rep = { min = 20, max = 30 },
+            duration = 50,
+            chance = 100,
+            cars = {
+                { model = 'vigero3',    label = 'VIGERO ZX' },
+                { model = 'elegy',      label = 'ELEGY RH8' },
+                { model = 'driftzr350', label = 'ZR350' },
+                { model = 'comet3',     label = 'COMET RETRO CUSTOM' },
+                { model = 'omnisegt',   label = 'OMNIS e-GT' },
+                { model = 'massacro',   label = 'MASSACRO' },
+                { model = 'jester4',    label = 'JESTER RR' },
+                { model = 'neon',       label = 'NEON' },
+                { model = 'jugular',    label = 'JUGULAR' },
+                { model = 'drafter',    label = '8F DRAFTER' },
+                { model = 'komoda',     label = 'KOMODA' },
+                { model = 'paragon',    label = 'PARAGON R' },
+                { model = 'vstr',       label = 'V-STR' },
+                { model = 'calico',     label = 'CALICO GTF' }
+            },
+            itemRewards = {
+                money = { min = 1000, max = 1500 },
+                black_money = { min = 15000, max = 30000 }
+            }
+        },
+        {
+            label = 'S',
+            requiredLevel = 5,
+            elo = { min = 15, max = 20 },
+            rep = { min = 15, max = 20 },
+            duration = 60,
+            chance = 90,
+            cars = {
+                { model = 'cypher',    label = 'CYPHER' },
+                { model = 'comet6',    label = 'COMET S2' },
+                { model = 'italirsx',  label = 'ITALI RSX' },
+                { model = 'tenf',      label = '10F' },
+                { model = 'vectre',    label = 'VECTRE' },
+                { model = 'growler',   label = 'GROWLER' },
+                { model = 'sultan3',   label = 'SULTAN CUSTOM' },
+                { model = 'remus',     label = 'REMUS' },
+                { model = 'pariah',    label = 'PARIAH' },
+                { model = 'drafter',   label = '8F DRAFTER' },
+                { model = 'banshee2',  label = 'BANSHEE 900R' },
+                { model = 'neon',      label = 'NEON' },
+                { model = 'coquette4', label = 'COQUETTE D10' },
+                { model = 'sugoi',     label = 'SUGOI' }
+            },
+            itemRewards = {
+                money = { min = 1500, max = 2000 },
+                black_money = { min = 30000, max = 50000 }
+            }
+        },
+        {
+            label = 'S+',
+            requiredLevel = 6,
+            elo = { min = 10, max = 15 },
+            rep = { min = 10, max = 15 },
+            duration = 60,
+            chance = 75,
+            cars = {
+                { model = 'zeno',     label = 'ZENO' },
+                { model = 'corsita',  label = 'CORSITA' },
+                { model = 'krieger',  label = 'KRIEGER' },
+                { model = 'vacca',    label = 'VACCA' },
+                { model = 'tyrant',   label = 'TYRANT' },
+                { model = 'italigto', label = 'ITALI GTO' },
+                { model = 'entity2',  label = 'ENTITY XXR' },
+                { model = 'xa21',     label = 'XA-21' },
+                { model = 'torero2',  label = 'TORERO XO' },
+                { model = 'ignus',    label = 'IGNUS' }
+            },
+            itemRewards = {
+                money = { min = 2500, max = 3000 },
+                black_money = { min = 50000, max = 80000 }
+            }
+        }
+    }
+}
+```

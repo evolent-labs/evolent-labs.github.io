@@ -1,0 +1,80 @@
+import { Steps, Tabs, Tab } from "nextra-theme-docs";
+import { Callout, Warn } from "nextra/components";
+
+# Evolent Boosting
+
+<div
+  style={{ display: "flex", gap: "10px", margin: "20px 0", flexWrap: "wrap" }}
+>
+  <a
+    href="https://docs.evolent.dev"
+    target="_blank"
+    style={{
+      padding: "5px 10px",
+      border: "2px solid #AFC1FF",
+      color: "#AFC1FF",
+      borderRadius: "5px",
+      textDecoration: "none",
+      background: "none",
+    }}
+  >
+    Our Store
+  </a>
+</div>
+
+Tired of the same old point A to B boosts? Yeah, us too. That’s why we built a next-level boosting system.  
+Our system is packed with variety, real progression, and features that actually make sense.
+
+## Installation
+
+<Steps>
+    ### Step 1: Install Dependencies
+
+    - Ensure you have the following resources installed:
+        - [ox_inventory](https://github.com/CommunityOx/ox_inventory)
+        - [ox_lib](https://github.com/CommunityOx/ox_lib)
+        - [oxmysql](https://github.com/CommunityOx/oxmysql)
+        - [ox_target](https://github.com/CommunityOx/ox_target)
+        - [bl_ui](https://github.com/Byte-Labs-Studio/bl_ui)
+    - Use any supported framework:
+        [OX](https://github.com/CommunityOx/ox_core),
+        [QBOX](https://github.com/Qbox-project/qbx_core),
+        [ESX](https://github.com/esx-framework/esx_core),
+        [QB](https://github.com/qbcore-framework/qb-core),
+        or **Standalone**
+
+    ### Step 2: Download the Resource
+    - Download & extract the `evolent_boosting` resource from [Cfx.re](https://forum.cfx.re/) and place it inside your `resources` folder.
+
+    ### Step 3: Execute all sql files
+    Execute all sql files in `sql` folder.
+
+    ### Step 3: Add Items to ox_inventory
+
+    Add this to your `ox_inventory/data/items.lua`:
+
+    ```lua
+    ["ghostlink"] = {
+        label = "GhostLink",
+        weight = 5000,
+        stack = true,
+        close = true,
+        client = {
+            event = 'evolent_boosting:startHacking'
+        }
+    },
+    ```
+
+### Step 4: Configuration
+
+- Configure the `config.lua`. Visit [Configuration](/boosting/Config) for a full breakdown.
+
+### Step 5: Starting the Script
+
+- Add evolent_boosting to your server's resource list and start the script.
+
+```bash
+ensure evolent_boosting
+```
+
+</Steps>

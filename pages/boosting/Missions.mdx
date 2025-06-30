@@ -1,0 +1,94 @@
+import { Steps, Tabs, Tab } from "nextra-theme-docs";
+
+# Evolent Boosting
+
+By default we already provide 5 out of box missions, 3 low tier, 1 mid tier and 1 high tier missions.
+
+## Create your own mission
+- Write server side data in `contract.data` (this gets passed to client-side).
+- Write client side data in `Contracts[data.contractId]`.
+- `GetBoostVehicle` and `DeliverVehicle` is recommended as first & last step.
+- While adding a mission to a class, remember, index matters.
+- Client-side preparation happens for all group members.
+- All validation happens through the `contract.leaderId`
+
+<Steps>
+    ### Create server side mission logic.
+    Create a new file in `server/missions/` named whatever... In our example (test)
+
+    ```lua
+    local missionModule = require('modules.mission')
+    local Mission = missionModule.Mission
+    local Step = missionModule.Step
+
+    return Mission:new({
+        steps = {
+            GetBoostVehicle,
+            Step:new({
+                title = "Step 2",
+                locations = {},
+                disableGps = true,
+                isComplete = function(self, contract)
+                    -- SERVER VALIDATION FOR COMPLETION
+                    return true
+                end,
+                complete = function(self, contract)
+                    -- EXECUTE SOME ACTION WHEN STEP GETS COMPLETED
+                end,
+                preparation = function(self, contract, location)
+                    -- THIS GETS EXECUTED ONLY ONCE WHEN THE STEP GEST STARTED
+                end
+            }),
+            DeliverVehicle
+        },
+        requiredItems = {
+            advancedlockpick = 1
+        }
+    })
+    ```
+
+    ### Add server side mission to list
+    Import your mission module in `server/missions/missions.lua` and add it to the appropriate mission class list.
+
+    ```lua
+    local PaintMission = require 'server.missions.paint'
+    local RimsMission = require 'server.missions.rims'
+    local TrackerMission = require 'server.missions.tracker'
+    local TowerMission = require 'server.missions.tower'
+    local GangMission = require 'server.missions.gang'
+    local TestMission = require 'server.missions.test'
+
+    Missions[1] = {
+        ["paint"] = PaintMission,
+        ["rims"] = RimsMission,
+        ["tracker"] = TrackerMission
+    }
+
+    Missions[2] = {
+        ["paint"] = PaintMission,
+        ["rims"] = RimsMission,
+        ["tracker"] = TrackerMission
+    }
+
+    Missions[3] = {
+        ["tower"] = TowerMission,
+    }
+
+    Missions[4] = {
+        ["tower"] = TowerMission,
+        -- THIS GOT ADDED TO A TIER MISSION
+        ["test"] = TestMission,
+    }
+
+    Missions[5] = {
+        ["gang"] = GangMission
+    }
+
+    Missions[6] = {
+        ["gang"] = GangMission
+    }
+    ```
+
+    ### Repeat the process in `client/missions`
+
+</Steps>
