@@ -4,11 +4,12 @@ This is out of the box config example.
 
 ```lua
 Config = {
-    Framework = 'ox',                                          -- ox_core, qbox, qb, esx
+    Framework = 'ox',                                          -- ox, qbx, qb, esx
     Notify = 'ox_lib',                                         -- ox_lib
     Target = 'ox_target',                                      -- ox_target
     ShowText = 'ox_lib',                                       -- ox_lib
-    Dispatch = "fd_dispatch",                                  -- fd_dispatch
+    Dispatch = "",                                             -- fd, ps, cd
+    Command = 'opentablet',                                    -- add cmd name or leave empty for not using
     AvailableContracts = 6,                                    -- Max amount of available contracts per reset
     DefaultAvatarUrl = 'https://i.ibb.co/jPtqTj3m/Vector.png', -- Default profile avatar url
     AppName = 'EVOLENTBOOSTING',                               -- UI Application name
@@ -18,7 +19,7 @@ Config = {
     EnableActionSFX = true,                                    -- Enables SFX for boosting actions
     MarketGeneration = 60,                                     -- Adds new contracts to the market every X minutes
     GeneratedContractsByMarket = 10,                           -- How many contracts will be generated each period
-    TransactionAccount = 'cash',                               -- Account to which player will receive money reward
+    TransactionAccount = 'cash',                               -- Account which will be used in market transactions
     MoneyRewards = {                                           -- Don't touch this (used for validation)
         cash = true,
         black_money = true,
