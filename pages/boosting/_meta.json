@@ -1,6 +1,6 @@
 {
-    "config": "Config",
-    "missions": "Missions",
-    "commands": "Commands",
-    "types": "Types"
+    "Config": "Config",
+    "Missions": "Missions",
+    "Commands": "Commands",
+    "Types": "Types"
 }
