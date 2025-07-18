@@ -1,0 +1,14 @@
+import { Steps } from "nextra-theme-docs";
+
+# RAHE Boosting Migration
+
+<Steps>
+    ### Run migration
+    Execute `convertrahe` in server console.
+
+    ### Remove functionality
+    Remove `convertrahe` command in server/bridge/_main.lua line 171
+
+    ### Make level adjustments
+    Configure `Config.BaseElo & Config.EloModifier` to match your needs
+</Steps>
