@@ -4,40 +4,59 @@ This is out of the box config example.
 
 ```lua
 Config = {
-    Framework = 'ox',                                          -- ox, qbx, qb, esx
+    Framework = 'qbx',                                          -- ox, qbx, qb, esx
     Notify = 'ox_lib',                                         -- ox_lib
     Target = 'ox_target',                                      -- ox_target
     ShowText = 'ox_lib',                                       -- ox_lib
     Dispatch = "",                                             -- fd, ps, cd, tk, rcore, kartik, lb
     Inventory = "ox",                                          -- ox, qs, qb, codem, core, origen, tgiann
-    Command = 'opentablet',                                    -- add cmd name or leave empty for not using
     AvailableContracts = 6,                                    -- Max amount of available contracts per reset
     DefaultAvatarUrl = 'https://i.ibb.co/jPtqTj3m/Vector.png', -- Default profile avatar url
     AppName = 'EVOLENTBOOSTING',                               -- UI Application name
     AppLogoUrl = 'https://i.ibb.co/jPtqTj3m/Vector.png',       -- UI Application logo url
     ResetTime = 60,                                            -- How often resets happen for available contracts in minutes
-    BaseElo = 250,                                             -- BASE ELO
-    EloModifier = 2,                                           -- BASE ELO MODIFIER
+    Leveling = {                                               -- Level progression configuration
+        mode = 'linear',                                       -- 'linear' or 'exponential'
+        linearStep = 250,                                      -- XP needed per level when mode = 'linear'
+        exp = {                                                -- Parameters when mode = 'exponential'
+            base = 250,                                        -- XP needed from level 1 -> 2
+            growth = 1.5,                                      -- Multiplier applied each level (e.g., 1.5x)
+            maxLevel = 100                                     -- Optional cap; set nil to disable
+        }
+    },
     EnableActionSFX = true,                                    -- Enables SFX for boosting actions
     MarketGeneration = 60,                                     -- Adds new contracts to the market every X minutes
     GeneratedContractsByMarket = 10,                           -- How many contracts will be generated each period
-    TransactionAccount = 'cash',                               -- Account which will be used in market transactions
+    TransactionAccount = 'rep',                               -- Account which will be used in market transactions (cash, rep)
     MoneyRewards = {                                           -- Don't touch this (used for validation)
         cash = true,
-        black_money = true,
         bank = true,
         money = true
     },
-    LogService = '',       -- fmsdk
+    LogService = '',       -- fmsdk, discord
+    Discord = { -- Webhook URL for logging
+        WebhookUrl = '',
+        Color = 3447003,
+        Username = 'Evolent Boosting',
+    },
+    UseWebpForInventoryImages = false, -- Only set to true if you use .webp images for your inventory
     QuickKeyBind = "H",    -- Quick key bind for current boosting progress
-    LatentBudget = 100000, -- DO NOT TOUCH THIS IF YOU DON'T KNOW WHY IT IS THERE
-    HighTierHacks = {      -- High Tier Hacks range
+    WaypointKeyBind = "J", -- Key bind for setting waypoint to current step (only works when progress UI is open)
+    BelowLevelRewardPercent = 20, -- Percentage of rewards (rep and XP) for contracts below player's level (1-100)
+    HighTierHacks = {      -- High Tier Hacks range and coolDown per hack
         min = 5,
-        max = 15
+        max = 15,
+        coolDown = 5000
     },
     BaseCoolDown = 6000,       -- Base cooldown for tracker position
     AdditionalCoolDown = 3000, -- Additional cooldown for tracker position
     FDLaptop = false,          -- TOGGLE FD LAPTOP COMPATIBILITY
+    DropoffPoliceCheckDistance = 200, -- How far police must be to deliver the vehicle
+    SpawnClearRadius = 3.0,    -- Radius in meters to consider a spawn occupied
+    Commands = {
+        generateContracts = { name = 'generatecontracts', acePermission = 'group.admin', enabled = true },
+        openTablet = { name = 'opentablet', enabled = true }
+    },
     Classes = {
         {
             label = 'D',
@@ -55,9 +74,18 @@ Config = {
                 { model = 'primo',      label = 'PRIMO' },
                 { model = 'picador',    label = 'PICADOR' }
             },
-            itemRewards = {
-                money = { min = 100, max = 300 },
-                black_money = { min = 1000, max = 3000 }
+            loot = {
+                rolls = { min = 1, max = 2 },
+                allowDuplicates = true,
+                pool = {
+                    { name = 'money',        min = 100,  max = 300,  chance = 20 },
+                    { name = 'black_money',  min = 500,  max = 1500, chance = 10 },
+                    { name = 'lockpick',     min = 1,    max = 2,    chance = 6 }
+                }
+            },
+            fuel = {
+                min = 50,
+                max = 100
             },
             -- marketOnly = false,
             -- requiredCops = 4,
@@ -83,10 +111,21 @@ Config = {
                 { model = 'fagaloa',    label = 'FAGALOA' },
                 { model = 'schafter2',  label = 'SCHAFTER' }
             },
-            itemRewards = {
-                money = { min = 300, max = 500 },
-                black_money = { min = 3000, max = 8000 }
-            }
+            loot = {
+                rolls = { min = 1, max = 3 },
+                allowDuplicates = true,
+                pool = {
+                    { name = 'money',           min = 300,  max = 500,  chance = 20 },
+                    { name = 'black_money',     min = 2000, max = 5000, chance = 12 },
+                    { name = 'lockpick',        min = 1,    max = 2,    chance = 8 },
+                    { name = 'advancedlockpick',min = 1,    max = 1,    chance = 4 },
+                    { name = 'radiocell',       min = 1,    max = 2,    chance = 6 }
+                }
+            },
+            fuel = {
+                min = 50,
+                max = 100
+            },
         },
         {
             label = 'B',
@@ -106,16 +145,27 @@ Config = {
                 { model = 'carbonizzare', label = 'CARBONIZZARE' },
                 { model = 'kuruma',       label = 'KURUMA' }
             },
-            itemRewards = {
-                money = { min = 500, max = 1000 },
-                black_money = { min = 8000, max = 15000 }
-            }
+            loot = {
+                rolls = { min = 2, max = 3 },
+                allowDuplicates = false,
+                pool = {
+                    { name = 'money',            min = 500,  max = 1000, chance = 18 },
+                    { name = 'black_money',      min = 5000, max = 12000, chance = 12 },
+                    { name = 'advancedlockpick', min = 1,    max = 1,     chance = 6 },
+                    { name = 'electronickit',    min = 1,    max = 2,     chance = 6 }
+                }
+            },
+            fuel = {
+                min = 50,
+                max = 100
+            },
         },
         {
             label = 'A',
             requiredLevel = 4,
             elo = { min = 20, max = 30 },
             rep = { min = 20, max = 30 },
+            vinscratchPrice = { min = 100, max = 200 },
             duration = 50,
             chance = 100,
             cars = {
@@ -134,16 +184,27 @@ Config = {
                 { model = 'vstr',       label = 'V-STR' },
                 { model = 'calico',     label = 'CALICO GTF' }
             },
-            itemRewards = {
-                money = { min = 1000, max = 1500 },
-                black_money = { min = 15000, max = 30000 }
-            }
+            loot = {
+                rolls = { min = 2, max = 4 },
+                allowDuplicates = false,
+                pool = {
+                    { name = 'money',         min = 1000, max = 1500,  chance = 16 },
+                    { name = 'black_money',   min = 12000,max = 25000,  chance = 12 },
+                    { name = 'electronickit', min = 1,    max = 2,      chance = 6 },
+                    { name = 'jammer',        min = 1,    max = 1,      chance = 2 }
+                }
+            },
+            fuel = {
+                min = 50,
+                max = 100
+            },
         },
         {
             label = 'S',
             requiredLevel = 5,
             elo = { min = 15, max = 20 },
             rep = { min = 15, max = 20 },
+            vinscratchPrice = { min = 200, max = 400 },
             duration = 60,
             chance = 90,
             cars = {
@@ -162,10 +223,21 @@ Config = {
                 { model = 'coquette4', label = 'COQUETTE D10' },
                 { model = 'sugoi',     label = 'SUGOI' }
             },
-            itemRewards = {
-                money = { min = 1500, max = 2000 },
-                black_money = { min = 30000, max = 50000 }
-            }
+            loot = {
+                rolls = { min = 2, max = 4 },
+                allowDuplicates = false,
+                pool = {
+                    { name = 'money',             min = 1500, max = 2000, chance = 14 },
+                    { name = 'black_money',       min = 25000,max = 45000, chance = 12 },
+                    { name = 'thermite',          min = 1,    max = 1,     chance = 4 },
+                    { name = 'nitrous',           min = 1,    max = 1,     chance = 2 },
+                    { name = 'advancedrepairkit', min = 1,    max = 1,     chance = 3 }
+                }
+            },
+            fuel = {
+                min = 50,
+                max = 100
+            },
         },
         {
             label = 'S+',
@@ -186,11 +258,63 @@ Config = {
                 { model = 'torero2',  label = 'TORERO XO' },
                 { model = 'ignus',    label = 'IGNUS' }
             },
-            itemRewards = {
-                money = { min = 2500, max = 3000 },
-                black_money = { min = 50000, max = 80000 }
-            }
+            loot = {
+                rolls = { min = 3, max = 5 },
+                allowDuplicates = false,
+                pool = {
+                    { name = 'money',        min = 2000, max = 3000, chance = 12 },
+                    { name = 'black_money',  min = 40000,max = 75000, chance = 12 },
+                    { name = 'thermite',     min = 1,    max = 2,     chance = 4 },
+                    { name = 'nitrous',      min = 1,    max = 2,     chance = 3 },
+                    { name = 'ghostlink',    min = 1,    max = 1,     chance = 1 },
+                    { name = 'drill',        min = 1,    max = 1,     chance = 2 }
+                }
+            },
+            fuel = {
+                min = 50,
+                max = 100
+            },
         }
     }
+}
+
+-- GLOBAL LIMIT FOR EACH VEHICLE MODEL (IF VEHICLE IS DEFINED IN THIS CONFIG IT CAN BE VIN SCRATCHED)
+Config.VinScratch = {
+    vigero3 = 1,
+    elegy = 1,
+    driftzr350 = 1,
+    comet3 = 1,
+    omnisegt = 1,
+    massacro = 1,
+    jester4 = 1,
+    neon = 1,
+    jugular = 1,
+    drafter = 1,
+    komoda = 1,
+    paragon = 1,
+    vstr = 1,
+    calico = 1,
+    cypher = 1,
+    comet6 = 1,
+    italirsx = 1,
+    tenf = 1,
+    vectre = 1,
+    growler = 1,
+    sultan3 = 1,
+    remus = 1,
+    pariah = 1,
+    banshee2 = 1,
+    coquette4 = 1,
+    sugoi = 1,
+    zeno = 1,
+    corsita = 1,
+    krieger = 1,
+    vacca = 1,
+    tyrant = 1,
+    italigto = 1,
+    entity2 = 1,
+    xa21 = 1,
+    torero2 = 1,
+    ignus = 1,
 }
 ```
