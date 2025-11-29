@@ -1,22 +1,22 @@
 import { Tabs, Tab } from "nextra-theme-docs";
 
 # Evolent Boosting
-## All types
+## Data Type Reference
 
-Here is listed all types in our resource.
+This section outlines the primary data structures used throughout the resource.
 
 <Tabs items={['Server', 'Client']}>
-    <Tab title="Server">
+    <Tab title="Server (Contract/Mission Logic)">
         ```lua
         ---@class Step
-        ---@field title string
-        ---@field locations vector4[]
-        ---@field isComplete fun(self: Step, contract: Contract, location: vector4): boolean
-        ---@field preparation? fun(self: Step, contract: Contract, location: vector4): any
+        ---@field title string                             -- Title displayed for the current mission step
+        ---@field locations vector4[]                      -- Array of coordinates relevant to the step (x, y, z, heading)
+        ---@field isComplete fun(self: Step, contract: Contract, location: vector4): boolean -- REQUIRED: Server-side validation check for step completion
+        ---@field preparation? fun(self: Step, contract: Contract, location: vector4): any -- Optional setup function executed when the step begins
 
         ---@class Mission
-        ---@field steps Step[]
-        ---@field requiredItems table<string, number> -- Item name → count
+        ---@field steps Step[]                             -- Sequence of steps required to complete the mission
+        ---@field requiredItems table<string, number>      -- Items required to start the mission (Item name → count)
 
         ---@class ItemData
         ---@field name string
@@ -28,57 +28,57 @@ Here is listed all types in our resource.
         ---@field label string
 
         ---@class Profile
-        ---@field stateId number
+        ---@field stateId number                           -- The player's unique identifier (e.g., QBCore/ESX player ID)
         ---@field username string
         ---@field imageUrl string
         ---@field rep number
         ---@field elo number
         ---@field wins number
         ---@field loses number
-        ---@field source number
-
+        ---@field source number                            -- The server source ID (e.g., network ID)
+        
         ---@class Contract
-        ---@field id string
-        ---@field leaderId string
-        ---@field classId number
-        ---@field classLabel string
+        ---@field id string                                -- Unique contract ID
+        ---@field leaderId string                          -- Unique identifier of the contract group leader
+        ---@field classId number                           -- Mission difficulty tier (1-6)
+        ---@field classLabel string                        -- Mission difficulty label (e.g., 'Low', 'Mid')
         ---@field requiredLevel number
-        ---@field missionId string
-        ---@field mission Mission
-        ---@field car CarData
-        ---@field elo number
-        ---@field rep number
-        ---@field currentStep number
+        ---@field missionId string                         -- The mission's registered key (e.g., 'paint', 'test')
+        ---@field mission Mission                          -- The Mission object containing steps
+        ---@field car CarData                              -- Details of the target vehicle
+        ---@field elo number                               -- Elo change on completion
+        ---@field rep number                               -- Reputation change on completion
+        ---@field currentStep number                       -- Index of the current active step
         ---@field isStepActive boolean
         ---@field duration number
-        ---@field group Profile[]
-        ---@field plate string
+        ---@field group Profile[]                          -- List of all players currently in the contract group
+        ---@field plate string                             -- Plate of the target vehicle
         ---@field requiredItems ItemData[]
         ---@field itemRewards ItemData[]
-        ---@field data table<string, any>
-        ---@field pendingInvites table<number, string>
+        ---@field data table<string, any>                  -- Arbitrary server-side state shared with the client's StepData
+        ---@field pendingInvites table<number, string>     -- Invites awaiting response
         ```
     </Tab>
-    <Tab title="Client">
+    <Tab title="Client (Step Execution/UI)">
         ```lua
         ---@class StepData
         ---@field currentStep number
-        ---@field serverData table<string, any>           -- Arbitrary server-side state shared with the client
+        ---@field serverData table<string, any>            -- Arbitrary server-side state (from Contract.data)
         ---@field missionId string
-        ---@field classId number                          -- Contract class ID (e.g., D, C, B, etc.)
+        ---@field classId number                           -- Contract class ID (1-6)
         ---@field contractId string
-        ---@field leaderId number                         -- State ID of the contract leader
+        ---@field leaderId number                          -- Player State ID of the contract leader
         ---@field plate string
-        ---@field car CarData                             -- Vehicle model and label
+        ---@field car CarData                              -- Vehicle model and label
 
         ---@class Step
-        ---@field isComplete fun(data: StepData): boolean -- Required. Checks if the step is complete
-        ---@field preparation? fun(data: StepData): void  -- Optional. Setup before step starts
-        ---@field onComplete? fun(data: StepData): void   -- Optional. Cleanup when step completes
+        ---@field isComplete fun(data: StepData): boolean   -- Required. Checks if the step is complete (usually tied to client events/inputs)
+        ---@field preparation? fun(data: StepData): void    -- Optional. Setup before step starts (e.g., adding blips/markers)
+        ---@field onComplete? fun(data: StepData): void     -- Optional. Cleanup when step completes (e.g., removing blips)
 
         ---@class ClientMission
-        ---@field steps Step[]                            -- Sequence of mission steps
-        ---@field canceled fun(contract: Contract): void  -- Called if mission is aborted
+        ---@field steps Step[]                             -- Sequence of mission steps
+        ---@field canceled fun(contract: Contract): void    -- Called if the mission is aborted by the leader
         ```
     </Tab>
 </Tabs>

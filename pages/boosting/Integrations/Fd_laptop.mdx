@@ -1,27 +1,69 @@
-import { Steps, Tabs, Tab } from "nextra-theme-docs";
+import { Steps } from "nextra-theme-docs";
+import { Callout, Warn } from "nextra/components";
 
 # FD Laptop
 
+The FD Laptop is a powerful, integrated in-game UI resource designed to provide players with accessible tools based on their character's job or permission level. It features a customizable interface and framework compatibility.
+
 <div
-  style={{ display: "flex", gap: "10px", margin: "20px 0", flexWrap: "wrap" }}
+  style={{ display: "flex", gap: "10px", margin: "20px 0", flexWrap: "wrap" }}
 >
-  <a
-    href="https://github.com/FelisDevelopment/fd_laptop"
-    target="_blank"
-    style={{
-      padding: "5px 10px",
-      border: "2px solid #AFC1FF",
-      color: "#AFC1FF",
-      borderRadius: "5px",
-      textDecoration: "none",
-      background: "none",
-    }}
-  >
-    Github Repository
-  </a>
+  <a
+    href="https://github.com/FelisDevelopment/fd_laptop"
+    target="_blank"
+    style={{
+      padding: "5px 10px",
+      border: "2px solid #AFC1FF",
+      color: "#AFC1FF",
+      borderRadius: "5px",
+      textDecoration: "none",
+      background: "none",
+    }}
+  >
+    Github Repository
+  </a>
 </div>
 
+---
+
+## Installation Guide
+
 <Steps>
-    ### Enable compatibility
-    Locate the `shared/config.lua` and toggle `Config.FDLaptop` to true/false
+    ### Step 1: Dependencies Check
+    
+    Ensure you have the following required resources installed and started before attempting to start `fd_laptop`:
+
+    * **[ox_lib](https://github.com/CommunityOx/ox_lib)** (Required for notifications, menus, and client utilities)
+    * **[ox_target](https://github.com/CommunityOx/ox_target)** (Recommended for interacting with laptop props)
+    * **Your Chosen Framework:** (ESX Legacy, QBCore, QBOX, or Standalone)
+
+    ### Step 2: Download and Placement
+
+    1.  Download the latest version of `fd_laptop` from the **Github Repository**.
+    2.  Extract the compressed file and rename the folder to `fd_laptop`.
+    3.  Place the `fd_laptop` folder directly into your server's `resources` directory.
+
+    ### Step 3: Enable Compatibility in our boosting resource
+    
+    Locate the resource's main configuration file at **`shared/config.lua`**.
+
+    * Change `Config.FDLaptop` to `true` or `false` based on your intended usage.
+
+    ```lua
+    -- shared/config.lua
+    Config.FDLaptop = true -- Set to true to enable the core laptop functionality
+    ```
+    
+    ### Step 4: Start the Resource
+
+    Add the following line to your server's main configuration file (`server.cfg` or `resources.cfg`) to ensure the script starts correctly:
+
+    ```bash
+    ensure fd_laptop
+    ```
+    
+    <Callout type="warn">
+        **Ordering is Critical!** Ensure `fd_laptop` is started *after* your framework and after `ox_lib`, but before `evolent_boosting`.
+    </Callout>
+
 </Steps>

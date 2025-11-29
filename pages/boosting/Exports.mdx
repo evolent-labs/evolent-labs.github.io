@@ -1,0 +1,75 @@
+import { Callout } from "nextra/components";
+
+# Client/Server Exports
+
+<Callout type="info">
+This page documents the functions exported by our resource, allowing other scripts to easily interact with the player progression and UI systems.
+</Callout>
+---
+
+## Server Exports
+
+The following functions are available on the **server thread** and are used for managing player profiles, ELO, and Reputation data.
+
+```lua
+---@param stateId number The unique identifier of the player profile.
+---@return table|nil
+exports("getProfile", function(stateId)
+    -- Retrieves the full player profile object (ELO, Rep, Wins, Losses).
+end)
+
+---@param stateId number
+---@param amount number
+---@return boolean
+exports("addXp", function(stateId, amount)
+    -- Adds the specified amount of ELO (XP) to the player's profile.
+end)
+
+---@param stateId number
+---@param amount number
+---@return boolean
+exports("removeXp", function(stateId, amount)
+    -- Removes the specified amount of ELO (XP) from the player's profile.
+end)
+
+---@param stateId number
+---@param levels number
+---@return boolean
+exports("addLevel", function(stateId, levels)
+    -- Grants the player the specified number of levels.
+end)
+
+---@param stateId number
+---@param levels number
+---@return boolean
+exports("removeLevel", function(stateId, levels)
+    -- Deducts the specified number of levels from the player's profile.
+end)
+
+---@param stateId number
+---@param amount number
+---@return boolean
+exports("addRep", function(stateId, amount)
+    -- Adds the specified amount of Reputation to the player's profile.
+end)
+
+---@param stateId number
+---@param amount number
+---@return boolean
+exports("removeRep", function(stateId, amount)
+    -- Removes the specified amount of Reputation from the player's profile.
+end)
+```
+
+---
+
+## Client Exports
+
+The following function is available on the client thread for external use, primarily for triggering the UI.
+
+```lua
+exports("openTablet", function()
+    -- Opens the main Boosting UI tablet. This is used by external scripts 
+    -- (e.g., inventory item use) to display the UI.
+end)
+```

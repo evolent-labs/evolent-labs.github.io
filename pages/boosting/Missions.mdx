@@ -1,94 +1,123 @@
 import { Steps, Tabs, Tab } from "nextra-theme-docs";
+import { Callout } from "nextra/components";
 
-# Evolent Boosting
+# Evolent Boosting: Creating Custom Missions
 
-By default we already provide 5 out of box missions, 3 low tier, 1 mid tier and 1 high tier missions.
+By default we already provide 5 out of box missions: 3 low tier, 1 mid tier, and 1 high tier missions.
 
-## Create your own mission
-- Write server side data in `contract.data` (this gets passed to client-side).
-- Write client side data in `Contracts[data.contractId]`.
-- `GetBoostVehicle` and `DeliverVehicle` is recommended as first & last step.
-- While adding a mission to a class, remember, index matters.
-- Client-side preparation happens for all group members.
-- All validation happens through the `contract.leaderId`
+<Callout type="info">
+    The main mission classes are indexed by **Tier Level** (e.g., Missions[1] is the lowest tier, Missions[6] is the highest). **The index where you place your mission matters** for difficulty and reward scaling.
+</Callout>
+
+### Key Concepts for Customizing
+
+* **Data Sharing (`contract.data`):** This server-side table holds data that needs to be passed to the client-side for use in location markers or UI updates.
+* **Client-Side Definition (`Contracts[data.contractId]`):** This table holds the client-side mission logic and actions, and is linked to the server-side definition by the mission's unique ID.
+* **Standard Steps:** The wrapper functions **`GetBoostVehicle`** and **`DeliverVehicle`** are highly recommended as the first and last steps of your custom mission.
+* **Validation:** All progression and security checks should be validated using the **`contract.leaderId`**.
+
+---
+
+## Create Your Own Mission
 
 <Steps>
-    ### Create server side mission logic.
-    Create a new file in `server/missions/` named whatever... In our example (test)
+    ### Step 1: Create Server-Side Mission Logic
+
+    Create a new file in `server/missions/` (e.g., `test.lua`). This file defines the sequence of steps, server-side validation, and required items.
 
     ```lua
     local missionModule = require('modules.mission')
     local Mission = missionModule.Mission
     local Step = missionModule.Step
+    local GetBoostVehicle = require 'server.missions.GetBoostVehicle' -- Import standard steps
+    local DeliverVehicle = require 'server.missions.DeliverVehicle'
 
     return Mission:new({
         steps = {
-            GetBoostVehicle,
+            GetBoostVehicle, -- Standard Step 1: Locate and retrieve the vehicle
             Step:new({
-                title = "Step 2",
-                locations = {},
+                title = "Step 2: Locate the Drop-off",
+                locations = { -- Optional locations that the client can use
+                    { x = 123.4, y = 567.8, z = 90.1, radius = 5.0, heading = 180.0 }
+                },
                 disableGps = true,
                 isComplete = function(self, contract)
-                    -- SERVER VALIDATION FOR COMPLETION
+                    -- SERVER VALIDATION FOR COMPLETION (e.g., checking if the item was delivered)
                     return true
                 end,
                 complete = function(self, contract)
-                    -- EXECUTE SOME ACTION WHEN STEP GETS COMPLETED
+                    -- EXECUTE SOME ACTION WHEN STEP GETS COMPLETED (e.g., spawning an NPC, or giving a temporary reward)
                 end,
                 preparation = function(self, contract, location)
-                    -- THIS GETS EXECUTED ONLY ONCE WHEN THE STEP GETS STARTED
+                    -- THIS GETS EXECUTED ONLY ONCE WHEN THE STEP STARTS (e.g., setting a variable in contract.data)
                 end
             }),
-            DeliverVehicle
+            DeliverVehicle -- Standard Final Step: Deliver the vehicle for payment
         },
         requiredItems = {
-            advancedlockpick = 1
+            -- Items needed to start the mission
+            advancedlockpick = 1 
         }
     })
     ```
 
-    ### Add server side mission to list
-    Import your mission module in `server/missions/missions.lua` and add it to the appropriate mission class list.
+    ### Step 2: Add Server-Side Mission to Tier List
+
+    Import your new mission module in `server/missions/missions.lua` and add it to the appropriate mission class list. The **key** you use must match the module name (e.g., `test`).
 
     ```lua
-    local PaintMission = require 'server.missions.paint'
-    local RimsMission = require 'server.missions.rims'
-    local TrackerMission = require 'server.missions.tracker'
-    local TowerMission = require 'server.missions.tower'
-    local GangMission = require 'server.missions.gang'
+    -- ... (Existing imports)
     local TestMission = require 'server.missions.test'
 
-    Missions[1] = {
-        ["paint"] = PaintMission,
-        ["rims"] = RimsMission,
-        ["tracker"] = TrackerMission
-    }
+    -- ... (Missions[1] through Missions[3])
 
-    Missions[2] = {
-        ["paint"] = PaintMission,
-        ["rims"] = RimsMission,
-        ["tracker"] = TrackerMission
-    }
-
-    Missions[3] = {
+    Missions[4] = { -- Example of adding a new Mid-Tier mission
         ["tower"] = TowerMission,
+        ["test"] = TestMission, -- <--- Your new mission added here
     }
 
-    Missions[4] = {
-        ["tower"] = TowerMission,
-        -- THIS GOT ADDED TO A TIER MISSION
-        ["test"] = TestMission,
-    }
-
-    Missions[5] = {
-        ["gang"] = GangMission
-    }
-
-    Missions[6] = {
-        ["gang"] = GangMission
-    }
+    -- ... (Missions[5] and Missions[6])
     ```
 
-    ### Repeat the process in `client/missions`
+    ### Step 3: Create Client-Side Mission Logic
+
+    Repeat the naming process in `client/missions/` (e.g., `test.lua`). This file handles client-specific logic like creating blips, markers, and UI feedback. **Note:** The `preparation` function here runs for all group members.
+
+    ```lua
+    local Mission = require('modules.mission')
+
+    Mission:registerClient('test', { -- Use the same mission key ('test')
+        preparation = function(self, contract, location)
+            -- CODE TO RUN WHEN THE MISSION STARTS ON THE CLIENT SIDE
+        end,
+        onStart = function(self, contract)
+            -- CODE TO RUN WHEN THE CURRENT STEP STARTS (e.g., displaying a marker)
+        end,
+        onComplete = function(self, contract)
+            -- CODE TO RUN WHEN THE CURRENT STEP IS COMPLETED (e.g., removing a marker)
+        end,
+        onLocation = function(self, contract, location)
+            -- CODE TO RUN WHEN A LOCATION IS ACTIVE
+        end
+    })
+    ```
+
+    ### Step 4: Add Client-Side Mission to Tier List
+
+    Import your new mission module in `client/missions/missions.lua` and add it to the appropriate mission class list. The **key** you use must match the module name (e.g., `test`).
+
+    ```lua
+    -- ... (Existing imports)
+    local TestMission = require 'client.missions.test'
+
+    -- ... (Missions[1] through Missions[3])
+
+    Missions[4] = { -- Example of adding a new Mid-Tier mission
+        ["tower"] = TowerMission,
+        ["test"] = TestMission, -- <--- Your new mission added here
+    }
+
+    -- ... (Missions[5] and Missions[6])
+    ```
 
 </Steps>

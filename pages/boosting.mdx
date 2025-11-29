@@ -29,29 +29,22 @@ Our system is packed with variety, real progression, and features that actually 
 
 <Steps>
     ### Step 1: Install Dependencies
+    * Ensure you have the following **required resources** installed:
+        * Any of the inventory scripts defined in [Configuration](/boosting/Config)
+        * [ox_lib](https://github.com/CommunityOx/ox_lib)
+        * [oxmysql](https://github.com/CommunityOx/oxmysql)
+        * [ox_target](https://github.com/CommunityOx/ox_target)
+        * [bl_ui](https://github.com/Byte-Labs-Studio/bl_ui) (Replaceable with other mini-games)
+    * Use any supported framework: **OX**, **QBOX**, **ESX**, **QB**, or **Standalone**.
+    
+    ### Step 2: Download and Extract
+    * Download & extract the `evolent_boosting` resource from [Cfx.re](https://forum.cfx.re/) and place it inside your `resources` folder.
 
-    - Ensure you have the following resources installed:
-        - Any of the inventory scripts defined in [Configuration](/boosting/Config)
-        - [ox_lib](https://github.com/CommunityOx/ox_lib)
-        - [oxmysql](https://github.com/CommunityOx/oxmysql)
-        - [ox_target](https://github.com/CommunityOx/ox_target)
-        - [bl_ui](https://github.com/Byte-Labs-Studio/bl_ui) Replaceable with other mini-games
-    - Use any supported framework:
-        [OX](https://github.com/CommunityOx/ox_core),
-        [QBOX](https://github.com/Qbox-project/qbx_core),
-        [ESX](https://github.com/esx-framework/esx_core),
-        [QB](https://github.com/qbcore-framework/qb-core),
-        or **Standalone**
+    ### Step 3: Execute SQL Files
+    * Execute all `.sql` files found in the `sql` folder into your server's database. This sets up the necessary tables for progression and contracts.
 
-    ### Step 2: Download the Resource
-    - Download & extract the `evolent_boosting` resource from [Cfx.re](https://forum.cfx.re/) and place it inside your `resources` folder.
-
-    ### Step 3: Execute all sql files
-    Execute all sql files in `sql` folder.
-
-    ### Step 3: Add Items to ox_inventory
-
-    Add this to your `ox_inventory/data/items.lua`:
+    ### Step 4: Add Items to ox_inventory
+    * Add the following entries to your `ox_inventory/data/items.lua`. These items are used to access the hacking minigame and the boosting contract UI, respectively.
 
     ```lua
     ["ghostlink"] = {
@@ -64,27 +57,27 @@ Our system is packed with variety, real progression, and features that actually 
         }
     },
     -- add this only if you won't use cmd
-    ["boostingtablet"]          = {
+    ["boostingtablet"] = {
         label = "Boosting Tablet",
         weight = 5000,
         stack = true,
         close = true,
         client = {
-          export = 'evolent_boosting.openTablet'
+            export = 'evolent_boosting.openTablet'
         }
     },
     ```
 
-### Step 4: Configuration
+    ### Step 5: Configuration
+    * Configure the `config.lua` to fit your server's needs (framework, locations, rewards, etc.). Visit [Configuration](/boosting/Config) for a full breakdown.
 
-- Configure the `config.lua`. Visit [Configuration](/boosting/Config) for a full breakdown.
+    ### Step 6: Starting the Script
+    * Add `evolent_boosting` to your server's resource list and start the script. **Ensure it is started AFTER all dependencies.**
 
-### Step 5: Starting the Script
-
-- Add evolent_boosting to your server's resource list and start the script.
-
-```bash
-ensure evolent_boosting
-```
+    ```bash
+    ensure ox_lib
+    ensure oxmysql
+    ensure evolent_boosting
+    ```
 
 </Steps>

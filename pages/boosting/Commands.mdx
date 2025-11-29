@@ -1,5 +1,36 @@
-### Commands
+import { Callout } from "nextra/components";
 
-```lua
-/generatecontracts id -- lets you regenerate/generate specified users contracts
-```
+# Commands
+This page lists all available console and in-game commands.
+
+---
+
+## Administrator Commands
+
+The following commands are typically restricted to users with specific roles.
+
+| Command | Usage Example | Parameters | Description |
+| :--- | :--- | :--- | :--- |
+| **`/generatecontracts`** | `/generatecontracts 123` | `[id]` (Player ID/Source) | Manually generates or regenerates all available contracts for the specified user ID. *(Console/RCON only)* |
+| **`/boosting:addXp`** | `/boosting:addXp 123 500` | `<targetId>`, `<amount>` | Adds a specified `amount` of XP (ELO) to a player's profile. |
+| **`/boosting:removeXp`** | `/boosting:removeXp 123 100` | `<targetId>`, `<amount>` | Removes a specified `amount` of XP (ELO) from a player's profile. |
+| **`/boosting:addLevel`** | `/boosting:addLevel 123 1` | `<targetId>`, `<levels>` | Manually grants a specified number of **levels** to a player's profile. |
+| **`/boosting:removeLevel`** | `/boosting:removeLevel 123 5` | `<targetId>`, `<levels>` | Manually deducts a specified number of **levels** from a player's profile. |
+| **`/boosting:addRep`** | `/boosting:addRep 123 25` | `<targetId>`, `<amount>` | Adds a specified `amount` of Reputation (Rep) to a player's profile. |
+| **`/boosting:removeRep`** | `/boosting:removeRep 123 5` | `<targetId>`, `<amount>` | Removes a specified `amount` of Reputation (Rep) from a player's profile. |
+
+<Callout type="info">
+    **Note:** For the `boosting:*` commands, `<targetId>` refers to the in-game **Source ID** or the system's `playerId`.
+</Callout>
+
+---
+
+## Player Command
+
+| Command | Usage Example | Description | Permissions |
+| :--- | :--- | :--- | :--- |
+| **`/opentablet`** | `/opentablet` | Opens the main Boosting UI for viewing available contracts. | Accessible to all players. |
+
+<Callout type="warn">
+    **Note:** The `/opentablet` command will only function if you have configured the script to use a command to open the UI (as an alternative to using an inventory item).
+</Callout>

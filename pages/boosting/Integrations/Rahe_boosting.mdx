@@ -1,14 +1,36 @@
 import { Steps } from "nextra-theme-docs";
+import { Callout, Warn } from "nextra/components";
 
 # RAHE Boosting Migration
 
+This guide outlines the process for migrating existing player progression data (such as levels, reputation, or stats) from the **RAHE Boosting** system to the new Evolent Boosting database structure.
+
+<Callout type="warn">
+    **MIGRATION WARNING:** This is a one-time, potentially irreversible data operation. We highly recommend performing this process only when your server is **offline** or the boosting resource is **stopped**.
+</Callout>
+
 <Steps>
-    ### Run migration
-    Execute `convertrahe` in server console.
+    ### Step 1: Execute Migration Command
+    
+    Start your server and execute the migration command directly in your server console. This command will move all existing RAHE data into the new structure.
 
-    ### Remove functionality
-    Remove `convertrahe` command in server/bridge/_main.lua line 171
+    ```bash
+    convertrahe
+    ```
 
-    ### Make level adjustments
-    Configure `Config.BaseElo & Config.EloModifier` to match your needs
+    ### Step 2: Remove Migration Command
+
+    Once the command has been successfully executed and all data is transferred, you must remove the command functionality to prevent accidental re-runs or unauthorized access.
+
+    Locate the command registration and remove or comment out line 171 in:
+    **`server/bridge/_main.lua`**
+
+    ### Step 3: Make Level Adjustments
+
+    Since the new system may use different formulas for progression, configure the core Elo/Reputation variables in your main configuration file to properly balance the imported player data.
+
+    Configure the following settings in **`config.lua`** to match your desired progression curve:
+
+    * `Config.BaseElo`
+    * `Config.EloModifier`
 </Steps>
