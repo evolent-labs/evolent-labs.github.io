@@ -1,0 +1,138 @@
+# Evolent Fleamarket
+
+This is out of the box config example.
+
+```lua
+Config = {
+    DebugEnabled = false,
+    Framework = 'qbx',                                         -- ox, qbx, qb, esx
+    Notify = 'ox_lib',                                         -- ox_lib
+    Target = 'ox_target',                                      -- ox_target
+    Inventory = 'ox',                                          -- ox, qs, qb, codem, core, origen, tgiann
+    BaseRepPerDolar = 0.0012,                                  -- Gets calculated as (base * total_price)
+    TransactionAccount = 'money',                              -- Account which will be used in market transactions (money, bank, dirty_money or whatever)
+    LogService = '',       -- fmsdk, discord
+    Discord = { -- Webhook URL for logging
+        WebhookUrl = '',
+        Color = 3447003,
+        Username = 'Evolent Fleamarket',
+    },
+    UseWebpForInventoryImages = false, -- Only set to true if you use .webp images for your inventory
+    Laptop = false,          -- TOGGLE LAPTOP COMPATIBILITY
+    Commands = {
+        openTablet = { name = 'fleamarket', enabled = true }
+    },
+    Categories = {
+        weapons = {
+            name= "Weapons",
+            icon= "fa-solid fa-gun",
+            children= {
+                { id= "WEAPON_PISTOL",          name= "Pistol" },
+                { id= "WEAPON_COMBATPISTOL",    name= "Combat Pistol" },
+                { id= "WEAPON_APPISTOL",        name= "AP Pistol" },
+                { id= "WEAPON_PISTOL50",        name= ".50 Pistol" },
+                { id= "WEAPON_HEAVYPISTOL",     name= "Heavy Pistol" },
+                { id= "WEAPON_VINTAGEPISTOL",   name= "Vintage Pistol" },
+                { id= "WEAPON_SNSPISTOL",       name= "SNS Pistol" },
+                { id= "WEAPON_SNSPISTOL_MK2",   name= "SNS Pistol MK2" },
+                { id= "WEAPON_PISTOL_MK2",      name= "Pistol MK2" },
+                { id= "WEAPON_DOUBLEACTION",    name= "Double-Action Revolver" },
+                { id= "WEAPON_REVOLVER",        name= "Revolver" },
+                { id= "WEAPON_REVOLVER_MK2",    name= "Revolver MK2" },
+                { id= "WEAPON_NAVYREVOLVER",    name= "Navy Revolver" },
+                { id= "WEAPON_CERAMICPISTOL",   name= "Ceramic Pistol" },
+                { id= "WEAPON_PISTOLXM3",       name= "WM 29 Pistol" },
+                { id= "WEAPON_MICROSMG",        name= "Micro SMG" },
+                { id= "WEAPON_MINISMG",         name= "Mini SMG" },
+                { id= "WEAPON_SMG",             name= "SMG" },
+                { id= "WEAPON_SMG_MK2",         name= "SMG Mk2" },
+                { id= "WEAPON_ASSAULTSMG",      name= "Assault SMG" },
+                { id= "WEAPON_COMBATPDW",       name= "Combat PDW" },
+                { id= "WEAPON_MACHINEPISTOL",   name= "Machine Pistol" },
+                { id= "WEAPON_ASSAULTRIFLE",    name= "Assault Rifle" },
+                { id= "WEAPON_ASSAULTRIFLE_MK2",name= "Assault Rifle MK2" },
+                { id= "WEAPON_CARBINERIFLE",    name= "Carbine Rifle" },
+                { id= "WEAPON_CARBINERIFLE_MK2",name= "Carbine Rifle MK2" },
+                { id= "WEAPON_SPECIALCARBINE",  name= "Special Carbine" },
+                { id= "WEAPON_SPECIALCARBINE_MK2", name= "Special Carbine MK2" },
+                { id= "WEAPON_BULLPUPRIFLE",    name= "Bullpup Rifle" },
+                { id= "WEAPON_BULLPUPRIFLE_MK2",name= "Bullpup Rifle MK2" },
+                { id= "WEAPON_COMPACTRIFLE",    name= "Compact Rifle" },
+                { id= "WEAPON_MILITARYRIFLE",   name= "Military Rifle" },
+                { id= "WEAPON_TACTICALRIFLE",   name= "Tactical Rifle" },
+                { id= "WEAPON_HEAVYRIFLE",      name= "Heavy Rifle" },
+                { id= "WEAPON_BATTLERIFLE",     name= "Battle Rifle" },
+                { id= "WEAPON_MARKSMANRIFLE",   name= "Marksman Rifle" },
+                { id= "WEAPON_MARKSMANRIFLE_MK2", name= "Marksman Rifle MK2" },
+                { id= "WEAPON_SNIPERRIFLE",     name= "Sniper Rifle" },
+                { id= "WEAPON_HEAVYSNIPER",     name= "Heavy Sniper" },
+                { id= "WEAPON_HEAVYSNIPER_MK2", name= "Heavy Sniper MK2" },
+                { id= "WEAPON_PRECISIONRIFLE",  name= "Precision Rifle" },
+                { id= "WEAPON_MG",              name= "Machine Gun" },
+                { id= "WEAPON_COMBATMG",        name= "Combat MG" },
+                { id= "WEAPON_COMBATMG_MK2",    name= "Combat MG MK2" },
+                { id= "WEAPON_PUMPSHOTGUN",     name= "Pump Shotgun" },
+                { id= "WEAPON_PUMPSHOTGUN_MK2", name= "Pump Shotgun MK2" },
+                { id= "WEAPON_SAWNOFFSHOTGUN",  name= "Sawn-Off Shotgun" },
+                { id= "WEAPON_DBSHOTGUN",       name= "Double Barrel Shotgun" },
+                { id= "WEAPON_BULLPUPSHOTGUN",  name= "Bullpup Shotgun" },
+                { id= "WEAPON_ASSAULTSHOTGUN",  name= "Assault Shotgun" },
+                { id= "WEAPON_HEAVYSHOTGUN",    name= "Heavy Shotgun" },
+                { id= "WEAPON_COMBATSHOTGUN",   name= "Combat Shotgun" },
+                { id= "WEAPON_AUTOSHOTGUN",     name= "Sweeper Shotgun" }
+            }
+        },
+        ammo = {
+            name= "Ammunition",
+            icon= "fa-solid fa-burst",
+            children= {
+                { id= "ammo-22",        name= ".22 LR" },
+                { id= "ammo-38",        name= ".38 Special" },
+                { id= "ammo-44",        name= ".44 Magnum" },
+                { id= "ammo-45",        name= ".45 ACP" },
+                { id= "ammo-50",        name= ".50 AE" },
+                { id= "ammo-9",         name= "9×19mm Parabellum" },
+                { id= "ammo-rifle",     name= "5.56×45mm NATO" },
+                { id= "ammo-rifle2",    name= "7.62×39mm" },
+                { id= "ammo-sniper",    name= "7.62×51mm NATO" },
+                { id= "ammo-heavysniper", name= ".50 BMG" },
+                { id= "ammo-shotgun",   name= "12 Gauge" },
+                { id= "ammo-musket",    name= ".50 Musket Ball" }
+            }
+        },
+        mods = {
+            name= "Weapon Parts & Mods",
+            icon= "fa-solid fa-screwdriver-wrench",
+            children= {
+                { id= "at_suppressor_light", name= "Pistol Suppressor" },
+                { id= "at_suppressor_heavy", name= "Rifle / SMG Suppressor" },
+                { id= "at_flashlight",       name= "Tactical Flashlight" },
+                { id= "at_grip",             name= "Foregrip" },
+                { id= "at_barrel",           name= "Heavy Barrel" },
+                { id= "at_clip_extended_pistol", name= "Extended Pistol Mag" },
+                { id= "at_clip_extended_smg",    name= "Extended SMG Mag" },
+                { id= "at_clip_extended_shotgun",name= "Extended Shotgun Mag" },
+                { id= "at_clip_extended_rifle",  name= "Extended Rifle Mag" },
+                { id= "at_clip_extended_mg",     name= "Extended MG Mag" },
+                { id= "at_clip_extended_sniper", name= "Extended Sniper Mag" },
+                { id= "at_clip_drum_smg",        name= "SMG Drum Mag" },
+                { id= "at_clip_drum_shotgun",    name= "Shotgun Drum Mag" },
+                { id= "at_clip_drum_rifle",      name= "Rifle Drum Mag" },
+                { id= "at_compensator",      name= "Compensator" },
+                { id= "at_scope_macro",      name= "Holographic Sight" },
+                { id= "at_scope_small",      name= "Small Scope" },
+                { id= "at_scope_medium",     name= "Medium Scope" },
+                { id= "at_scope_large",      name= "Large Scope" },
+                { id= "at_scope_advanced",   name= "Advanced Scope" }
+            }
+        },
+        armor = { name= "Armor vests & rigs",      icon= "fa-solid fa-shield-halved" },
+        clothing = { name= "Clothing",                icon= "fa-solid fa-shirt" },
+        meds = { name= "Medical supplies",        icon= "fa-solid fa-kit-medical" },
+        food = { name= "Food & drinks",           icon= "fa-solid fa-utensils" },
+        keys = { name= "Keys",                    icon= "fa-solid fa-key" },
+        currency = { name= "Currency",                icon= "fa-solid fa-money-bill-1" },
+        containers = { name= "Containers",              icon= "fa-solid fa-box-archive" }
+    }
+}
+```

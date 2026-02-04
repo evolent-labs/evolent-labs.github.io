@@ -1,0 +1,55 @@
+import { Steps, Tabs, Tab } from "nextra-theme-docs";
+import { Callout, Warn } from "nextra/components";
+
+# Evolent Fleamarket
+
+<div
+  style={{ display: "flex", gap: "10px", margin: "20px 0", flexWrap: "wrap" }}
+>
+  <a
+    href="https://evolent.dev/product/fleamarket"
+    target="_blank"
+    style={{
+      padding: "5px 10px",
+      border: "2px solid #AFC1FF",
+      color: "#AFC1FF",
+      borderRadius: "5px",
+      textDecoration: "none",
+      background: "none",
+    }}
+  >
+    Our Store
+  </a>
+</div>
+
+We created a next flea market script that puts control, variety, and player interaction front and center. Whether you’re a casual trader, a collector, or just looking to make some quick cash, our system has something for you. From rare finds to everyday goods, it’s all about making the market feel alive.
+
+## Installation
+
+<Steps>
+    ### Step 1: Install Dependencies
+    * Ensure you have the following **required resources** installed:
+        * Any of the inventory scripts defined in [Configuration](/fleamarket/Config)
+        * [ox_lib](https://github.com/CommunityOx/ox_lib)
+        * [oxmysql](https://github.com/CommunityOx/oxmysql)
+    * Use any supported framework: **OX**, **QBOX**, **ESX**, **QB**, or **Standalone**.
+    
+    ### Step 2: Download and Extract
+    * Download & extract the `evolent_fleamarket` resource from [Cfx.re](https://forum.cfx.re/) and place it inside your `resources` folder.
+
+    ### Step 3: Execute SQL Files
+    * Execute all `.sql` files found in the `sql` folder into your server's database. This sets up the necessary tables for progression and contracts.
+
+    ### Step 4: Configuration
+    * Configure the `config.lua` to fit your server's needs (framework, categories, subcategories, etc.). Visit [Configuration](/fleamarket/Config) for a full breakdown.
+
+    ### Step 6: Starting the Script
+    * Add `evolent_fleamarket` to your server's resource list and start the script. **Ensure it is started AFTER all dependencies.**
+
+    ```bash
+    ensure ox_lib
+    ensure oxmysql
+    ensure evolent_fleamarket
+    ```
+
+</Steps>
