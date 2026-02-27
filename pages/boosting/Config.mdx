@@ -4,7 +4,8 @@ This is out of the box config example.
 
 ```lua
 Config = {
-    Framework = 'qbx',                                          -- ox, qbx, qb, esx
+    Debug = false,
+    Framework = 'qbx',                                         -- ox, qbx, qb, esx
     Notify = 'ox_lib',                                         -- ox_lib
     Target = 'ox_target',                                      -- ox_target
     ShowText = 'ox_lib',                                       -- ox_lib
@@ -24,21 +25,19 @@ Config = {
             maxLevel = 100                                     -- Optional cap; set nil to disable
         }
     },
+    MarketEnabled = true,                                      -- Market functionality
+    MaxActiveBoosts = 3,                                       -- Defines how many boosts can be done at the same time
+    QuickProgressDefault = true,                               -- Quick progress visibility
     EnableActionSFX = true,                                    -- Enables SFX for boosting actions
     MarketGeneration = 60,                                     -- Adds new contracts to the market every X minutes
     GeneratedContractsByMarket = 10,                           -- How many contracts will be generated each period
-    TransactionAccount = 'rep',                               -- Account which will be used in market transactions (cash, rep)
+    TransactionAccount = 'rep',                                -- Account which will be used in market transactions (cash, rep)
     MoneyRewards = {                                           -- Don't touch this (used for validation)
         cash = true,
         bank = true,
         money = true
     },
     LogService = '',       -- fmsdk, discord
-    Discord = { -- Webhook URL for logging
-        WebhookUrl = '',
-        Color = 3447003,
-        Username = 'Evolent Boosting',
-    },
     UseWebpForInventoryImages = false, -- Only set to true if you use .webp images for your inventory
     QuickKeyBind = "H",    -- Quick key bind for current boosting progress
     WaypointKeyBind = "J", -- Key bind for setting waypoint to current step (only works when progress UI is open)
@@ -50,7 +49,7 @@ Config = {
     },
     BaseCoolDown = 6000,       -- Base cooldown for tracker position
     AdditionalCoolDown = 3000, -- Additional cooldown for tracker position
-    FDLaptop = false,          -- TOGGLE FD LAPTOP COMPATIBILITY
+    Laptop = false,          -- fd, av, lb or false
     DropoffPoliceCheckDistance = 200, -- How far police must be to deliver the vehicle
     SpawnClearRadius = 3.0,    -- Radius in meters to consider a spawn occupied
     Commands = {
@@ -87,6 +86,18 @@ Config = {
                 min = 50,
                 max = 100
             },
+            mods = {
+                applyCount = { min = 1, max = 2 },
+                pool = {
+                    { type = 4 }, 
+                    { type = 0 },
+                    { type = 1 },
+                    { type = 11, min = 0, max = 1 },
+                    { type = 12, min = 0, max = 1 },
+                },
+                always = {},
+                wheels = { enabled = false }
+            }
             -- marketOnly = false,
             -- requiredCops = 4,
             -- overwriteBidding = 16,
@@ -126,6 +137,18 @@ Config = {
                 min = 50,
                 max = 100
             },
+            mods = {
+                applyCount = { min = 2, max = 4 },
+                pool = {
+                    { type = 0 }, { type = 1 }, { type = 2 },
+                    { type = 4 }, { type = 7 },
+                    { type = 11, min = 1, max = 2 },
+                    { type = 12, min = 1, max = 2 },
+                    { type = 13, min = 0, max = 1 },
+                },
+                always = {},
+                wheels = { enabled = true, wheelType = 0 }
+            }
         },
         {
             label = 'B',
@@ -159,6 +182,19 @@ Config = {
                 min = 50,
                 max = 100
             },
+            mods = {
+                applyCount = { min = 4, max = 6 },
+                pool = {
+                    { type = 0 }, { type = 1 }, { type = 2 },
+                    { type = 3 }, { type = 4 }, { type = 7 },
+                    { type = 11, min = 2, max = 3 },
+                    { type = 12, min = 2, max = 3 },
+                    { type = 13, min = 1, max = 2 },
+                    { type = 15, min = 1, max = 2 },
+                },
+                always = {},
+                wheels = { enabled = true, wheelType = 0 }
+            }
         },
         {
             label = 'A',
@@ -198,6 +234,23 @@ Config = {
                 min = 50,
                 max = 100
             },
+            mods = {
+                applyCount = { min = 6, max = 9 },
+                pool = {
+                    { type = 0 }, { type = 1 }, { type = 2 },
+                    { type = 3 }, { type = 4 }, { type = 6 },
+                    { type = 7 }, { type = 10 },
+                    { type = 11, min = 3, max = 4 },
+                    { type = 12, min = 2, max = 3 },
+                    { type = 13, min = 2, max = 3 },
+                    { type = 15, min = 2, max = 3 },
+                },
+                always = {
+                    turbo = true,
+                    xenon = true,
+                },
+                wheels = { enabled = true, wheelType = 0 }
+            }
         },
         {
             label = 'S',
@@ -238,6 +291,23 @@ Config = {
                 min = 50,
                 max = 100
             },
+            mods = {
+                applyCount = { min = 8, max = 12 },
+                pool = {
+                    { type = 0 }, { type = 1 }, { type = 2 },
+                    { type = 3 }, { type = 4 }, { type = 6 },
+                    { type = 7 }, { type = 8 }, { type = 10 },
+                    { type = 11, min = 4, max = 5 },
+                    { type = 12, min = 3, max = 4 },
+                    { type = 13, min = 3, max = 4 },
+                    { type = 15, min = 3, max = 4 },
+                },
+                always = {
+                    turbo = true,
+                    xenon = true,
+                },
+                wheels = { enabled = true, wheelType = 0 }
+            }
         },
         {
             label = 'S+',
@@ -274,6 +344,23 @@ Config = {
                 min = 50,
                 max = 100
             },
+            mods = {
+                applyCount = { min = 12, max = 16 },
+                pool = {
+                    { type = 0 }, { type = 1 }, { type = 2 },
+                    { type = 3 }, { type = 4 }, { type = 6 },
+                    { type = 7 }, { type = 8 }, { type = 10 },
+                    { type = 11, min = 4, max = 5 },
+                    { type = 12, min = 4, max = 5 },
+                    { type = 13, min = 4, max = 5 },
+                    { type = 15, min = 4, max = 5 },
+                },
+                always = {
+                    turbo = true,
+                    xenon = true,
+                },
+                wheels = { enabled = true, wheelType = 0 }
+            }
         }
     }
 }
