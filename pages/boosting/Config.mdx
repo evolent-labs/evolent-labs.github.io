@@ -42,10 +42,17 @@ Config = {
     QuickKeyBind = "H",    -- Quick key bind for current boosting progress
     WaypointKeyBind = "J", -- Key bind for setting waypoint to current step (only works when progress UI is open)
     BelowLevelRewardPercent = 20, -- Percentage of rewards (rep and XP) for contracts below player's level (1-100)
-    HighTierHacks = {      -- High Tier Hacks range and coolDown per hack
-        min = 5,
-        max = 15,
-        coolDown = 5000
+    Hacks = {      -- Hacks range and cooldown per class by index
+        [5] = {
+            min = 8,
+            max = 12,
+            coolDown = 6000
+        },
+        [6] = {
+            min = 10,
+            max = 14,
+            coolDown = 6000
+        }
     },
     BaseCoolDown = 6000,       -- Base cooldown for tracker position
     AdditionalCoolDown = 3000, -- Additional cooldown for tracker position
