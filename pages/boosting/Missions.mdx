@@ -84,22 +84,24 @@ By default we already provide 5 out of box missions: 3 low tier, 1 mid tier, and
     Repeat the naming process in `client/missions/` (e.g., `test.lua`). This file handles client-specific logic like creating blips, markers, and UI feedback. **Note:** The `preparation` function here runs for all group members.
 
     ```lua
-    local Mission = require('modules.mission')
-
-    Mission:registerClient('test', { -- Use the same mission key ('test')
-        preparation = function(self, contract, location)
-            -- CODE TO RUN WHEN THE MISSION STARTS ON THE CLIENT SIDE
-        end,
-        onStart = function(self, contract)
-            -- CODE TO RUN WHEN THE CURRENT STEP STARTS (e.g., displaying a marker)
-        end,
-        onComplete = function(self, contract)
-            -- CODE TO RUN WHEN THE CURRENT STEP IS COMPLETED (e.g., removing a marker)
-        end,
-        onLocation = function(self, contract, location)
-            -- CODE TO RUN WHEN A LOCATION IS ACTIVE
+    return {
+        steps = {
+            {
+                isComplete = function(data)
+                    -- CODE TO RUN TO CHECK IF THIS STEP IS SUCCESSFULLY COMPLETED
+                end,
+                onComplete = function (data)
+                    -- CODE TO RUN WHEN THE CURRENT STEP IS COMPLETED (e.g., removing a marker, entity)
+                end,
+                preparation = function (data)
+                    -- CODE TO RUN WHEN THE MISSION STARTS ON THE CLIENT SIDE
+                end
+            }
+        },
+        canceled = function (contract)
+            -- THIS RUNS WHEN THE CONTRACT IS CANCELED BY THE PLAYER
         end
-    })
+    }
     ```
 
     ### Step 4: Add Client-Side Mission to Tier List
