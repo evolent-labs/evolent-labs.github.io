@@ -11,8 +11,8 @@ By default we already provide 5 out of box missions: 3 low tier, 1 mid tier, and
 
 ### Key Concepts for Customizing
 
-* **Data Sharing (`contract.data`):** This server-side table holds data that needs to be passed to the client-side for use in location markers or UI updates.
-* **Client-Side Definition (`Contracts[data.contractId]`):** This table holds the client-side mission logic and actions, and is linked to the server-side definition by the mission's unique ID.
+* **Data Sharing (`contract.data`):** This server side table holds data that needs to be passed to the client side for use in location markers or UI updates.
+* **Client Side Definition (`Contracts[data.contractId]`):** This table holds the client side mission logic and actions, and is linked to the server side definition by the mission's unique ID.
 * **Standard Steps:** The wrapper functions **`GetBoostVehicle`** and **`DeliverVehicle`** are highly recommended as the first and last steps of your custom mission.
 * **Validation:** All progression and security checks should be validated using the **`contract.leaderId`**.
 
@@ -21,105 +21,122 @@ By default we already provide 5 out of box missions: 3 low tier, 1 mid tier, and
 ## Create Your Own Mission
 
 <Steps>
-    ### Step 1: Create Server-Side Mission Logic
+    ### Step 1: Create Server Side Mission Step Logic
 
-    Create a new file in `server/missions/` (e.g., `test.lua`). This file defines the sequence of steps, server-side validation, and required items.
+    Create a new file in `server/missions/steps/` (e.g., `test.lua`). This file defines the step functionality (validation, required items e.g).
 
     ```lua
     local missionModule = require('modules.mission')
-    local Mission = missionModule.Mission
     local Step = missionModule.Step
-    local GetBoostVehicle = require 'server.missions.GetBoostVehicle' -- Import standard steps
-    local DeliverVehicle = require 'server.missions.DeliverVehicle'
 
-    return Mission:new({
-        steps = {
-            GetBoostVehicle, -- Standard Step 1: Locate and retrieve the vehicle
-            Step:new({
-                title = "Step 2: Locate the Drop-off",
-                locations = { -- Optional locations that the client can use
-                    { x = 123.4, y = 567.8, z = 90.1, radius = 5.0, heading = 180.0 }
-                },
-                disableGps = true,
-                isComplete = function(self, contract)
-                    -- SERVER VALIDATION FOR COMPLETION (e.g., checking if the item was delivered)
-                    return true
-                end,
-                complete = function(self, contract)
-                    -- EXECUTE SOME ACTION WHEN STEP GETS COMPLETED (e.g., spawning an NPC, or giving a temporary reward)
-                end,
-                preparation = function(self, contract, location)
-                    -- THIS GETS EXECUTED ONLY ONCE WHEN THE STEP STARTS (e.g., setting a variable in contract.data)
-                end
-            }),
-            DeliverVehicle -- Standard Final Step: Deliver the vehicle for payment
+    LocateDropOff = Step:new({
+        title = "Step 2: Locate the Drop off",
+        locations = { -- Optional locations that the client can use
+            { x = 123.4, y = 567.8, z = 90.1, radius = 5.0, heading = 180.0 }
         },
-        requiredItems = {
-            -- Items needed to start the mission
-            advancedlockpick = 1 
-        }
+        disableGps = true,
+        isComplete = function(self, contract)
+            -- SERVER VALIDATION FOR COMPLETION (e.g., checking if the item was delivered)
+            return true
+        end,
+        complete = function(self, contract)
+            -- EXECUTE SOME ACTION WHEN STEP GETS COMPLETED (e.g., spawning an NPC, or giving a temporary reward)
+        end,
+        preparation = function(self, contract, location)
+            -- THIS GETS EXECUTED ONLY ONCE WHEN THE STEP STARTS (e.g., setting a variable in contract.data)
+        end
     })
     ```
 
-    ### Step 2: Add Server-Side Mission to Tier List
+    ### Step 2: Add Created Step To ServerSteps List
 
-    Import your new mission module in `server/missions/missions.lua` and add it to the appropriate mission class list. The **key** you use must match the module name (e.g., `test`).
+    Locate `server/missions/main.lua` and modify the list as shown below.
 
     ```lua
-    -- ... (Existing imports)
-    local TestMission = require 'server.missions.test'
-
-    -- ... (Missions[1] through Missions[3])
-
-    Missions[4] = { -- Example of adding a new Mid-Tier mission
-        ["tower"] = TowerMission,
-        ["test"] = TestMission, -- <--- Your new mission added here
+    local ServerSteps = {
+        getBoostVehicle = GetBoostVehicle,
+        getBoostVehicleMarked = GetBoostVehicleMarked,
+        changeRims = ChangeRims,
+        deliverVehicle = DeliverVehicle,
+        hackVehicle = HackVehicle,
+        neutralizeGang = NeutralizeGang,
+        paintVehicle = PaintVehicle,
+        signalJammers = SignalJammers,
+        tracker = Tracker,
+        locateDropOff = LocateDropOff
     }
-
-    -- ... (Missions[5] and Missions[6])
     ```
 
-    ### Step 3: Create Client-Side Mission Logic
+    ### Step 3: Create Client Side Mission Step Logic
 
-    Repeat the naming process in `client/missions/` (e.g., `test.lua`). This file handles client-specific logic like creating blips, markers, and UI feedback. **Note:** The `preparation` function here runs for all group members.
+    Repeat the naming process in `client/missions/steps/` (e.g., `test.lua`). This file handles client step specific logic like creating blips, markers, and UI feedback. **Note:** The `preparation` function here runs for all group members.
 
     ```lua
-    return {
-        steps = {
-            {
-                isComplete = function(data)
-                    -- CODE TO RUN TO CHECK IF THIS STEP IS SUCCESSFULLY COMPLETED
-                end,
-                onComplete = function (data)
-                    -- CODE TO RUN WHEN THE CURRENT STEP IS COMPLETED (e.g., removing a marker, entity)
-                end,
-                preparation = function (data)
-                    -- CODE TO RUN WHEN THE MISSION STARTS ON THE CLIENT SIDE
-                end
-            }
-        },
-        canceled = function (contract)
-            -- THIS RUNS WHEN THE CONTRACT IS CANCELED BY THE PLAYER
+    
+    LocateDropOff = {
+        isComplete = function(data)
+            -- CODE TO RUN TO CHECK IF THIS STEP IS SUCCESSFULLY COMPLETED
+        end,
+        onComplete = function (data)
+            -- CODE TO RUN WHEN THE CURRENT STEP IS COMPLETED (e.g., removing a marker, entity)
+        end,
+        preparation = function (data)
+            -- CODE TO RUN WHEN THE MISSION STARTS ON THE CLIENT SIDE
         end
     }
     ```
 
-    ### Step 4: Add Client-Side Mission to Tier List
+    ### Step 4: Add Created Step To ClientSteps List
 
-    Import your new mission module in `client/missions/missions.lua` and add it to the appropriate mission class list. The **key** you use must match the module name (e.g., `test`).
+    Locate `client/missions/main.lua` and modify the list as shown below.
 
     ```lua
-    -- ... (Existing imports)
-    local TestMission = require 'client.missions.test'
-
-    -- ... (Missions[1] through Missions[3])
-
-    Missions[4] = { -- Example of adding a new Mid-Tier mission
-        ["tower"] = TowerMission,
-        ["test"] = TestMission, -- <--- Your new mission added here
+    ClientSteps = {
+        getBoostVehicle = {
+            label = "Get Boost Vehicle",
+            step = GetBoostVehicle,
+        },
+        getBoostVehicleMarked = {
+            label = "Get Marked Boost Vehicle",
+            step = GetBoostVehicle,
+        },
+        changeRims = {
+            label = "Change Rims",
+            step = ChangeRims,
+        },
+        deliverVehicle = {
+            label = "Deliver Vehicle",
+            step = DeliverVehicle,
+        },
+        hackVehicle = {
+            label = "Hack Vehicle",
+            step = HackVehicle,
+        },
+        neutralizeGang = {
+            label = "Neutralize Gang",
+            step = NeutralizeGang,
+        },
+        paintVehicle = {
+            label = "Paint Vehicle",
+            step = PaintVehicle,
+        },
+        signalJammers = {
+            label = "Disable Signal Jammers",
+            step = SignalJammers,
+        },
+        tracker = {
+            label = "Remove Tracker",
+            step = Tracker,
+        },
+        locateDropOff = {
+            label = "Locate Drop Off",
+            step = LocateDropOff
+        }
     }
-
-    -- ... (Missions[5] and Missions[6])
     ```
+
+    ### Step 5: Link The Newly Created Step
+
+    Open tablet, go to admin -> missions -> and you will see your newly created step right there.
 
 </Steps>

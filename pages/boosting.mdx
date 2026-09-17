@@ -34,7 +34,7 @@ Our system is packed with variety, real progression, and features that actually 
         * [ox_lib](https://github.com/CommunityOx/ox_lib)
         * [oxmysql](https://github.com/CommunityOx/oxmysql)
         * [ox_target](https://github.com/CommunityOx/ox_target)
-        * [bl_ui](https://github.com/Byte-Labs-Studio/bl_ui) (Replaceable with other mini-games)
+        * [bl_ui](https://github.com/Byte-Labs-Studio/bl_ui) (Replaceable with other mini games)
     * Use any supported framework: **OX**, **QBOX**, **ESX**, **QB**, or **Standalone**.
     
     ### Step 2: Download and Extract
@@ -69,9 +69,15 @@ Our system is packed with variety, real progression, and features that actually 
     ```
 
     ### Step 5: Configuration
-    * Configure the `config.lua` to fit your server's needs (framework, locations, rewards, etc.). Visit [Configuration](/boosting/Config) for a full breakdown.
+    * Configure the `config.lua` to fit your server's needs (framework specific settings). Everything else can be adapted through the in game Admin Configuration menu. Visit [Configuration](/boosting/Config) for a full config source preview.
 
-    ### Step 6: Starting the Script
+    ### Step 6: ACE Perms
+    ```
+    add_ace group.admin boosting.view allow
+    add_ace group.admin boosting.manage allow
+    add_ace group.admin boosting.configure allow
+    ```
+    ### Step 7: Starting the Script
     * Add `evolent_boosting` to your server's resource list and start the script. **Ensure it is started AFTER all dependencies.**
 
     ```bash
