@@ -1,0 +1,3110 @@
+# Commands (/boosting/Commands)
+
+
+
+## Administrator commands [#administrator-commands]
+
+These commands are restricted to users with the right permissions.
+
+| Command                     | Usage example                 | Parameters                  | Description                                                                                         |
+| :-------------------------- | :---------------------------- | :-------------------------- | :-------------------------------------------------------------------------------------------------- |
+| **`/generatecontracts`**    | `/generatecontracts 123`      | `[id]` (player ID / source) | Generates or regenerates all available contracts for the given player. &#x2A;(Console / RCON only)* |
+| **`/boosting:addXp`**       | `/boosting:addXp 123 500`     | `<targetId>`, `<amount>`    | Adds `amount` XP (ELO) to a player's profile.                                                       |
+| **`/boosting:removeXp`**    | `/boosting:removeXp 123 100`  | `<targetId>`, `<amount>`    | Removes `amount` XP (ELO) from a player's profile.                                                  |
+| **`/boosting:addLevel`**    | `/boosting:addLevel 123 1`    | `<targetId>`, `<levels>`    | Grants a number of **levels** to a player's profile.                                                |
+| **`/boosting:removeLevel`** | `/boosting:removeLevel 123 5` | `<targetId>`, `<levels>`    | Removes a number of **levels** from a player's profile.                                             |
+| **`/boosting:addRep`**      | `/boosting:addRep 123 25`     | `<targetId>`, `<amount>`    | Adds `amount` reputation to a player's profile.                                                     |
+| **`/boosting:removeRep`**   | `/boosting:removeRep 123 5`   | `<targetId>`, `<amount>`    | Removes `amount` reputation from a player's profile.                                                |
+
+<Callout>
+  For the `boosting:*` commands, `<targetId>` is the in-game **source ID** or the system's `playerId`.
+</Callout>
+
+## Player commands [#player-commands]
+
+| Command           | Usage example | Description                                         | Permissions |
+| :---------------- | :------------ | :-------------------------------------------------- | :---------- |
+| **`/opentablet`** | `/opentablet` | Opens the Boosting UI with the available contracts. | All players |
+
+<Callout type="warn">
+  `/opentablet` only works when the script is configured to open the UI with a command instead of an inventory item.
+</Callout>
+
+
+# Configuration (/boosting/Config)
+
+
+
+Evolent Boosting is configured in two places. `config.lua` holds the framework specific settings, and everything else is edited live through the in-game **Admin** menu on the tablet.
+
+## Framework config [#framework-config]
+
+These settings live in `config.lua` and need a resource restart after a change.
+
+```lua title="config.lua"
+Config = {
+    Framework = 'qbx',                                         -- ox, qbx, qb, esx
+    Notify = 'ox_lib',                                         -- ox_lib
+    Target = 'ox_target',                                      -- ox_target
+    ShowText = 'ox_lib',                                       -- ox_lib
+    Dispatch = "",                                             -- fd, ps, cd, tk, rcore, kartik, lb
+    Inventory = "ox",                                          -- ox, qs, qb, codem, core, origen, tgiann
+    LogService = '',                                           -- fmsdk, discord
+    UseWebpForInventoryImages = false,                         -- Only set to true if you use .webp images for your inventory
+    Laptop = false,                                            -- fd, av, lb or false
+    AppName = 'EVOLENTBOOSTING',                               -- UI Application name
+    Commands = {
+        generateContracts = { name = 'generatecontracts', acePermission = 'group.admin', enabled = true },
+        openTablet = { name = 'opentablet', enabled = true }
+    }
+}
+```
+
+## Admin menu config [#admin-menu-config]
+
+<Callout title="Edited in game">
+  You don't edit this file by hand. Open the tablet, go to **Admin**, and change the values there. The JSON below is the out of the box configuration for reference.
+</Callout>
+
+```json title="Admin configuration"
+{
+    "AdditionalCoolDown": 3000,
+    "BaseCoolDown": 6000,
+    "MarketGeneration": 60,
+    "SpawnClearRadius": 3,
+    "DeliveryPeds": [
+        "s_m_y_blackops_01"
+    ],
+    "Hacks": [
+        {
+            "min": 8,
+            "max": 12,
+            "coolDown": 6000
+        },
+        {
+            "min": 8,
+            "max": 12,
+            "coolDown": 6000
+        },
+        {
+            "min": 8,
+            "max": 12,
+            "coolDown": 6000
+        },
+        {
+            "min": 8,
+            "max": 12,
+            "coolDown": 6000
+        },
+        {
+            "min": 8,
+            "max": 12,
+            "coolDown": 6000
+        },
+        {
+            "min": 10,
+            "max": 14,
+            "coolDown": 6000
+        },
+        {
+            "min": 8,
+            "max": 12,
+            "coolDown": 6000
+        }
+    ],
+    "Classes": [
+        {
+            "chance": 100,
+            "requiredLevel": 1,
+            "mods": {
+                "pool": [
+                    {
+                        "type": 4
+                    },
+                    {
+                        "type": 0
+                    },
+                    {
+                        "type": 1
+                    },
+                    {
+                        "min": 0,
+                        "max": 1,
+                        "type": 11
+                    },
+                    {
+                        "min": 0,
+                        "max": 1,
+                        "type": 12
+                    }
+                ],
+                "wheels": {
+                    "enabled": false
+                },
+                "applyCount": {
+                    "min": 1,
+                    "max": 2
+                },
+                "always": []
+            },
+            "fuel": {
+                "min": 50,
+                "max": 100
+            },
+            "loot": {
+                "pool": [
+                    {
+                        "chance": 20,
+                        "max": 300,
+                        "name": "money",
+                        "min": 100
+                    },
+                    {
+                        "chance": 10,
+                        "max": 1500,
+                        "name": "black_money",
+                        "min": 500
+                    },
+                    {
+                        "chance": 6,
+                        "max": 2,
+                        "name": "lockpick",
+                        "min": 1
+                    }
+                ],
+                "allowDuplicates": true,
+                "rolls": {
+                    "min": 1,
+                    "max": 2
+                }
+            },
+            "label": "D",
+            "duration": 40,
+            "rep": {
+                "min": 70,
+                "max": 100
+            },
+            "elo": {
+                "min": 70,
+                "max": 100
+            },
+            "cars": [
+                {
+                    "vinscratchLimit": 0,
+                    "label": "EMPEROR",
+                    "isVinscratch": false,
+                    "model": "emperor"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "PREMIER",
+                    "isVinscratch": false,
+                    "model": "premier"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "INTRUDER",
+                    "isVinscratch": false,
+                    "model": "intruder"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "STANIER",
+                    "isVinscratch": false,
+                    "model": "stanier"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "DILETTANTE",
+                    "isVinscratch": false,
+                    "model": "dilettante"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "PRIMO",
+                    "isVinscratch": false,
+                    "model": "primo"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "PICADOR",
+                    "isVinscratch": false,
+                    "model": "picador"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "9F",
+                    "isVinscratch": false,
+                    "model": "ninef"
+                }
+            ]
+        },
+        {
+            "chance": 100,
+            "requiredLevel": 2,
+            "mods": {
+                "pool": [
+                    {
+                        "type": 0
+                    },
+                    {
+                        "type": 1
+                    },
+                    {
+                        "type": 2
+                    },
+                    {
+                        "type": 4
+                    },
+                    {
+                        "type": 7
+                    },
+                    {
+                        "min": 1,
+                        "max": 2,
+                        "type": 11
+                    },
+                    {
+                        "min": 1,
+                        "max": 2,
+                        "type": 12
+                    },
+                    {
+                        "min": 0,
+                        "max": 1,
+                        "type": 13
+                    }
+                ],
+                "wheels": {
+                    "enabled": true,
+                    "wheelType": 0
+                },
+                "applyCount": {
+                    "min": 2,
+                    "max": 4
+                },
+                "always": []
+            },
+            "fuel": {
+                "min": 50,
+                "max": 100
+            },
+            "loot": {
+                "pool": [
+                    {
+                        "chance": 20,
+                        "max": 500,
+                        "name": "money",
+                        "min": 300
+                    },
+                    {
+                        "chance": 12,
+                        "max": 5000,
+                        "name": "black_money",
+                        "min": 2000
+                    },
+                    {
+                        "chance": 8,
+                        "max": 2,
+                        "name": "lockpick",
+                        "min": 1
+                    },
+                    {
+                        "chance": 4,
+                        "max": 1,
+                        "name": "advancedlockpick",
+                        "min": 1
+                    },
+                    {
+                        "chance": 6,
+                        "max": 2,
+                        "name": "radiocell",
+                        "min": 1
+                    }
+                ],
+                "allowDuplicates": true,
+                "rolls": {
+                    "min": 1,
+                    "max": 3
+                }
+            },
+            "label": "C",
+            "duration": 40,
+            "rep": {
+                "min": 50,
+                "max": 70
+            },
+            "elo": {
+                "min": 50,
+                "max": 70
+            },
+            "cars": [
+                {
+                    "vinscratchLimit": 0,
+                    "label": "RUMPO VAN",
+                    "isVinscratch": false,
+                    "model": "rumpo"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "BUCCANEER",
+                    "isVinscratch": false,
+                    "model": "buccaneer"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "CHINO",
+                    "isVinscratch": false,
+                    "model": "chino"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "WASHINGTON",
+                    "isVinscratch": false,
+                    "model": "washington"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "VIRGO",
+                    "isVinscratch": false,
+                    "model": "virgo"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "PREMIER",
+                    "isVinscratch": false,
+                    "model": "premier"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "MINIVAN",
+                    "isVinscratch": false,
+                    "model": "minivan"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "PIGALLE",
+                    "isVinscratch": false,
+                    "model": "pigalle"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "FAGALOA",
+                    "isVinscratch": false,
+                    "model": "fagaloa"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "SCHAFTER",
+                    "isVinscratch": false,
+                    "model": "schafter2"
+                }
+            ]
+        },
+        {
+            "chance": 100,
+            "requiredLevel": 3,
+            "mods": {
+                "pool": [
+                    {
+                        "type": 0
+                    },
+                    {
+                        "type": 1
+                    },
+                    {
+                        "type": 2
+                    },
+                    {
+                        "type": 3
+                    },
+                    {
+                        "type": 4
+                    },
+                    {
+                        "type": 7
+                    },
+                    {
+                        "min": 2,
+                        "max": 3,
+                        "type": 11
+                    },
+                    {
+                        "min": 2,
+                        "max": 3,
+                        "type": 12
+                    },
+                    {
+                        "min": 1,
+                        "max": 2,
+                        "type": 13
+                    },
+                    {
+                        "min": 1,
+                        "max": 2,
+                        "type": 15
+                    }
+                ],
+                "wheels": {
+                    "enabled": true,
+                    "wheelType": 0
+                },
+                "applyCount": {
+                    "min": 4,
+                    "max": 6
+                },
+                "always": []
+            },
+            "fuel": {
+                "min": 50,
+                "max": 100
+            },
+            "loot": {
+                "pool": [
+                    {
+                        "chance": 18,
+                        "max": 1000,
+                        "name": "money",
+                        "min": 500
+                    },
+                    {
+                        "chance": 12,
+                        "max": 12000,
+                        "name": "black_money",
+                        "min": 5000
+                    },
+                    {
+                        "chance": 6,
+                        "max": 1,
+                        "name": "advancedlockpick",
+                        "min": 1
+                    },
+                    {
+                        "chance": 6,
+                        "max": 2,
+                        "name": "electronickit",
+                        "min": 1
+                    }
+                ],
+                "allowDuplicates": false,
+                "rolls": {
+                    "min": 2,
+                    "max": 3
+                }
+            },
+            "label": "B",
+            "duration": 40,
+            "rep": {
+                "min": 30,
+                "max": 50
+            },
+            "elo": {
+                "min": 30,
+                "max": 50
+            },
+            "cars": [
+                {
+                    "vinscratchLimit": 0,
+                    "label": "SULTAN",
+                    "isVinscratch": false,
+                    "model": "sultan"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "BUFFALO",
+                    "isVinscratch": false,
+                    "model": "buffalo"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "KURUMA",
+                    "isVinscratch": false,
+                    "model": "kuruma"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "FUTO",
+                    "isVinscratch": false,
+                    "model": "futo"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "FELTZER",
+                    "isVinscratch": false,
+                    "model": "feltzer2"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "COMET",
+                    "isVinscratch": false,
+                    "model": "comet2"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "9F",
+                    "isVinscratch": false,
+                    "model": "ninef"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "CARBONIZZARE",
+                    "isVinscratch": false,
+                    "model": "carbonizzare"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "KURUMA",
+                    "isVinscratch": false,
+                    "model": "kuruma"
+                }
+            ]
+        },
+        {
+            "chance": 100,
+            "requiredLevel": 4,
+            "mods": {
+                "pool": [
+                    {
+                        "type": 0
+                    },
+                    {
+                        "type": 1
+                    },
+                    {
+                        "type": 2
+                    },
+                    {
+                        "type": 3
+                    },
+                    {
+                        "type": 4
+                    },
+                    {
+                        "type": 6
+                    },
+                    {
+                        "type": 7
+                    },
+                    {
+                        "type": 10
+                    },
+                    {
+                        "min": 3,
+                        "max": 4,
+                        "type": 11
+                    },
+                    {
+                        "min": 2,
+                        "max": 3,
+                        "type": 12
+                    },
+                    {
+                        "min": 2,
+                        "max": 3,
+                        "type": 13
+                    },
+                    {
+                        "min": 2,
+                        "max": 3,
+                        "type": 15
+                    }
+                ],
+                "wheels": {
+                    "enabled": true,
+                    "wheelType": 0
+                },
+                "applyCount": {
+                    "min": 6,
+                    "max": 9
+                },
+                "always": {
+                    "turbo": true,
+                    "xenon": true
+                }
+            },
+            "fuel": {
+                "min": 50,
+                "max": 100
+            },
+            "loot": {
+                "pool": [
+                    {
+                        "chance": 16,
+                        "max": 1500,
+                        "name": "money",
+                        "min": 1000
+                    },
+                    {
+                        "chance": 12,
+                        "max": 25000,
+                        "name": "black_money",
+                        "min": 12000
+                    },
+                    {
+                        "chance": 6,
+                        "max": 2,
+                        "name": "electronickit",
+                        "min": 1
+                    },
+                    {
+                        "chance": 2,
+                        "max": 1,
+                        "name": "jammer",
+                        "min": 1
+                    }
+                ],
+                "allowDuplicates": false,
+                "rolls": {
+                    "min": 2,
+                    "max": 4
+                }
+            },
+            "label": "A",
+            "duration": 50,
+            "rep": {
+                "min": 20,
+                "max": 30
+            },
+            "vinscratchPrice": {
+                "min": 100,
+                "max": 200
+            },
+            "elo": {
+                "min": 20,
+                "max": 30
+            },
+            "cars": [
+                {
+                    "vinscratchLimit": 0,
+                    "label": "VIGERO ZX",
+                    "isVinscratch": false,
+                    "model": "vigero3"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "ELEGY RH8",
+                    "isVinscratch": false,
+                    "model": "elegy"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "ZR350",
+                    "isVinscratch": false,
+                    "model": "driftzr350"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "COMET RETRO CUSTOM",
+                    "isVinscratch": false,
+                    "model": "comet3"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "OMNIS e-GT",
+                    "isVinscratch": false,
+                    "model": "omnisegt"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "MASSACRO",
+                    "isVinscratch": false,
+                    "model": "massacro"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "JESTER RR",
+                    "isVinscratch": false,
+                    "model": "jester4"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "NEON",
+                    "isVinscratch": false,
+                    "model": "neon"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "JUGULAR",
+                    "isVinscratch": false,
+                    "model": "jugular"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "8F DRAFTER",
+                    "isVinscratch": false,
+                    "model": "drafter"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "KOMODA",
+                    "isVinscratch": false,
+                    "model": "komoda"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "PARAGON R",
+                    "isVinscratch": false,
+                    "model": "paragon"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "V-STR",
+                    "isVinscratch": false,
+                    "model": "vstr"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "CALICO GTF",
+                    "isVinscratch": false,
+                    "model": "calico"
+                }
+            ]
+        },
+        {
+            "chance": 90,
+            "requiredLevel": 5,
+            "mods": {
+                "pool": [
+                    {
+                        "type": 0
+                    },
+                    {
+                        "type": 1
+                    },
+                    {
+                        "type": 2
+                    },
+                    {
+                        "type": 3
+                    },
+                    {
+                        "type": 4
+                    },
+                    {
+                        "type": 6
+                    },
+                    {
+                        "type": 7
+                    },
+                    {
+                        "type": 8
+                    },
+                    {
+                        "type": 10
+                    },
+                    {
+                        "min": 4,
+                        "max": 5,
+                        "type": 11
+                    },
+                    {
+                        "min": 3,
+                        "max": 4,
+                        "type": 12
+                    },
+                    {
+                        "min": 3,
+                        "max": 4,
+                        "type": 13
+                    },
+                    {
+                        "min": 3,
+                        "max": 4,
+                        "type": 15
+                    }
+                ],
+                "wheels": {
+                    "enabled": true,
+                    "wheelType": 0
+                },
+                "applyCount": {
+                    "min": 8,
+                    "max": 12
+                },
+                "always": {
+                    "turbo": true,
+                    "xenon": true
+                }
+            },
+            "fuel": {
+                "min": 50,
+                "max": 100
+            },
+            "loot": {
+                "pool": [
+                    {
+                        "chance": 14,
+                        "max": 2000,
+                        "name": "money",
+                        "min": 1500
+                    },
+                    {
+                        "chance": 12,
+                        "max": 45000,
+                        "name": "black_money",
+                        "min": 25000
+                    },
+                    {
+                        "chance": 4,
+                        "max": 1,
+                        "name": "thermite",
+                        "min": 1
+                    },
+                    {
+                        "chance": 2,
+                        "max": 1,
+                        "name": "nitrous",
+                        "min": 1
+                    },
+                    {
+                        "chance": 3,
+                        "max": 1,
+                        "name": "advancedrepairkit",
+                        "min": 1
+                    }
+                ],
+                "allowDuplicates": false,
+                "rolls": {
+                    "min": 2,
+                    "max": 4
+                }
+            },
+            "label": "S",
+            "duration": 60,
+            "rep": {
+                "min": 15,
+                "max": 20
+            },
+            "vinscratchPrice": {
+                "min": 200,
+                "max": 400
+            },
+            "elo": {
+                "min": 15,
+                "max": 20
+            },
+            "cars": [
+                {
+                    "vinscratchLimit": 0,
+                    "label": "CYPHER",
+                    "isVinscratch": false,
+                    "model": "cypher"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "COMET S2",
+                    "isVinscratch": false,
+                    "model": "comet6"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "ITALI RSX",
+                    "isVinscratch": false,
+                    "model": "italirsx"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "10F",
+                    "isVinscratch": false,
+                    "model": "tenf"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "VECTRE",
+                    "isVinscratch": false,
+                    "model": "vectre"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "GROWLER",
+                    "isVinscratch": false,
+                    "model": "growler"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "SULTAN CUSTOM",
+                    "isVinscratch": false,
+                    "model": "sultan3"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "REMUS",
+                    "isVinscratch": false,
+                    "model": "remus"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "PARIAH",
+                    "isVinscratch": false,
+                    "model": "pariah"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "8F DRAFTER",
+                    "isVinscratch": false,
+                    "model": "drafter"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "BANSHEE 900R",
+                    "isVinscratch": false,
+                    "model": "banshee2"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "NEON",
+                    "isVinscratch": false,
+                    "model": "neon"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "COQUETTE D10",
+                    "isVinscratch": false,
+                    "model": "coquette4"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "SUGOI",
+                    "isVinscratch": false,
+                    "model": "sugoi"
+                }
+            ]
+        },
+        {
+            "chance": 75,
+            "requiredLevel": 6,
+            "mods": {
+                "pool": [
+                    {
+                        "type": 0
+                    },
+                    {
+                        "type": 1
+                    },
+                    {
+                        "type": 2
+                    },
+                    {
+                        "type": 3
+                    },
+                    {
+                        "type": 4
+                    },
+                    {
+                        "type": 6
+                    },
+                    {
+                        "type": 7
+                    },
+                    {
+                        "type": 8
+                    },
+                    {
+                        "type": 10
+                    },
+                    {
+                        "min": 4,
+                        "max": 5,
+                        "type": 11
+                    },
+                    {
+                        "min": 4,
+                        "max": 5,
+                        "type": 12
+                    },
+                    {
+                        "min": 4,
+                        "max": 5,
+                        "type": 13
+                    },
+                    {
+                        "min": 4,
+                        "max": 5,
+                        "type": 15
+                    }
+                ],
+                "wheels": {
+                    "enabled": true,
+                    "wheelType": 0
+                },
+                "applyCount": {
+                    "min": 12,
+                    "max": 16
+                },
+                "always": {
+                    "turbo": true,
+                    "xenon": true
+                }
+            },
+            "fuel": {
+                "min": 50,
+                "max": 100
+            },
+            "loot": {
+                "pool": [
+                    {
+                        "chance": 12,
+                        "max": 3000,
+                        "name": "money",
+                        "min": 2000
+                    },
+                    {
+                        "chance": 12,
+                        "max": 75000,
+                        "name": "black_money",
+                        "min": 40000
+                    },
+                    {
+                        "chance": 4,
+                        "max": 2,
+                        "name": "thermite",
+                        "min": 1
+                    },
+                    {
+                        "chance": 3,
+                        "max": 2,
+                        "name": "nitrous",
+                        "min": 1
+                    },
+                    {
+                        "chance": 1,
+                        "max": 1,
+                        "name": "ghostlink",
+                        "min": 1
+                    },
+                    {
+                        "chance": 2,
+                        "max": 1,
+                        "name": "drill",
+                        "min": 1
+                    }
+                ],
+                "allowDuplicates": false,
+                "rolls": {
+                    "min": 3,
+                    "max": 5
+                }
+            },
+            "label": "S+",
+            "duration": 60,
+            "rep": {
+                "min": 10,
+                "max": 15
+            },
+            "elo": {
+                "min": 10,
+                "max": 15
+            },
+            "cars": [
+                {
+                    "vinscratchLimit": 0,
+                    "label": "ZENO",
+                    "isVinscratch": false,
+                    "model": "zeno"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "CORSITA",
+                    "isVinscratch": false,
+                    "model": "corsita"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "KRIEGER",
+                    "isVinscratch": false,
+                    "model": "krieger"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "VACCA",
+                    "isVinscratch": false,
+                    "model": "vacca"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "TYRANT",
+                    "isVinscratch": false,
+                    "model": "tyrant"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "ITALI GTO",
+                    "isVinscratch": false,
+                    "model": "italigto"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "ENTITY XXR",
+                    "isVinscratch": false,
+                    "model": "entity2"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "XA-21",
+                    "isVinscratch": false,
+                    "model": "xa21"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "TORERO XO",
+                    "isVinscratch": false,
+                    "model": "torero2"
+                },
+                {
+                    "vinscratchLimit": 0,
+                    "label": "IGNUS",
+                    "isVinscratch": false,
+                    "model": "ignus"
+                }
+            ]
+        }
+    ],
+    "DefaultAvatarUrl": "https://i.ibb.co/jPtqTj3m/Vector.png",
+    "MissionSteps": {
+        "lastSteps": [
+            "deliverVehicle"
+        ],
+        "firstSteps": [
+            "getBoostVehicle",
+            "getBoostVehicleMarked"
+        ]
+    },
+    "AvailableContracts": 6,
+    "BelowLevelRewardPercent": 20,
+    "EnableActionSFX": true,
+    "MoneyRewards": {
+        "cash": true,
+        "money": true,
+        "bank": true
+    },
+    "ResetTime": 60,
+    "Pages": {
+        "store": true,
+        "leaderboard": true,
+        "contract_history": true,
+        "market_history": true,
+        "market": true
+    },
+    "MaxActiveBoosts": 3,
+    "QuickProgress": {
+        "defaultVisibility": true,
+        "waypointKeyBind": "J",
+        "position": "mid-right",
+        "keyBind": "H"
+    },
+    "TransactionAccount": "rep",
+    "DropoffPoliceCheckDistance": 200,
+    "GeneratedContractsByMarket": 10,
+    "Leveling": {
+        "exp": {
+            "growth": 1.5,
+            "base": 250,
+            "maxLevel": 100
+        },
+        "linearStep": 250,
+        "mode": "linear"
+    }
+}
+```
+
+## Missions config [#missions-config]
+
+The missions that ship with the resource, as configured under **Admin** > **Missions**. See [Custom Missions](/boosting/Missions) to add your own steps.
+
+```json title="Missions"
+[
+    {
+        "classes": [
+            1,
+            2
+        ],
+        "steps": [
+            "getBoostVehicle",
+            "paintVehicle",
+            "deliverVehicle"
+        ],
+        "requiredItems": {
+            "advancedlockpick": 1
+        },
+        "id": "paint"
+    },
+    {
+        "classes": [
+            1,
+            2
+        ],
+        "steps": [
+            "getBoostVehicle",
+            "tracker",
+            "deliverVehicle"
+        ],
+        "requiredItems": {
+            "advancedlockpick": 1
+        },
+        "id": "tracker"
+    },
+    {
+        "classes": [
+            3,
+            4
+        ],
+        "steps": [
+            "getBoostVehicleMarked",
+            "signalJammers",
+            "deliverVehicle"
+        ],
+        "requiredItems": {
+            "advancedlockpick": 1
+        },
+        "id": "tower"
+    },
+    {
+        "classes": [
+            5,
+            6
+        ],
+        "steps": [
+            "neutralizeGang",
+            "hackVehicle",
+            "deliverVehicle"
+        ],
+        "requiredItems": {
+            "ghostlink": 1,
+            "advancedlockpick": 1
+        },
+        "id": "gang"
+    },
+    {
+        "classes": [
+            1,
+            2
+        ],
+        "steps": [
+            "getBoostVehicle",
+            "paintVehicle",
+            "changeRims",
+            "deliverVehicle"
+        ],
+        "requiredItems": {
+            "advancedlockpick": 1
+        },
+        "id": "paintnrims"
+    },
+    {
+        "requiredItems": {
+            "advancedlockpick": 1
+        },
+        "steps": [
+            "getBoostVehicle",
+            "changeRims",
+            "paintVehicle",
+            "deliverVehicle"
+        ],
+        "classes": [
+            1,
+            2
+        ],
+        "id": "rimsnpaint"
+    }
+]
+```
+
+
+# Exports (/boosting/Exports)
+
+
+
+## Server exports [#server-exports]
+
+Available on the **server**. Use them to manage player profiles, ELO and reputation.
+
+```lua title="Server"
+---@param stateId number The unique identifier of the player profile.
+---@return table|nil
+exports("getProfile", function(stateId)
+    -- Retrieves the full player profile object (ELO, Rep, Wins, Losses).
+end)
+
+---@param stateId number
+---@param amount number
+---@return boolean
+exports("addXp", function(stateId, amount)
+    -- Adds the specified amount of ELO (XP) to the player's profile.
+end)
+
+---@param stateId number
+---@param amount number
+---@return boolean
+exports("removeXp", function(stateId, amount)
+    -- Removes the specified amount of ELO (XP) from the player's profile.
+end)
+
+---@param stateId number
+---@param levels number
+---@return boolean
+exports("addLevel", function(stateId, levels)
+    -- Grants the player the specified number of levels.
+end)
+
+---@param stateId number
+---@param levels number
+---@return boolean
+exports("removeLevel", function(stateId, levels)
+    -- Deducts the specified number of levels from the player's profile.
+end)
+
+---@param stateId number
+---@param amount number
+---@return boolean
+exports("addRep", function(stateId, amount)
+    -- Adds the specified amount of Reputation to the player's profile.
+end)
+
+---@param stateId number
+---@param amount number
+---@return boolean
+exports("removeRep", function(stateId, amount)
+    -- Removes the specified amount of Reputation from the player's profile.
+end)
+```
+
+## Client exports [#client-exports]
+
+Available on the **client**, mainly to open the UI from another resource.
+
+```lua title="Client"
+exports("openTablet", function()
+    -- Opens the main Boosting UI tablet. This is used by external scripts
+    -- (e.g., inventory item use) to display the UI.
+end)
+```
+
+
+# FD Laptop (/boosting/Integrations/Fd_laptop)
+
+
+
+The FD Laptop is an in-game UI resource that gives players tools based on their job or permission level. It has a customizable interface and works with every major framework.
+
+<LinkButtons>
+  <LinkButton href="https://github.com/FelisDevelopment/fd_laptop">
+    GitHub Repository
+  </LinkButton>
+</LinkButtons>
+
+## Installation [#installation]
+
+<Steps>
+  <Step>
+    ### Check the dependencies [#check-the-dependencies]
+
+    Make sure these resources are installed and started before `fd_laptop`:
+
+    * **[ox\_lib](https://github.com/CommunityOx/ox_lib)** (notifications, menus and client utilities)
+    * **[ox\_target](https://github.com/CommunityOx/ox_target)** (recommended, for interacting with laptop props)
+    * **Your framework** (ESX Legacy, QBCore, QBOX or Standalone)
+  </Step>
+
+  <Step>
+    ### Download and place it [#download-and-place-it]
+
+    1. Download the latest version of `fd_laptop` from the **GitHub repository**.
+    2. Extract it and rename the folder to `fd_laptop`.
+    3. Place the `fd_laptop` folder in your server's `resources` directory.
+  </Step>
+
+  <Step>
+    ### Enable it in Evolent Boosting [#enable-it-in-evolent-boosting]
+
+    Open &#x2A;*`config.lua`** and set `Laptop` to `'fd'`.
+
+    ```lua title="config.lua"
+    Config = {
+        -- ...
+        Laptop = 'fd', -- fd, av, lb or false -- [!code highlight]
+    }
+    ```
+
+    | Value   | Laptop                 |
+    | :------ | :--------------------- |
+    | `false` | Laptop integration off |
+    | `'fd'`  | FD Laptop              |
+    | `'av'`  | AV Laptop              |
+    | `'lb'`  | LB Laptop              |
+  </Step>
+
+  <Step>
+    ### Start the resource [#start-the-resource]
+
+    Add this line to your `server.cfg` (or `resources.cfg`):
+
+    ```bash title="server.cfg"
+    ensure fd_laptop
+    ```
+
+    <Callout type="warn" title="Ordering is critical">
+      Start `fd_laptop` **after** your framework and `ox_lib`, but **before** `evolent_boosting`.
+    </Callout>
+  </Step>
+</Steps>
+
+
+# RAHE Boosting Migration (/boosting/Integrations/Rahe_boosting)
+
+
+
+This guide moves existing player progression (levels, reputation and stats) from **RAHE Boosting** into the Evolent Boosting database.
+
+<Callout type="warn" title="One-time migration">
+  This is a one-time data operation that can't easily be undone. Run it while your server is **empty** or the boosting resource is **stopped**, and make a database backup first.
+</Callout>
+
+<Steps>
+  <Step>
+    ### Run the migration command [#run-the-migration-command]
+
+    Start your server and run this command in the server console. It moves all existing RAHE data into the new structure.
+
+    ```bash title="Server console"
+    convertrahe
+    ```
+  </Step>
+
+  <Step>
+    ### Remove the migration command [#remove-the-migration-command]
+
+    Once the data is transferred, remove the command so it can't be run again by accident. Remove or comment out line 171 in &#x2A;*`server/bridge/_main.lua`**.
+  </Step>
+
+  <Step>
+    ### Adjust the levels [#adjust-the-levels]
+
+    The new system may use a different progression formula. Balance the imported data with these values in &#x2A;*`config.lua`**:
+
+    * `Config.BaseElo`
+    * `Config.EloModifier`
+  </Step>
+</Steps>
+
+
+# Custom Missions (/boosting/Missions)
+
+
+
+Five missions ship out of the box: three low tier, one mid tier and one high tier.
+
+<Callout>
+  Mission classes are indexed by **tier level**: `Missions[1]` is the lowest tier and `Missions[6]` the highest. **The index where you place your mission matters** for difficulty and reward scaling.
+</Callout>
+
+## Key concepts [#key-concepts]
+
+* **Data sharing (`contract.data`):** a server side table for data the client needs, for example for location markers or UI updates.
+* **Client side definition (`Contracts[data.contractId]`):** holds the client side mission logic and actions, linked to the server side definition by the mission's unique ID.
+* **Standard steps:*&#x2A; the wrapper functions &#x2A;*`GetBoostVehicle`*&#x2A; and &#x2A;*`DeliverVehicle`** are recommended as the first and last steps of your mission.
+* **Validation:*&#x2A; do every progression and security check against &#x2A;*`contract.leaderId`**.
+
+## Create your own mission step [#create-your-own-mission-step]
+
+<Steps>
+  <Step>
+    ### Create the server side step [#create-the-server-side-step]
+
+    Create a new file in `server/missions/steps/`, e.g. `test.lua`. This file defines what the step does on the server (validation, required items, ...).
+
+    ```lua title="server/missions/steps/test.lua"
+    local missionModule = require('modules.mission')
+    local Step = missionModule.Step
+
+    LocateDropOff = Step:new({
+        title = "Step 2: Locate the Drop off",
+        locations = { -- Optional locations that the client can use
+            { x = 123.4, y = 567.8, z = 90.1, radius = 5.0, heading = 180.0 }
+        },
+        disableGps = true,
+        isComplete = function(self, contract)
+            -- SERVER VALIDATION FOR COMPLETION (e.g., checking if the item was delivered)
+            return true
+        end,
+        complete = function(self, contract)
+            -- EXECUTE SOME ACTION WHEN STEP GETS COMPLETED (e.g., spawning an NPC, or giving a temporary reward)
+        end,
+        preparation = function(self, contract, location)
+            -- THIS GETS EXECUTED ONLY ONCE WHEN THE STEP STARTS (e.g., setting a variable in contract.data)
+        end
+    })
+    ```
+  </Step>
+
+  <Step>
+    ### Register it in the server steps list [#register-it-in-the-server-steps-list]
+
+    Open `server/missions/main.lua` and add your step to the list.
+
+    ```lua title="server/missions/main.lua"
+    local ServerSteps = {
+        getBoostVehicle = GetBoostVehicle,
+        getBoostVehicleMarked = GetBoostVehicleMarked,
+        changeRims = ChangeRims,
+        deliverVehicle = DeliverVehicle,
+        hackVehicle = HackVehicle,
+        neutralizeGang = NeutralizeGang,
+        paintVehicle = PaintVehicle,
+        signalJammers = SignalJammers,
+        tracker = Tracker,
+        locateDropOff = LocateDropOff -- [!code ++]
+    }
+    ```
+  </Step>
+
+  <Step>
+    ### Create the client side step [#create-the-client-side-step]
+
+    Create a file with the same name in `client/missions/steps/`. It handles the client side of the step, like blips, markers and UI feedback.
+
+    <Callout type="warn">
+      The client `preparation` function runs for **every group member**.
+    </Callout>
+
+    ```lua title="client/missions/steps/test.lua"
+    LocateDropOff = {
+        isComplete = function(data)
+            -- CODE TO RUN TO CHECK IF THIS STEP IS SUCCESSFULLY COMPLETED
+        end,
+        onComplete = function (data)
+            -- CODE TO RUN WHEN THE CURRENT STEP IS COMPLETED (e.g., removing a marker, entity)
+        end,
+        preparation = function (data)
+            -- CODE TO RUN WHEN THE MISSION STARTS ON THE CLIENT SIDE
+        end
+    }
+    ```
+  </Step>
+
+  <Step>
+    ### Register it in the client steps list [#register-it-in-the-client-steps-list]
+
+    Open `client/missions/main.lua` and add your step with a label.
+
+    ```lua title="client/missions/main.lua"
+    ClientSteps = {
+        getBoostVehicle = {
+            label = "Get Boost Vehicle",
+            step = GetBoostVehicle,
+        },
+        getBoostVehicleMarked = {
+            label = "Get Marked Boost Vehicle",
+            step = GetBoostVehicle,
+        },
+        changeRims = {
+            label = "Change Rims",
+            step = ChangeRims,
+        },
+        deliverVehicle = {
+            label = "Deliver Vehicle",
+            step = DeliverVehicle,
+        },
+        hackVehicle = {
+            label = "Hack Vehicle",
+            step = HackVehicle,
+        },
+        neutralizeGang = {
+            label = "Neutralize Gang",
+            step = NeutralizeGang,
+        },
+        paintVehicle = {
+            label = "Paint Vehicle",
+            step = PaintVehicle,
+        },
+        signalJammers = {
+            label = "Disable Signal Jammers",
+            step = SignalJammers,
+        },
+        tracker = {
+            label = "Remove Tracker",
+            step = Tracker,
+        },
+        locateDropOff = { -- [!code ++]
+            label = "Locate Drop Off", -- [!code ++]
+            step = LocateDropOff -- [!code ++]
+        } -- [!code ++]
+    }
+    ```
+  </Step>
+
+  <Step>
+    ### Link the step to a mission [#link-the-step-to-a-mission]
+
+    Open the tablet and go to **Admin** > **Missions**. Your new step is listed there, ready to add to a mission.
+  </Step>
+</Steps>
+
+See [Types](/boosting/Types) for the full `Step`, `Contract` and `StepData` definitions.
+
+
+# Types (/boosting/Types)
+
+
+
+<Tabs items="['Server', 'Client']">
+  <Tab value="Server">
+    Contract and mission logic on the server.
+
+    ```lua
+    ---@class Step
+    ---@field title string                             -- Title displayed for the current mission step
+    ---@field locations vector4[]                      -- Array of coordinates relevant to the step (x, y, z, heading)
+    ---@field isComplete fun(self: Step, contract: Contract, location: vector4): boolean -- REQUIRED: Server-side validation check for step completion
+    ---@field preparation? fun(self: Step, contract: Contract, location: vector4): any -- Optional setup function executed when the step begins
+
+    ---@class Mission
+    ---@field steps Step[]                             -- Sequence of steps required to complete the mission
+    ---@field requiredItems table<string, number>      -- Items required to start the mission (Item name → count)
+
+    ---@class ItemData
+    ---@field name string
+    ---@field label string
+    ---@field count number
+
+    ---@class CarData
+    ---@field model string
+    ---@field label string
+
+    ---@class Profile
+    ---@field stateId number                           -- The player's unique identifier (e.g., QBCore/ESX player ID)
+    ---@field username string
+    ---@field imageUrl string
+    ---@field rep number
+    ---@field elo number
+    ---@field wins number
+    ---@field loses number
+    ---@field source number                            -- The server source ID (e.g., network ID)
+
+    ---@class Contract
+    ---@field id string                                -- Unique contract ID
+    ---@field leaderId string                          -- Unique identifier of the contract group leader
+    ---@field classId number                           -- Mission difficulty tier (1-6)
+    ---@field classLabel string                        -- Mission difficulty label (e.g., 'Low', 'Mid')
+    ---@field requiredLevel number
+    ---@field missionId string                         -- The mission's registered key (e.g., 'paint', 'test')
+    ---@field mission Mission                          -- The Mission object containing steps
+    ---@field car CarData                              -- Details of the target vehicle
+    ---@field elo number                               -- Elo change on completion
+    ---@field rep number                               -- Reputation change on completion
+    ---@field currentStep number                       -- Index of the current active step
+    ---@field isStepActive boolean
+    ---@field duration number
+    ---@field group Profile[]                          -- List of all players currently in the contract group
+    ---@field plate string                             -- Plate of the target vehicle
+    ---@field requiredItems ItemData[]
+    ---@field itemRewards ItemData[]
+    ---@field data table<string, any>                  -- Arbitrary server-side state shared with the client's StepData
+    ---@field pendingInvites table<number, string>     -- Invites awaiting response
+    ```
+  </Tab>
+
+  <Tab value="Client">
+    Step execution and UI on the client.
+
+    ```lua
+    ---@class StepData
+    ---@field currentStep number
+    ---@field serverData table<string, any>            -- Arbitrary server-side state (from Contract.data)
+    ---@field missionId string
+    ---@field classId number                           -- Contract class ID (1-6)
+    ---@field contractId string
+    ---@field leaderId number                          -- Player State ID of the contract leader
+    ---@field plate string
+    ---@field car CarData                              -- Vehicle model and label
+
+    ---@class Step
+    ---@field isComplete fun(data: StepData): boolean   -- Required. Checks if the step is complete (usually tied to client events/inputs)
+    ---@field preparation? fun(data: StepData): void    -- Optional. Setup before step starts (e.g., adding blips/markers)
+    ---@field onComplete? fun(data: StepData): void     -- Optional. Cleanup when step completes (e.g., removing blips)
+
+    ---@class ClientMission
+    ---@field steps Step[]                             -- Sequence of mission steps
+    ---@field canceled fun(contract: Contract): void    -- Called if the mission is aborted by the leader
+    ```
+  </Tab>
+</Tabs>
+
+
+# Getting Started (/boosting)
+
+
+
+<LinkButtons>
+  <LinkButton href="https://evolent.dev">
+    Our Store
+  </LinkButton>
+</LinkButtons>
+
+Tired of the same old point A to B boosts? Yeah, us too. That’s why we built a next-level boosting system.
+Our system is packed with variety, real progression, and features that actually make sense.
+
+## Installation [#installation]
+
+<Steps>
+  <Step>
+    ### Install dependencies [#install-dependencies]
+
+    Make sure the following **required resources** are installed:
+
+    * Any of the inventory scripts listed in [Configuration](/boosting/Config)
+    * [ox\_lib](https://github.com/CommunityOx/ox_lib)
+    * [oxmysql](https://github.com/CommunityOx/oxmysql)
+    * [ox\_target](https://github.com/CommunityOx/ox_target)
+    * [bl\_ui](https://github.com/Byte-Labs-Studio/bl_ui) (replaceable with other minigames)
+
+    Use any supported framework: **OX**, **QBOX**, **ESX**, **QB** or **Standalone**.
+  </Step>
+
+  <Step>
+    ### Download and extract [#download-and-extract]
+
+    Download and extract the `evolent_boosting` resource from the [Cfx.re Portal](https://portal.cfx.re/assets/granted-assets) and place it inside your `resources` folder.
+  </Step>
+
+  <Step>
+    ### Execute the SQL files [#execute-the-sql-files]
+
+    Run every `.sql` file from the `sql` folder on your server's database. This sets up the tables for progression and contracts.
+  </Step>
+
+  <Step>
+    ### Add the items to ox\_inventory [#add-the-items-to-ox_inventory]
+
+    Add these entries to `ox_inventory/data/items.lua`. They open the hacking minigame and the boosting contract UI.
+
+    ```lua title="ox_inventory/data/items.lua"
+    ["ghostlink"] = {
+        label = "GhostLink",
+        weight = 5000,
+        stack = true,
+        close = true,
+        client = {
+            event = 'evolent_boosting:startHacking'
+        }
+    },
+    -- add this only if you won't use the command
+    ["boostingtablet"] = {
+        label = "Boosting Tablet",
+        weight = 5000,
+        stack = true,
+        close = true,
+        client = {
+            export = 'evolent_boosting.openTablet'
+        }
+    },
+    ```
+  </Step>
+
+  <Step>
+    ### Configure [#configure]
+
+    Set up `config.lua` for your server (framework specific settings). Everything else is adjusted in game through the **Admin** menu. See [Configuration](/boosting/Config) for the full config.
+  </Step>
+
+  <Step>
+    ### Add the ACE permissions [#add-the-ace-permissions]
+
+    ```bash title="server.cfg"
+    add_ace group.admin boosting.view allow
+    add_ace group.admin boosting.manage allow
+    add_ace group.admin boosting.configure allow
+    ```
+  </Step>
+
+  <Step>
+    ### Start the script [#start-the-script]
+
+    Add `evolent_boosting` to your resource list. &#x2A;*Make sure it starts after all dependencies.**
+
+    ```bash title="server.cfg"
+    ensure ox_lib
+    ensure oxmysql
+    ensure evolent_boosting
+    ```
+  </Step>
+</Steps>
+
+## Next steps [#next-steps]
+
+<Cards>
+  <Card icon="<Settings2 />" title="Configuration" href="/boosting/Config" description="Framework settings and the in-game admin config." />
+
+  <Card icon="<Route />" title="Custom Missions" href="/boosting/Missions" description="Build your own mission steps." />
+
+  <Card icon="<Terminal />" title="Commands" href="/boosting/Commands" description="Admin and player commands." />
+
+  <Card icon="<Code />" title="Exports" href="/boosting/Exports" description="Integrate with other resources." />
+</Cards>
+
+
+# Configuration (/fleamarket/Config)
+
+
+
+This is the out of the box `config.lua`. Adjust the framework, inventory and categories to fit your server.
+
+```lua title="config.lua"
+Config = {
+    DebugEnabled = false,
+    Framework = 'qbx',                                         -- ox, qbx, qb, esx
+    Notify = 'ox_lib',                                         -- ox_lib
+    Target = 'ox_target',                                      -- ox_target
+    Inventory = 'ox',                                          -- ox, qs, qb, codem, core, origen, tgiann
+    BaseRepPerDolar = 0.0012,                                  -- Gets calculated as (base * total_price)
+    TransactionAccount = 'money',                              -- Account which will be used in market transactions (money, bank, dirty_money or whatever)
+    LogService = '',       -- fmsdk, discord
+    Discord = { -- Webhook URL for logging
+        WebhookUrl = '',
+        Color = 3447003,
+        Username = 'Evolent Fleamarket',
+    },
+    UseWebpForInventoryImages = false, -- Only set to true if you use .webp images for your inventory
+    Laptop = false,          -- TOGGLE LAPTOP COMPATIBILITY
+    Commands = {
+        openTablet = { name = 'fleamarket', enabled = true }
+    },
+    Categories = {
+        weapons = {
+            name= "Weapons",
+            icon= "fa-solid fa-gun",
+            children= {
+                { id= "WEAPON_PISTOL",          name= "Pistol" },
+                { id= "WEAPON_COMBATPISTOL",    name= "Combat Pistol" },
+                { id= "WEAPON_APPISTOL",        name= "AP Pistol" },
+                { id= "WEAPON_PISTOL50",        name= ".50 Pistol" },
+                { id= "WEAPON_HEAVYPISTOL",     name= "Heavy Pistol" },
+                { id= "WEAPON_VINTAGEPISTOL",   name= "Vintage Pistol" },
+                { id= "WEAPON_SNSPISTOL",       name= "SNS Pistol" },
+                { id= "WEAPON_SNSPISTOL_MK2",   name= "SNS Pistol MK2" },
+                { id= "WEAPON_PISTOL_MK2",      name= "Pistol MK2" },
+                { id= "WEAPON_DOUBLEACTION",    name= "Double-Action Revolver" },
+                { id= "WEAPON_REVOLVER",        name= "Revolver" },
+                { id= "WEAPON_REVOLVER_MK2",    name= "Revolver MK2" },
+                { id= "WEAPON_NAVYREVOLVER",    name= "Navy Revolver" },
+                { id= "WEAPON_CERAMICPISTOL",   name= "Ceramic Pistol" },
+                { id= "WEAPON_PISTOLXM3",       name= "WM 29 Pistol" },
+                { id= "WEAPON_MICROSMG",        name= "Micro SMG" },
+                { id= "WEAPON_MINISMG",         name= "Mini SMG" },
+                { id= "WEAPON_SMG",             name= "SMG" },
+                { id= "WEAPON_SMG_MK2",         name= "SMG Mk2" },
+                { id= "WEAPON_ASSAULTSMG",      name= "Assault SMG" },
+                { id= "WEAPON_COMBATPDW",       name= "Combat PDW" },
+                { id= "WEAPON_MACHINEPISTOL",   name= "Machine Pistol" },
+                { id= "WEAPON_ASSAULTRIFLE",    name= "Assault Rifle" },
+                { id= "WEAPON_ASSAULTRIFLE_MK2",name= "Assault Rifle MK2" },
+                { id= "WEAPON_CARBINERIFLE",    name= "Carbine Rifle" },
+                { id= "WEAPON_CARBINERIFLE_MK2",name= "Carbine Rifle MK2" },
+                { id= "WEAPON_SPECIALCARBINE",  name= "Special Carbine" },
+                { id= "WEAPON_SPECIALCARBINE_MK2", name= "Special Carbine MK2" },
+                { id= "WEAPON_BULLPUPRIFLE",    name= "Bullpup Rifle" },
+                { id= "WEAPON_BULLPUPRIFLE_MK2",name= "Bullpup Rifle MK2" },
+                { id= "WEAPON_COMPACTRIFLE",    name= "Compact Rifle" },
+                { id= "WEAPON_MILITARYRIFLE",   name= "Military Rifle" },
+                { id= "WEAPON_TACTICALRIFLE",   name= "Tactical Rifle" },
+                { id= "WEAPON_HEAVYRIFLE",      name= "Heavy Rifle" },
+                { id= "WEAPON_BATTLERIFLE",     name= "Battle Rifle" },
+                { id= "WEAPON_MARKSMANRIFLE",   name= "Marksman Rifle" },
+                { id= "WEAPON_MARKSMANRIFLE_MK2", name= "Marksman Rifle MK2" },
+                { id= "WEAPON_SNIPERRIFLE",     name= "Sniper Rifle" },
+                { id= "WEAPON_HEAVYSNIPER",     name= "Heavy Sniper" },
+                { id= "WEAPON_HEAVYSNIPER_MK2", name= "Heavy Sniper MK2" },
+                { id= "WEAPON_PRECISIONRIFLE",  name= "Precision Rifle" },
+                { id= "WEAPON_MG",              name= "Machine Gun" },
+                { id= "WEAPON_COMBATMG",        name= "Combat MG" },
+                { id= "WEAPON_COMBATMG_MK2",    name= "Combat MG MK2" },
+                { id= "WEAPON_PUMPSHOTGUN",     name= "Pump Shotgun" },
+                { id= "WEAPON_PUMPSHOTGUN_MK2", name= "Pump Shotgun MK2" },
+                { id= "WEAPON_SAWNOFFSHOTGUN",  name= "Sawn-Off Shotgun" },
+                { id= "WEAPON_DBSHOTGUN",       name= "Double Barrel Shotgun" },
+                { id= "WEAPON_BULLPUPSHOTGUN",  name= "Bullpup Shotgun" },
+                { id= "WEAPON_ASSAULTSHOTGUN",  name= "Assault Shotgun" },
+                { id= "WEAPON_HEAVYSHOTGUN",    name= "Heavy Shotgun" },
+                { id= "WEAPON_COMBATSHOTGUN",   name= "Combat Shotgun" },
+                { id= "WEAPON_AUTOSHOTGUN",     name= "Sweeper Shotgun" }
+            }
+        },
+        ammo = {
+            name= "Ammunition",
+            icon= "fa-solid fa-burst",
+            children= {
+                { id= "ammo-22",        name= ".22 LR" },
+                { id= "ammo-38",        name= ".38 Special" },
+                { id= "ammo-44",        name= ".44 Magnum" },
+                { id= "ammo-45",        name= ".45 ACP" },
+                { id= "ammo-50",        name= ".50 AE" },
+                { id= "ammo-9",         name= "9×19mm Parabellum" },
+                { id= "ammo-rifle",     name= "5.56×45mm NATO" },
+                { id= "ammo-rifle2",    name= "7.62×39mm" },
+                { id= "ammo-sniper",    name= "7.62×51mm NATO" },
+                { id= "ammo-heavysniper", name= ".50 BMG" },
+                { id= "ammo-shotgun",   name= "12 Gauge" },
+                { id= "ammo-musket",    name= ".50 Musket Ball" }
+            }
+        },
+        mods = {
+            name= "Weapon Parts & Mods",
+            icon= "fa-solid fa-screwdriver-wrench",
+            children= {
+                { id= "at_suppressor_light", name= "Pistol Suppressor" },
+                { id= "at_suppressor_heavy", name= "Rifle / SMG Suppressor" },
+                { id= "at_flashlight",       name= "Tactical Flashlight" },
+                { id= "at_grip",             name= "Foregrip" },
+                { id= "at_barrel",           name= "Heavy Barrel" },
+                { id= "at_clip_extended_pistol", name= "Extended Pistol Mag" },
+                { id= "at_clip_extended_smg",    name= "Extended SMG Mag" },
+                { id= "at_clip_extended_shotgun",name= "Extended Shotgun Mag" },
+                { id= "at_clip_extended_rifle",  name= "Extended Rifle Mag" },
+                { id= "at_clip_extended_mg",     name= "Extended MG Mag" },
+                { id= "at_clip_extended_sniper", name= "Extended Sniper Mag" },
+                { id= "at_clip_drum_smg",        name= "SMG Drum Mag" },
+                { id= "at_clip_drum_shotgun",    name= "Shotgun Drum Mag" },
+                { id= "at_clip_drum_rifle",      name= "Rifle Drum Mag" },
+                { id= "at_compensator",      name= "Compensator" },
+                { id= "at_scope_macro",      name= "Holographic Sight" },
+                { id= "at_scope_small",      name= "Small Scope" },
+                { id= "at_scope_medium",     name= "Medium Scope" },
+                { id= "at_scope_large",      name= "Large Scope" },
+                { id= "at_scope_advanced",   name= "Advanced Scope" }
+            }
+        },
+        armor = { name= "Armor vests & rigs",      icon= "fa-solid fa-shield-halved" },
+        clothing = { name= "Clothing",                icon= "fa-solid fa-shirt" },
+        meds = { name= "Medical supplies",        icon= "fa-solid fa-kit-medical" },
+        food = { name= "Food & drinks",           icon= "fa-solid fa-utensils" },
+        keys = { name= "Keys",                    icon= "fa-solid fa-key" },
+        currency = { name= "Currency",                icon= "fa-solid fa-money-bill-1" },
+        containers = { name= "Containers",              icon= "fa-solid fa-box-archive" }
+    }
+}
+```
+
+
+# Getting Started (/fleamarket)
+
+
+
+<LinkButtons>
+  <LinkButton href="https://evolent.dev">
+    Our Store
+  </LinkButton>
+</LinkButtons>
+
+Bring your server’s economy to life with a fully interactive flea market designed for player control, variety, and real trading strategy. Whether your players are casual sellers, hardcore collectors, or hustlers looking to flip items for profit, this system creates a living marketplace where every deal matters. From rare collectibles to everyday essentials, your players decide what’s valuable. Supply, demand, and reputation shape the market, making every listing feel meaningful and every sale rewarding.
+
+## Installation [#installation]
+
+<Steps>
+  <Step>
+    ### Install dependencies [#install-dependencies]
+
+    Make sure the following **required resources** are installed:
+
+    * Any of the inventory scripts listed in [Configuration](/fleamarket/Config)
+    * [ox\_lib](https://github.com/CommunityOx/ox_lib)
+    * [oxmysql](https://github.com/CommunityOx/oxmysql)
+
+    Use any supported framework: **OX**, **QBOX**, **ESX**, **QB** or **Standalone**.
+  </Step>
+
+  <Step>
+    ### Download and extract [#download-and-extract]
+
+    Download and extract the `evolent_fleamarket` resource from the [Cfx.re Portal](https://portal.cfx.re/assets/granted-assets) and place it inside your `resources` folder.
+  </Step>
+
+  <Step>
+    ### Execute the SQL files [#execute-the-sql-files]
+
+    Run every `.sql` file from the `sql` folder on your server's database. This sets up the tables the market needs.
+  </Step>
+
+  <Step>
+    ### Configure [#configure]
+
+    Set up `config.lua` for your server (framework, categories, subcategories, ...). See [Configuration](/fleamarket/Config) for the full config.
+  </Step>
+
+  <Step>
+    ### Start the script [#start-the-script]
+
+    Add `evolent_fleamarket` to your resource list. &#x2A;*Make sure it starts after all dependencies.**
+
+    ```bash title="server.cfg"
+    ensure ox_lib
+    ensure oxmysql
+    ensure evolent_fleamarket
+    ```
+  </Step>
+</Steps>
+
+
+# Commands (/garage/Commands)
+
+
+
+This page lists all available in-game commands.
+
+## Administrator Commands [#administrator-commands]
+
+| Command         | Usage Example | Description                                                                                                           | Permissions             |
+| :-------------- | :------------ | :-------------------------------------------------------------------------------------------------------------------- | :---------------------- |
+| **`/evgarage`** | `/evgarage`   | Opens the [Garage Manager](/garage/Manager) to create, edit and delete garages, and to change the brand and settings. | `evolent.garage.manage` |
+
+<Callout type="info">
+  **Note:** The ACE permission name can be changed with `Garage.ManageAce` in `config.lua`.
+
+  ```bash title="server.cfg"
+  add_ace group.admin evolent.garage.manage allow
+  ```
+</Callout>
+
+## Player Commands [#player-commands]
+
+| Command       | Usage Example | Description                                                        | Permissions                |
+| :------------ | :------------ | :----------------------------------------------------------------- | :------------------------- |
+| **`/evpark`** | `/evpark`     | Shows a short reminder of how to store a vehicle at a garage lift. | Accessible to all players. |
+
+<Callout type="warn">
+  **Note:** Turning on `Debug` registers a few extra developer commands used by Evolent support to diagnose lifts. They print extra output to the console and should stay **off on a live server**.
+</Callout>
+
+
+# Configuration (/garage/Config)
+
+
+
+This is the out of the box `config.lua`. Times are in **milliseconds**, distances in **metres**.
+
+<Callout title="Most values can be changed in game">
+  Open `/evgarage` > **Settings** to change these values live for every player. A value saved in game **overrides** `config.lua`. Pressing **Reset** on it (or **Reset everything to config.lua**) puts the `config.lua` value back. A value you remove from `config.lua` falls back to its default.
+</Callout>
+
+## Full config [#full-config]
+
+```lua title="config.lua"
+EvolentGarageConfig = {}
+
+EvolentGarageConfig.Framework = 'auto' -- auto, qbox, qbcore, esx or oxcore. auto takes the one that runs
+EvolentGarageConfig.Locale = 'en'
+EvolentGarageConfig.Debug = false
+EvolentGarageConfig.ErrorNotifications = false
+EvolentGarageConfig.FailureHint = true
+
+EvolentGarageConfig.Brand = {
+    Accent = '#00BFFF', -- #RGB or #RRGGBB
+    Logo = 'web/shared/evolent-logo.png', -- a file in this resource or an https:// link
+    Name = 'Evolent Parking', -- **word** makes that word bold
+    Light = '', -- cabin and terminal lights, empty = the same as Accent
+}
+
+local Garage = {}
+
+-- add_ace group.admin evolent.garage.manage allow
+Garage.ManageAce = 'evolent.garage.manage'
+
+Garage.RaiseDuration = 8000
+Garage.LowerDuration = 8000
+Garage.PrepareDuration = 2000
+
+Garage.Gate = { Duration = 2500 }
+
+Garage.Movement = {
+    BlockTimeout = 20000,
+    PickupTimeout = 180000,
+    ParkingTimeout = 180000,
+    ClearDistance = 6.5, -- a collected car counts as gone at this distance
+    AbandonedTimeout = 60000,
+    ReturnCooldown = 10000,
+}
+
+-- 'impound' or 'last'. Vehicles your own impound script holds (state 2) are never touched
+Garage.LostVehicles = { Enabled = true, Garage = 'impound' }
+
+-- Pad values are half the size of the platform itself, which the store list leaves out
+Garage.StoreNearby = {
+    Lift = 18.0,
+    PadHalfX = 0.9,
+    PadHalfY = 1.35,
+    BikePadHalfX = 0.45,
+    BikePadHalfY = 0.7,
+}
+
+-- sprite and colour numbers: docs.fivem.net/docs/game-references/blips
+Garage.Blips = {
+    Enabled = true,
+    Sprite = 357,
+    Colour = 3,
+    Scale = 0.6,
+    ImpoundSprite = 67,
+    ImpoundColour = 1,
+}
+
+Garage.CabinLighting = { Enabled = true, Range = 4.2, Intensity = 1.35, Radius = 95.0, Shadows = false }
+
+Garage.SpawnProtection = { Enabled = true, Margin = 3.0, Range = 200.0 }
+
+Garage.Audio = { Enabled = true, HearDistance = 35.0 }
+
+Garage.MaxGroundDifference = 0.18
+Garage.PlacementSurface = { MaxDifference = 0.05 }
+Garage.GroundClearance = 0.18
+
+Garage.UseMappedShaft = false
+
+EvolentGarageConfig.Garage = Garage
+
+local Terminal = {}
+
+Terminal.InteractDistance = 4.5
+
+Terminal.Interact = 'auto' -- 'auto', 'key' or 'target'
+-- key ids: docs.fivem.net/docs/game-references/controls
+Terminal.InteractKey = 38 -- 38 = E
+Terminal.DrawDistance = 22.0
+Terminal.OpenSettleMs = 350
+
+Terminal.Lighting = { Enabled = true, Distance = 16.0, Range = 1.1, Intensity = 1.6 }
+
+EvolentGarageConfig.Terminal = Terminal
+```
+
+## Options [#options]
+
+### General [#general]
+
+| Option               | Default  | Description                                                                              |
+| :------------------- | :------- | :--------------------------------------------------------------------------------------- |
+| `Framework`          | `'auto'` | `auto`, `qbox`, `qbcore`, `esx` or `oxcore`. `auto` picks the framework that is running. |
+| `Locale`             | `'en'`   | Language file from `locales/` used for player texts. Takes effect after a restart.       |
+| `Debug`              | `false`  | Extra console output and the developer commands. &#x2A;*Keep off on a live server.**     |
+| `ErrorNotifications` | `false`  | Show error notifications to players. Off: errors only go to the server console.          |
+| `FailureHint`        | `true`   | Show a short *try again* line when a collect or store stops halfway.                     |
+
+### Brand [#brand]
+
+The colour, logo and name shown on every terminal and in the Garage Manager. These can also be changed in game under `/evgarage` > **Brand**.
+
+| Option   | Default                         | Description                                                              |
+| :------- | :------------------------------ | :----------------------------------------------------------------------- |
+| `Accent` | `'#00BFFF'`                     | Brand colour, `#RGB` or `#RRGGBB`.                                       |
+| `Logo`   | `'web/shared/evolent-logo.png'` | A file inside the resource or an `https://` link.                        |
+| `Name`   | `'Evolent Parking'`             | Text next to the logo. Wrap a word in `**` to make it bold.              |
+| `Light`  | `''`                            | Colour of the cabin and terminal lights. Empty uses the `Accent` colour. |
+
+### Garage [#garage]
+
+| Option                           | Default                   | Description                                                                        |
+| :------------------------------- | :------------------------ | :--------------------------------------------------------------------------------- |
+| `ManageAce`                      | `'evolent.garage.manage'` | ACE permission required to open the Garage Manager.                                |
+| `RaiseDuration`                  | `8000`                    | Time the lift takes to rise (2000 - 60000).                                        |
+| `LowerDuration`                  | `8000`                    | Time the lift takes to lower (2000 - 60000).                                       |
+| `PrepareDuration`                | `2000`                    | Quiet moment after the shutters begin to move, before the lift starts (0 - 30000). |
+| `Gate.Duration`                  | `2500`                    | Time the shutters take to open or close (500 - 30000).                             |
+| `MaxGroundDifference`            | `0.18`                    | How uneven the ground under a lift may be when placing it.                         |
+| `PlacementSurface.MaxDifference` | `0.05`                    | Allowed surface difference when placing a lift.                                    |
+| `GroundClearance`                | `0.18`                    | Ground clearance used when placing a lift.                                         |
+| `UseMappedShaft`                 | `false`                   | Only for maps that have a real open shaft under the lift.                          |
+
+<Callout type="warn">
+  Raise the placement values only if a spot you need is refused. Large values let lifts float or sink.
+</Callout>
+
+### Movement [#movement]
+
+| Option             | Default  | Description                                                                            |
+| :----------------- | :------- | :------------------------------------------------------------------------------------- |
+| `BlockTimeout`     | `20000`  | How long a blocked cabin waits before the cycle gives up. The car is always kept safe. |
+| `PickupTimeout`    | `180000` | Time to drive a collected car off the lift. After that it goes back into storage.      |
+| `ParkingTimeout`   | `180000` | Time to drive onto the lift when storing. After that the lift lowers empty.            |
+| `ClearDistance`    | `6.5`    | Distance at which a collected car counts as gone from the lift.                        |
+| `AbandonedTimeout` | `60000`  | A raised lift nobody uses lowers after this time (15000 - 300000).                     |
+| `ReturnCooldown`   | `10000`  | Cooldown after **Return vehicle** before the lift can be called again.                 |
+
+### Lost Vehicles [#lost-vehicles]
+
+| Option    | Default     | Description                                                                                               |
+| :-------- | :---------- | :-------------------------------------------------------------------------------------------------------- |
+| `Enabled` | `true`      | Bring back vehicles lost to a despawn, a crash or a restart. Off: such a car stays marked as out.         |
+| `Garage`  | `'impound'` | `impound` sends lost cars to your impound garage. `last` returns them to the garage they were taken from. |
+
+See [Lost vehicles](/garage/Usage#lost-vehicles) for exactly when a car counts as lost.
+
+### Store Nearby [#store-nearby]
+
+| Option                          | Default        | Description                                                                              |
+| :------------------------------ | :------------- | :--------------------------------------------------------------------------------------- |
+| `Lift`                          | `18.0`         | Owned cars within this distance of the lift can be picked in the **Store vehicle** list. |
+| `PadHalfX` / `PadHalfY`         | `0.9` / `1.35` | Half size of the lift platform area for cars.                                            |
+| `BikePadHalfX` / `BikePadHalfY` | `0.45` / `0.7` | Half size of the lift platform area for motorbikes.                                      |
+
+### Blips [#blips]
+
+Sprite and colour numbers can be found in the [FiveM blip list](https://docs.fivem.net/docs/game-references/blips/).
+
+| Option                            | Default     | Description                                                                 |
+| :-------------------------------- | :---------- | :-------------------------------------------------------------------------- |
+| `Enabled`                         | `true`      | Show garages on the map. A single garage can still switch its own blip off. |
+| `Sprite` / `Colour`               | `357` / `3` | Blip for regular garages.                                                   |
+| `ImpoundSprite` / `ImpoundColour` | `67` / `1`  | Blip for impound garages.                                                   |
+| `Scale`                           | `0.6`       | Blip size.                                                                  |
+
+### Lighting, Audio & Traffic [#lighting-audio--traffic]
+
+| Option                              | Default        | Description                                             |
+| :---------------------------------- | :------------- | :------------------------------------------------------ |
+| `CabinLighting.Enabled`             | `true`         | Lights the car while it rides the lift.                 |
+| `CabinLighting.Range` / `Intensity` | `4.2` / `1.35` | Range and strength of the cabin light.                  |
+| `CabinLighting.Radius`              | `95.0`         | Spread of the cabin light.                              |
+| `CabinLighting.Shadows`             | `false`        | Cast shadows from the cabin light. Costs frames.        |
+| `Audio.Enabled`                     | `true`         | Motor sound for the lift and the shutters.              |
+| `Audio.HearDistance`                | `35.0`         | Distance the motor can be heard from.                   |
+| `SpawnProtection.Enabled`           | `true`         | Stops GTA spawning parked traffic on a lift platform.   |
+| `SpawnProtection.Margin`            | `3.0`          | Extra margin around the lift kept free of traffic.      |
+| `SpawnProtection.Range`             | `200.0`        | Distance from a lift at which the protection is active. |
+
+### Terminal [#terminal]
+
+| Option                         | Default       | Description                                                                                            |
+| :----------------------------- | :------------ | :----------------------------------------------------------------------------------------------------- |
+| `Interact`                     | `'auto'`      | `auto` uses ox\_target when it runs and the key prompt when it does not. `key` or `target` forces one. |
+| `InteractKey`                  | `38` (E)      | [Control id](https://docs.fivem.net/docs/game-references/controls/) for the key prompt.                |
+| `InteractDistance`             | `4.5`         | How close a player must stand to use the terminal.                                                     |
+| `DrawDistance`                 | `22.0`        | Further away the terminal screen is not rendered at all.                                               |
+| `OpenSettleMs`                 | `350`         | Pause between the camera arriving and the menu showing.                                                |
+| `Lighting.Enabled`             | `true`        | Light strips on the terminal. They take the brand colour.                                              |
+| `Lighting.Distance`            | `16.0`        | Distance the strips are lit from.                                                                      |
+| `Lighting.Range` / `Intensity` | `1.1` / `1.6` | Range and strength of the terminal light.                                                              |
+
+## Locales [#locales]
+
+Every text a player sees can be translated. The English text is the key, and `locales/<Locale>.json` maps it to your language. Texts you leave out stay in English.
+
+<Steps>
+  <Step>
+    ### Copy the English file [#copy-the-english-file]
+
+    Copy `locales/en.json` to a new file named after your language code, e.g. `locales/de.json`.
+  </Step>
+
+  <Step>
+    ### Translate the values [#translate-the-values]
+
+    Only change the text on the **right** side. Keep placeholders such as `%d` and `%s` in your translation.
+
+    ```json title="locales/de.json"
+    {
+        "Move closer to your garage terminal.": "Geh näher an dein Garagenterminal.",
+        "The lift is resetting. Try again in %d sec.": "Der Lift setzt sich zurück. Versuche es in %d Sek. erneut."
+    }
+    ```
+  </Step>
+
+  <Step>
+    ### Select the language [#select-the-language]
+
+    Set `EvolentGarageConfig.Locale = 'de'` in `config.lua`, or pick it in `/evgarage` > **Settings** > **Messages**, then restart the resource.
+  </Step>
+</Steps>
+
+## Notifications [#notifications]
+
+All notifications go through `client/notify.lua`, which is left open so you can point it at your own notification resource. By default it uses `ox_lib`.
+
+```lua title="client/notify.lua"
+-- data = { title, description, type = 'inform' | 'success' | 'error', duration = ms or nil }
+function EvolentGarageNotify(data)
+if type(data) ~= 'table' then
+    return lib.notify(data)
+end
+data.title = EvolentGarageText(data.title)
+data.description = EvolentGarageText(data.description)
+
+-- your own resource instead of the line below, for example:
+-- return TriggerEvent('myNotify', data.type, data.description, data.duration or 5000)
+return lib.notify(data)
+end
+```
+
+<Callout type="info">
+  A few messages sent by the server (for example *A vehicle of yours was recovered and taken to the impound*) use the `ox_lib:notify` client event directly, so keep ox\_lib installed even when you use your own notifications.
+</Callout>
+
+
+# Exports (/garage/Exports)
+
+
+
+<Callout type="info">
+  This page documents the functions exported by our resource that other scripts may use.
+</Callout>
+
+## Client Exports [#client-exports]
+
+The following function is available on the **client thread**, for example to open the Garage Manager from your own admin menu.
+
+```lua
+exports("OpenCreator", function()
+-- Opens the Garage Manager, exactly like the /evgarage command.
+-- The player still needs the Garage.ManageAce permission; without it
+-- they get a notification and nothing opens.
+end)
+```
+
+```lua
+-- example: a button in your own admin menu
+exports.evolent_garage:OpenCreator()
+```
+
+<Callout type="warn">
+  The other exports you may find in the resource (`SetGarages`, `UpdateStatus`, `RegisterGarageAdapter`, `DrawLighting`, ...) are used internally between the lift and the terminal and are **not** meant to be used by other scripts. Most of them refuse calls from other resources.
+</Callout>
+
+
+# Frameworks (/garage/Frameworks)
+
+
+
+The script talks to your framework through one **bridge file** per framework in `modules/creator/bridge/`. With `Framework = 'auto'` the bridge of the framework that is running is loaded, and the others stay inactive.
+
+The bridge files are **not escrowed**, so you can point them at your own economy, key script or database layout.
+
+## Supported Frameworks [#supported-frameworks]
+
+|                           | Qbox                       | QBCore                  | ESX              | ox\_core                     |
+| :------------------------ | :------------------------- | :---------------------- | :--------------- | :--------------------------- |
+| **Config value**          | `qbox`                     | `qbcore`                | `esx`            | `oxcore`                     |
+| **Required resources**    | `qbx_core`, `qbx_vehicles` | `qb-core`               | `es_extended`    | `ox_core`                    |
+| **Vehicle table**         | `player_vehicles`          | `player_vehicles`       | `owned_vehicles` | `vehicles`                   |
+| **Vehicle keys**          | `qbx_vehiclekeys`          | `qb-vehiclekeys`        | Add your own     | Built into ox\_core          |
+| **Impound fee paid from** | Bank, then cash            | Bank, then cash         | Bank, then cash  | `money` item (ox\_inventory) |
+| **Storage suggestions**   | `qbx_garages`              | `QBCore.Shared.Garages` | Free text        | Free text                    |
+| **On duty check**         | Yes                        | Yes                     | Always on duty   | Always on duty               |
+
+<Callout type="info">
+  **ESX:** the script adds a `parking` column to `owned_vehicles` on the first start, and reads the `vehicles` table to turn the model hash back into a spawn name. A car whose model is missing from the `vehicles` table can't be spawned and stays hidden; the console tells you which plate it is.
+</Callout>
+
+<Callout type="info">
+  **ox\_core:** groups are used as jobs. A player's job is the group with the highest grade.
+</Callout>
+
+## Customizing a Bridge [#customizing-a-bridge]
+
+Open the bridge file of your framework, e.g. `modules/creator/bridge/qbox.lua`, and change the function you need. Two common examples:
+
+<Tabs items="['Vehicle Keys (ESX)', 'Custom Economy']">
+  <Tab>
+    ESX has no key system of its own, so `GiveKeys` is empty. Add the call of your lock resource:
+
+    ```lua title="modules/creator/bridge/esx.lua"
+    function Bridge.GiveKeys(playerId, entity)
+        local plate = GetVehicleNumberPlateText(entity)
+        -- example, use the export or event of your own key script
+        exports.my_vehiclekeys:GiveKey(playerId, plate)
+    end
+    ```
+  </Tab>
+
+  <Tab>
+    `TakePayment` is used for the impound release fee. Return `true` only when the money was taken:
+
+    ```lua title="modules/creator/bridge/qbox.lua"
+    function Bridge.TakePayment(playerId, amount, reason)
+        -- example, use your own banking resource
+        return exports.my_banking:RemoveMoney(playerId, amount, reason) == true
+    end
+    ```
+  </Tab>
+</Tabs>
+
+<Callout type="warn">
+  **Never spawn, move or delete vehicles from a bridge.** Only `GetVehicle`, `GetVehicles` and the database updates may yield; every other function has to return straight away.
+</Callout>
+
+<Callout type="info">
+  **Custom framework?** Pick the bridge that is closest to yours, set `Framework` to that name in `config.lua`, and rewrite its functions. Remove the `AssertReady` checks for resources you don't run.
+</Callout>
+
+## Bridge Reference [#bridge-reference]
+
+Every bridge fills the global `EvolentGarageBridge` table with the functions below.
+
+<Tabs items="['Data Types', 'Functions']">
+  <Tab>
+    ```lua
+    ---@class BridgePlayer
+    ---@field identifier string|number               -- citizenid, ESX identifier or ox charId
+    ---@field job { name: string, grade: number, onDuty: boolean }
+
+    ---@class BridgeVehicle
+    ---@field id number|string                       -- vehicle row id (the plate on ESX)
+    ---@field citizenid string|number                -- owner identifier
+    ---@field modelName string                       -- spawn name, e.g. 'sultan'
+    ---@field state 0|1                              -- 0 = out, 1 = stored
+    ---@field garage string|nil                      -- storage name the vehicle is kept in
+    ---@field props table                            -- ox_lib vehicle properties (plate, mods, fuelLevel, ...)
+    ```
+  </Tab>
+
+  <Tab>
+    ```lua
+    ---@type boolean? Set to true when the vehicle id is a plate (ESX), so it is never read as a number
+    Bridge.VehicleIdIsPlate = nil
+
+    ---Throws when a required resource is not running. Called once on start.
+    function Bridge.AssertReady() end
+
+    ---@return BridgePlayer|nil
+    function Bridge.GetPlayer(source) end
+
+    ---@return boolean Used to validate the jobs added in the Garage Manager
+    function Bridge.JobExists(jobName) end
+
+    ---@return table<string, { label: string }> Storage suggestions in the Garage Manager
+    function Bridge.GetGarages() end
+
+    ---@return table<string, { name: string }> Vehicle names keyed by spawn name
+    function Bridge.GetVehicleCatalog() end
+
+    ---@return BridgeVehicle|nil
+    function Bridge.GetVehicle(vehicleId) end
+
+    ---@param garageId string|nil nil = any garage
+    ---@param state 0|1
+    ---@return BridgeVehicle[]
+    function Bridge.GetVehicles(ownerId, garageId, state) end
+
+    ---@return boolean true = the money was taken
+    function Bridge.TakePayment(playerId, amount, reason) end
+
+    function Bridge.GetEntityVehicleId(entity) end
+    function Bridge.SetEntityVehicleId(entity, vehicleId) end
+    function Bridge.GiveKeys(playerId, entity) end
+
+    -- Database updates. Each one returns the number of affected rows
+    -- (0 = another request won) and throws on a database error.
+    function Bridge.ReserveVehicle(vehicleId, ownerId, garageId) end        -- stored -> out, collecting
+    function Bridge.StoreVehicle(vehicleId, ownerId, garageId, props) end   -- save props, mark stored
+    function Bridge.MarkVehicleOut(vehicleId, ownerId) end                 -- stored -> out
+    function Bridge.RecoverLostVehicle(vehicleId, ownerId, garageId) end    -- lost (out) -> stored
+    function Bridge.RestoreStoredVehicle(vehicleId, ownerId, garageId) end  -- undo a reservation
+    ```
+  </Tab>
+</Tabs>
+
+
+# Garage Manager (/garage/Manager)
+
+
+
+The Garage Manager is where you build and look after your garages. There is no garage list in `config.lua`: every garage is created in game and saved instantly, **no restart needed**.
+
+Open it with `/evgarage`. You need the ACE permission set in `Garage.ManageAce`:
+
+```bash title="server.cfg"
+add_ace group.admin evolent.garage.manage allow
+```
+
+The start screen lists **Your Garages** and gives you three buttons: **Add new garage**, **Brand** and **Settings**.
+
+## Create a Garage [#create-a-garage]
+
+<Steps>
+  <Step>
+    ### Garage Details [#garage-details]
+
+    * **Display name**: the name players see on the terminal and the map blip (2 to 60 characters).
+    * **Vehicle storage**: which stored vehicles the terminal shows. See [Vehicle Storage](#vehicle-storage) below.
+    * **Impound garage**: tick this to turn the garage into an impound. See [Impound Garages](#impound-garages) below.
+  </Step>
+
+  <Step>
+    ### Place in the World [#place-in-the-world]
+
+    Press **Place lift**, then **Place terminal**. A free camera opens so you can put each part exactly where you want it, with a live preview.
+
+    | Key             | Action           |
+    | :-------------- | :--------------- |
+    | `W` `A` `S` `D` | Move camera      |
+    | `Q` / `E`       | Camera down / up |
+    | `Mouse`         | Look around      |
+    | `Shift`         | Move faster      |
+    | `Mouse Wheel`   | Rotate preview   |
+    | `Alt`           | Fine rotation    |
+    | `PgUp` / `PgDn` | Preview height   |
+    | `Enter`         | Confirm position |
+    | `Esc`           | Cancel           |
+
+    <Callout type="info">
+      Keep the **blue exit arrow** clear when placing the lift. That is the way the car drives out, so point it at an open parking area and aim at level ground.
+    </Callout>
+
+    Below the placement you can also switch on:
+
+    * **Rear lift door**: adds a second shutter at the back. Both doors open and close together.
+    * **Map blip**: show this garage on the map.
+  </Step>
+
+  <Step>
+    ### Who Can Use It [#who-can-use-it]
+
+    * With **no jobs** in the list, the garage is **public** and everyone can use it.
+    * Press **Add job** to restrict it. Each job has its own **minimum grade**, and a garage can list up to 12 jobs.
+    * Tick **On duty only** to require players to be on duty for one of the listed jobs.
+  </Step>
+
+  <Step>
+    ### Save [#save]
+
+    Press **Save garage**. The lift and terminal appear for every player straight away.
+  </Step>
+</Steps>
+
+### Placement Rules [#placement-rules]
+
+A garage is refused when it breaks one of these rules. The manager tells you which one.
+
+* The terminal must be **2.5 to 20 metres** from the lift centre, and **outside** the lift footprint and its safety margin.
+* Lift centres must be at least **9 metres** apart.
+* The ground under the lift must be level. The allowed difference can be raised under **Settings** > **Advanced**, see [Configuration](/garage/Config#garage).
+* A server can have up to **50 garages**.
+* A garage can't be edited or deleted while its lift is running a cycle.
+
+## Vehicle Storage [#vehicle-storage]
+
+Every garage stores its vehicles under a **storage name**, which is written to the `garage` column of your framework's vehicle table.
+
+* **Leave it empty** to give the garage its own dedicated storage (`evolent:<garage id>`).
+* **Pick an existing garage** from the suggestions to share its vehicles. The lift then shows every car parked in, for example, `pillboxgarage` of your current garage script, and cars stored at the lift show up there too.
+* **Use the same name on several lifts** to let them share one storage.
+
+<Callout type="info">
+  Suggestions come from `qbx_garages` on Qbox and from `QBCore.Shared.Garages` on QBCore. On ESX and ox\_core you can type any storage name yourself.
+</Callout>
+
+## Impound Garages [#impound-garages]
+
+Tick **Impound garage** and set a **Release fee** to turn a garage into an impound.
+
+* An impound **hands vehicles back for a fee** and **takes none in**. The *Store vehicle* option is not offered at an impound terminal.
+* The fee is taken from the player's **bank**, and from their **cash** when the bank can't cover it. On ox\_core it is taken as the `money` item. The car only leaves once the fee is paid.
+* An impound gets its own map blip (`Blips.ImpoundSprite` / `Blips.ImpoundColour`).
+* When `LostVehicles.Garage` is `'impound'`, lost vehicles are sent here. With more than one impound garage, the first one by garage ID is used.
+
+<Callout type="warn">
+  Vehicles your own impound or police script has impounded (state `2` on QB / Qbox) are **never touched** by this script.
+</Callout>
+
+## Brand [#brand]
+
+Press **Brand** to change the look of every terminal and of the manager itself. Saving applies it to all players at once.
+
+* **Colour**: the accent colour of the terminal and manager.
+* **Lights in the garage and on the terminal**: a separate colour for the cabin light and the terminal strips, or *Same as the brand colour*.
+* **Logo**: upload a picture or use an `https://` link. **Use the default logo** puts the original back.
+* **Text next to the logo**: your garage brand name. Select letters and pick a weight (Regular, Medium, Semibold, Bold), italic or underline.
+
+**Reset to config.lua** throws the in-game brand away and uses the `Brand` section of `config.lua` again.
+
+## Settings [#settings]
+
+Press **Settings** to change how the garages behave. Values are grouped in **Terminal**, **Lift**, **Vehicles**, **Map & sound**, **Lights**, **Messages** and **Advanced**, and every row explains what it does.
+
+* **Save settings** applies the changes to every player straight away. Only the language needs a restart.
+* **Reset** on a single row, or **Reset everything to config.lua**, puts the `config.lua` value back.
+
+The meaning, default and limits of each value are listed on the [Configuration](/garage/Config) page.
+
+
+# Using Garages (/garage/Usage)
+
+
+
+This page explains how players use a garage, so you know what to expect and what to tell your community.
+
+Players open the terminal by walking up to it and using **ox\_target** (*Use garage terminal*) or the key prompt (**E** by default). The terminal shows the vehicles stored in this garage and the owned vehicles that are parked nearby.
+
+## Collect a Vehicle [#collect-a-vehicle]
+
+<Steps>
+  <Step>
+    ### Pick a Vehicle [#pick-a-vehicle]
+
+    Open the terminal and select a car under **Your Vehicles**. Fuel, engine and body condition are shown for each one. At an impound, the release fee is shown and paid here.
+  </Step>
+
+  <Step>
+    ### Wait for the Lift [#wait-for-the-lift]
+
+    The shutters open and the platform brings the car up from below. The keys are handed over automatically when your key script is supported (see [Frameworks](/garage/Frameworks)).
+  </Step>
+
+  <Step>
+    ### Drive Out [#drive-out]
+
+    Get in and drive the car off the lift. Changed your mind? Choose **Return your vehicle** on the terminal and it goes back down.
+  </Step>
+</Steps>
+
+<Callout type="info">
+  A collected car that is not driven off within `Movement.PickupTimeout` (3 minutes by default) goes back into storage by itself.
+</Callout>
+
+## Store a Vehicle [#store-a-vehicle]
+
+<Steps>
+  <Step>
+    ### Park Nearby [#park-nearby]
+
+    Park your car near the garage and **step out**. Only owned cars within `StoreNearby.Lift` (18 m by default) of the lift are listed.
+  </Step>
+
+  <Step>
+    ### Choose Store Vehicle [#choose-store-vehicle]
+
+    Open the terminal and select the car under **Store vehicle**. The empty lift rises and the shutters open.
+  </Step>
+
+  <Step>
+    ### Drive onto the Lift [#drive-onto-the-lift]
+
+    Drive fully onto the raised lift, stop, and step outside. Storage starts automatically and the car is saved with its mods, fuel and damage.
+  </Step>
+</Steps>
+
+<Callout type="info">
+  Players who forget how it works can type `/evpark` for a short in-game reminder.
+</Callout>
+
+## Which Vehicles Fit [#which-vehicles-fit]
+
+* Cars and motorbikes can be stored.
+* Bicycles, boats, helicopters, planes and trains can't.
+* The vehicle must fit inside the lift cabin: at most **2.85 m wide**, **6.25 m long** and **2.80 m high**. Larger vehicles are refused with *This vehicle does not fit inside the lift*.
+
+## Lost Vehicles [#lost-vehicles]
+
+A car can end up marked as *out* in the database while it no longer exists in the world, for example after a despawn, a crash or a server restart. With `LostVehicles.Enabled`, these cars are brought back automatically when the owner opens a terminal.
+
+| `LostVehicles.Garage` | Where the car goes                                                                                                                                                                           |
+| :-------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `'impound'`           | To your [impound garage](/garage/Manager#impound-garages). The player is told *A vehicle of yours was recovered and taken to the impound*. With no impound garage, it behaves like `'last'`. |
+| `'last'`              | Back to the garage it was taken from, the next time the owner opens that garage's terminal.                                                                                                  |
+
+A car is **left alone** when it still exists in the world, when a lift cycle is using it, or when another script has impounded it (state `2`).
+
+<Callout type="info">
+  Want to know why a certain car was not recovered? Turn on `Debug` and open the terminal. The server console prints one reason for every car it skipped.
+</Callout>
+
+## Good to Know [#good-to-know]
+
+* Garages only work in the **default routing bucket** (bucket `0`). Players in an instance can't use a terminal.
+* One lift runs **one cycle at a time**. Other players see *Someone else is using the lift* until it is done.
+* If a player leaves or the server restarts in the middle of a cycle, the script remembers it and finishes it safely once a player is near the lift again, so the car ends up back in storage.
+* Everyone nearby sees and hears the lift move, the shutters open and the car come up.
+
+
+# Getting Started (/garage)
+
+
+
+<LinkButtons>
+  <LinkButton href="https://evolent.dev">
+    Our Store
+  </LinkButton>
+</LinkButtons>
+
+Tired of invisible parking spots and cars popping out of thin air? Yeah, us too. That’s why we built real underground garages.
+Players walk up to a terminal, pick a car, and watch an animated lift bring it up from below. Everything is placed and managed in game, no config editing needed.
+
+## Installation [#installation]
+
+<Steps>
+  <Step>
+    ### Install dependencies [#install-dependencies]
+
+    Make sure the following **required resources** are installed:
+
+    * [ox\_lib](https://github.com/CommunityOx/ox_lib)
+    * [oxmysql](https://github.com/CommunityOx/oxmysql)
+    * **OneSync** enabled on your server
+
+    These resources are **optional**:
+
+    * [ox\_target](https://github.com/CommunityOx/ox_target) (without it, players use a key prompt at the terminal)
+    * `qbx_vehiclekeys` / `qb-vehiclekeys` (keys are handed over automatically when a car is collected)
+
+    Use any supported framework: **QBOX**, **QB**, **ESX** or **OX**. See [Frameworks](/garage/Frameworks) for what each one needs.
+  </Step>
+
+  <Step>
+    ### Download and extract [#download-and-extract]
+
+    Download and extract the `evolent_garage` resource from the [Cfx.re Portal](https://portal.cfx.re/assets/granted-assets) and place it inside your `resources` folder.
+
+    <Callout type="warn" title="Don't rename the resource">
+      The brand, the settings and the lift recovery journal are stored against the resource name. A renamed folder starts without them.
+    </Callout>
+  </Step>
+
+  <Step>
+    ### Database [#database]
+
+    There are **no SQL files to run**. The script uses the vehicle table your framework already has.
+
+    **ESX only:** the script adds a `parking` column to `owned_vehicles` on the first start. If your database user isn't allowed to alter tables, run this once yourself:
+
+    ```sql
+    ALTER TABLE owned_vehicles ADD COLUMN parking VARCHAR(80) NULL;
+    ```
+  </Step>
+
+  <Step>
+    ### Configure [#configure]
+
+    Open `config.lua` and adjust it to your server. The defaults work for most servers, and nearly every value can be changed later in game through `/evgarage` > **Settings**. See [Configuration](/garage/Config) for the full breakdown.
+  </Step>
+
+  <Step>
+    ### Add the ACE permission [#add-the-ace-permission]
+
+    Give your staff access to the Garage Manager:
+
+    ```bash title="server.cfg"
+    add_ace group.admin evolent.garage.manage allow
+    ```
+  </Step>
+
+  <Step>
+    ### Start the script [#start-the-script]
+
+    Add `evolent_garage` to your resource list. &#x2A;*Make sure it starts after your framework and all dependencies.**
+
+    ```bash title="server.cfg"
+    ensure ox_lib
+    ensure oxmysql
+    ensure ox_target
+    # your framework (e.g. qbx_core + qbx_vehicles, qb-core, es_extended, ox_core)
+    ensure evolent_garage
+    ```
+  </Step>
+
+  <Step>
+    ### Create your first garage [#create-your-first-garage]
+
+    Join the server, type `/evgarage` and follow the [Garage Manager](/garage/Manager) guide.
+  </Step>
+</Steps>
+
+## Updating [#updating]
+
+<Callout title="Keep the data folder">
+  Your garages are saved in `data/garages.json`. **Keep the `data` folder** when you replace the resource with a new version. If the file does get lost, the script restores the garages from a server side backup on the next start.
+</Callout>
+
+When a new version adds or removes files, the server has to re-read the manifest. Run both commands in your server console:
+
+```bash title="Server console"
+refresh
+ensure evolent_garage
+```
+
+## Next steps [#next-steps]
+
+<Cards>
+  <Card icon="<LayoutDashboard />" title="Garage Manager" href="/garage/Manager" description="Place lifts and terminals, set access and impounds." />
+
+  <Card icon="<Settings2 />" title="Configuration" href="/garage/Config" description="Every option, its default and its limits." />
+
+  <Card icon="<CarFront />" title="Using Garages" href="/garage/Usage" description="How players collect and store vehicles." />
+
+  <Card icon="<Blocks />" title="Frameworks" href="/garage/Frameworks" description="Framework support and custom bridges." />
+</Cards>
+
+
+# Client Exports (/skills/Functions/Client)
+
+
+
+## getSkillLevel [#getskilllevel]
+
+Gets the current level of one of the player's skills.
+
+```lua
+exports.evolent_skills:getSkillLevel(skill)
+```
+
+| Parameter | Type     |
+| :-------- | :------- |
+| `skill`   | `string` |
+
+```lua title="Example"
+local skillLevel = exports.evolent_skills:getSkillLevel('driving')
+if skillLevel > 10 then
+    print('Player is above level 10!')
+end
+```
+
+## getSkillXp [#getskillxp]
+
+Gets the current XP of one of the player's skills.
+
+```lua
+exports.evolent_skills:getSkillXp(skill)
+```
+
+| Parameter | Type     |
+| :-------- | :------- |
+| `skill`   | `string` |
+
+```lua title="Example"
+local skillXp = exports.evolent_skills:getSkillXp('shooting')
+print(skillXp) -- 182
+```
+
+## getAllSkills [#getallskills]
+
+Gets all of the player's skills with their levels and XP.
+
+```lua
+exports.evolent_skills:getAllSkills()
+```
+
+```lua title="Example"
+local skills = exports.evolent_skills:getAllSkills()
+for skillName, skillData in pairs(skills) do
+    print(skillName, skillData.level, skillData.xp)
+end
+```
+
+
+# Server Exports (/skills/Functions/Server)
+
+
+
+## addXp [#addxp]
+
+Adds XP to one of a player's skills.
+
+```lua
+exports.evolent_skills:addXp(playerId, skill, xpAmount)
+```
+
+| Parameter  | Type     |
+| :--------- | :------- |
+| `playerId` | `number` |
+| `skill`    | `string` |
+| `xpAmount` | `number` |
+
+```lua title="Example"
+RegisterCommand('addshootingskill', function(source, args)
+    local target = args[1]
+    exports.evolent_skills:addXp(target, 'shooting', 50)
+end)
+```
+
+## removeXp [#removexp]
+
+Removes XP from one of a player's skills.
+
+```lua
+exports.evolent_skills:removeXp(playerId, skill, xpAmount)
+```
+
+| Parameter  | Type     |
+| :--------- | :------- |
+| `playerId` | `number` |
+| `skill`    | `string` |
+| `xpAmount` | `number` |
+
+```lua title="Example"
+RegisterCommand('removedrivingskill', function(source, args)
+    local target = args[1]
+    exports.evolent_skills:removeXp(target, 'driving', 20)
+end)
+```
+
+## getSkillLevel [#getskilllevel]
+
+Gets the current level of one of a player's skills.
+
+```lua
+exports.evolent_skills:getSkillLevel(playerId, skill)
+```
+
+| Parameter  | Type     |
+| :--------- | :------- |
+| `playerId` | `number` |
+| `skill`    | `string` |
+
+```lua title="Example"
+local skillLevel = exports.evolent_skills:getSkillLevel(1, 'driving')
+if skillLevel > 10 then
+    print('Player is above level 10!')
+end
+```
+
+## getSkillXp [#getskillxp]
+
+Gets the current XP of one of a player's skills.
+
+```lua
+exports.evolent_skills:getSkillXp(playerId, skill)
+```
+
+| Parameter  | Type     |
+| :--------- | :------- |
+| `playerId` | `number` |
+| `skill`    | `string` |
+
+```lua title="Example"
+local skillXp = exports.evolent_skills:getSkillXp(1, 'shooting')
+print(skillXp) -- 182
+```
+
+## setSkillLevel [#setskilllevel]
+
+Sets the level of one of a player's skills. The XP is recalculated from the level.
+
+```lua
+exports.evolent_skills:setSkillLevel(playerId, skill, level)
+```
+
+| Parameter  | Type     |
+| :--------- | :------- |
+| `playerId` | `number` |
+| `skill`    | `string` |
+| `level`    | `number` |
+
+```lua title="Example"
+if isTooDumb(source) then
+    exports.evolent_skills:setSkillLevel(source, 'driving', 50)
+end
+```
+
+## resetSkill [#resetskill]
+
+Resets one of a player's skills to level 1 with 0 XP.
+
+```lua
+exports.evolent_skills:resetSkill(playerId, skill)
+```
+
+| Parameter  | Type     |
+| :--------- | :------- |
+| `playerId` | `number` |
+| `skill`    | `string` |
+
+```lua title="Example"
+if isExploiting(source) then
+    exports.evolent_skills:resetSkill(source, 'sales')
+end
+```
+
+## getAllSkills [#getallskills]
+
+Gets all of a player's skills with their levels and XP.
+
+```lua
+exports.evolent_skills:getAllSkills(playerId)
+```
+
+| Parameter  | Type     |
+| :--------- | :------- |
+| `playerId` | `number` |
+
+```lua title="Example"
+local skills = exports.evolent_skills:getAllSkills(source)
+for skillName, skillData in pairs(skills) do
+    print(skillName, skillData.level, skillData.xp)
+end
+```
+
+
+# Getting Started (/skills)
+
+
+
+<LinkButtons>
+  <LinkButton href="https://github.com/evolent-labs/evolent_skills">
+    View on GitHub
+  </LinkButton>
+
+  <LinkButton href="https://github.com/evolent-labs/evolent_skills/releases">
+    View Releases
+  </LinkButton>
+</LinkButtons>
+
+Evolent Skills is an advanced script for managing player skills on your FiveM server, supporting both QBCore and ESX.
+
+## Installation [#installation]
+
+<Steps>
+  <Step>
+    ### Install dependencies [#install-dependencies]
+
+    Make sure [ox\_lib](https://github.com/CommunityOx/ox_lib) and [oxmysql](https://github.com/CommunityOx/oxmysql) are installed.
+  </Step>
+
+  <Step>
+    ### Download Evolent Skills [#download-evolent-skills]
+
+    Download a [release](https://github.com/evolent-labs/evolent_skills/releases), or clone the source code and build it yourself:
+
+    ```bash title="Terminal"
+    git clone https://github.com/evolent-labs/evolent_skills.git
+    cd evolent_skills
+    pnpm i
+    pnpm run build
+    ```
+  </Step>
+
+  <Step>
+    ### Configure [#configure]
+
+    Adjust `config.lua` to your server. Every skill has its own XP curve, maximum level, icon and colour.
+
+    ```lua title="config.lua"
+    return {
+        ---@type 'qb'|'esx'
+        Framework = 'qb',  -- Choose your framework
+
+        --- @type table<string, Skill>
+        Skills = {
+            driving = {  -- Skill identifier
+                label = 'Driving',  -- Skill label
+                baseXp = 120,  -- XP needed to achieve level 2
+                nextLevelMultiplier = 1.1,  -- Multiplier for each level
+                maxLevel = 100,  -- Max skill level
+                icon = 'fas fa-car',  -- Icon from FontAwesome
+                color = '#AFC1FF'  -- Color used in the UI
+            },
+        }
+    }
+    ```
+  </Step>
+
+  <Step>
+    ### Start the script [#start-the-script]
+
+    Add `evolent_skills` to your resource list and start it.
+
+    ```bash title="server.cfg"
+    ensure evolent_skills
+    ```
+  </Step>
+</Steps>
+
+## Next steps [#next-steps]
+
+<Cards>
+  <Card icon="<Server />" title="Server Exports" href="/skills/Functions/Server" description="Add, remove and read skill XP and levels." />
+
+  <Card icon="<Monitor />" title="Client Exports" href="/skills/Functions/Client" description="Read the local player's skills." />
+</Cards>

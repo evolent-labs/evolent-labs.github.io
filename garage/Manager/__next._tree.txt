@@ -1,0 +1,5 @@
+:HL["/_next/static/chunks/3wth1h-agjoch.css","style"]
+:HL["/_next/static/media/70bc3e132a0a741e-s.p.3t6q91iet4nsy.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["https://avatars.githubusercontent.com/u/110971334?s=400&u=08b894e2c622900b431ed52533702603b36e82df&v=4","image"]
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"(docs)","param":null,"prefetchHints":4128,"slots":{"children":{"name":"slug","param":{"type":"c","key":"garage/Manager","siblings":["api","llms-full.txt","llms.mdx","llms.txt","og"]},"prefetchHints":4160,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"kYOGl4IfslK-J4aB7d2U-"}

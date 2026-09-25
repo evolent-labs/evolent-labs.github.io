@@ -1,0 +1,28 @@
+# Exports (/garage/Exports)
+
+
+
+<Callout type="info">
+  This page documents the functions exported by our resource that other scripts may use.
+</Callout>
+
+## Client Exports [#client-exports]
+
+The following function is available on the **client thread**, for example to open the Garage Manager from your own admin menu.
+
+```lua
+exports("OpenCreator", function()
+-- Opens the Garage Manager, exactly like the /evgarage command.
+-- The player still needs the Garage.ManageAce permission; without it
+-- they get a notification and nothing opens.
+end)
+```
+
+```lua
+-- example: a button in your own admin menu
+exports.evolent_garage:OpenCreator()
+```
+
+<Callout type="warn">
+  The other exports you may find in the resource (`SetGarages`, `UpdateStatus`, `RegisterGarageAdapter`, `DrawLighting`, ...) are used internally between the lift and the terminal and are **not** meant to be used by other scripts. Most of them refuse calls from other resources.
+</Callout>

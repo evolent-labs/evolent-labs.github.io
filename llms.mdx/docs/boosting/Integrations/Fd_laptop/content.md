@@ -1,0 +1,67 @@
+# FD Laptop (/boosting/Integrations/Fd_laptop)
+
+
+
+The FD Laptop is an in-game UI resource that gives players tools based on their job or permission level. It has a customizable interface and works with every major framework.
+
+<LinkButtons>
+  <LinkButton href="https://github.com/FelisDevelopment/fd_laptop">
+    GitHub Repository
+  </LinkButton>
+</LinkButtons>
+
+## Installation [#installation]
+
+<Steps>
+  <Step>
+    ### Check the dependencies [#check-the-dependencies]
+
+    Make sure these resources are installed and started before `fd_laptop`:
+
+    * **[ox\_lib](https://github.com/CommunityOx/ox_lib)** (notifications, menus and client utilities)
+    * **[ox\_target](https://github.com/CommunityOx/ox_target)** (recommended, for interacting with laptop props)
+    * **Your framework** (ESX Legacy, QBCore, QBOX or Standalone)
+  </Step>
+
+  <Step>
+    ### Download and place it [#download-and-place-it]
+
+    1. Download the latest version of `fd_laptop` from the **GitHub repository**.
+    2. Extract it and rename the folder to `fd_laptop`.
+    3. Place the `fd_laptop` folder in your server's `resources` directory.
+  </Step>
+
+  <Step>
+    ### Enable it in Evolent Boosting [#enable-it-in-evolent-boosting]
+
+    Open &#x2A;*`config.lua`** and set `Laptop` to `'fd'`.
+
+    ```lua title="config.lua"
+    Config = {
+        -- ...
+        Laptop = 'fd', -- fd, av, lb or false -- [!code highlight]
+    }
+    ```
+
+    | Value   | Laptop                 |
+    | :------ | :--------------------- |
+    | `false` | Laptop integration off |
+    | `'fd'`  | FD Laptop              |
+    | `'av'`  | AV Laptop              |
+    | `'lb'`  | LB Laptop              |
+  </Step>
+
+  <Step>
+    ### Start the resource [#start-the-resource]
+
+    Add this line to your `server.cfg` (or `resources.cfg`):
+
+    ```bash title="server.cfg"
+    ensure fd_laptop
+    ```
+
+    <Callout type="warn" title="Ordering is critical">
+      Start `fd_laptop` **after** your framework and `ox_lib`, but **before** `evolent_boosting`.
+    </Callout>
+  </Step>
+</Steps>

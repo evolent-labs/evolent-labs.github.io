@@ -1,0 +1,87 @@
+# Using Garages (/garage/Usage)
+
+
+
+This page explains how players use a garage, so you know what to expect and what to tell your community.
+
+Players open the terminal by walking up to it and using **ox\_target** (*Use garage terminal*) or the key prompt (**E** by default). The terminal shows the vehicles stored in this garage and the owned vehicles that are parked nearby.
+
+## Collect a Vehicle [#collect-a-vehicle]
+
+<Steps>
+  <Step>
+    ### Pick a Vehicle [#pick-a-vehicle]
+
+    Open the terminal and select a car under **Your Vehicles**. Fuel, engine and body condition are shown for each one. At an impound, the release fee is shown and paid here.
+  </Step>
+
+  <Step>
+    ### Wait for the Lift [#wait-for-the-lift]
+
+    The shutters open and the platform brings the car up from below. The keys are handed over automatically when your key script is supported (see [Frameworks](/garage/Frameworks)).
+  </Step>
+
+  <Step>
+    ### Drive Out [#drive-out]
+
+    Get in and drive the car off the lift. Changed your mind? Choose **Return your vehicle** on the terminal and it goes back down.
+  </Step>
+</Steps>
+
+<Callout type="info">
+  A collected car that is not driven off within `Movement.PickupTimeout` (3 minutes by default) goes back into storage by itself.
+</Callout>
+
+## Store a Vehicle [#store-a-vehicle]
+
+<Steps>
+  <Step>
+    ### Park Nearby [#park-nearby]
+
+    Park your car near the garage and **step out**. Only owned cars within `StoreNearby.Lift` (18 m by default) of the lift are listed.
+  </Step>
+
+  <Step>
+    ### Choose Store Vehicle [#choose-store-vehicle]
+
+    Open the terminal and select the car under **Store vehicle**. The empty lift rises and the shutters open.
+  </Step>
+
+  <Step>
+    ### Drive onto the Lift [#drive-onto-the-lift]
+
+    Drive fully onto the raised lift, stop, and step outside. Storage starts automatically and the car is saved with its mods, fuel and damage.
+  </Step>
+</Steps>
+
+<Callout type="info">
+  Players who forget how it works can type `/evpark` for a short in-game reminder.
+</Callout>
+
+## Which Vehicles Fit [#which-vehicles-fit]
+
+* Cars and motorbikes can be stored.
+* Bicycles, boats, helicopters, planes and trains can't.
+* The vehicle must fit inside the lift cabin: at most **2.85 m wide**, **6.25 m long** and **2.80 m high**. Larger vehicles are refused with *This vehicle does not fit inside the lift*.
+
+## Lost Vehicles [#lost-vehicles]
+
+A car can end up marked as *out* in the database while it no longer exists in the world, for example after a despawn, a crash or a server restart. With `LostVehicles.Enabled`, these cars are brought back automatically when the owner opens a terminal.
+
+| `LostVehicles.Garage` | Where the car goes                                                                                                                                                                           |
+| :-------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `'impound'`           | To your [impound garage](/garage/Manager#impound-garages). The player is told *A vehicle of yours was recovered and taken to the impound*. With no impound garage, it behaves like `'last'`. |
+| `'last'`              | Back to the garage it was taken from, the next time the owner opens that garage's terminal.                                                                                                  |
+
+A car is **left alone** when it still exists in the world, when a lift cycle is using it, or when another script has impounded it (state `2`).
+
+<Callout type="info">
+  Want to know why a certain car was not recovered? Turn on `Debug` and open the terminal. The server console prints one reason for every car it skipped.
+</Callout>
+
+## Good to Know [#good-to-know]
+
+* Garages only work in the **default routing bucket** (bucket `0`). Players in an instance can't use a terminal.
+* One lift runs **one cycle at a time**. Other players see *Someone else is using the lift* until it is done.
+* If a player leaves or the server restarts in the middle of a cycle, the script remembers it and finishes it safely once a player is near the lift again, so the car ends up back in storage.
+* Everyone nearby sees and hears the lift move, the shutters open and the car come up.
