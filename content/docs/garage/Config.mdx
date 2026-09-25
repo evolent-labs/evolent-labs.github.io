@@ -1,0 +1,255 @@
+---
+title: Configuration
+description: Every option in config.lua, with its default and limits.
+icon: Settings2
+---
+
+This is the out of the box `config.lua`. Times are in **milliseconds**, distances in **metres**.
+
+<Callout title="Most values can be changed in game">
+  Open `/evgarage` > **Settings** to change these values live for every player. A value saved in game **overrides** `config.lua`. Pressing **Reset** on it (or **Reset everything to config.lua**) puts the `config.lua` value back. A value you remove from `config.lua` falls back to its default.
+</Callout>
+
+## Full config
+
+```lua title="config.lua"
+EvolentGarageConfig = {}
+
+EvolentGarageConfig.Framework = 'auto' -- auto, qbox, qbcore, esx or oxcore. auto takes the one that runs
+EvolentGarageConfig.Locale = 'en'
+EvolentGarageConfig.Debug = false
+EvolentGarageConfig.ErrorNotifications = false
+EvolentGarageConfig.FailureHint = true
+
+EvolentGarageConfig.Brand = {
+    Accent = '#00BFFF', -- #RGB or #RRGGBB
+    Logo = 'web/shared/evolent-logo.png', -- a file in this resource or an https:// link
+    Name = 'Evolent Parking', -- **word** makes that word bold
+    Light = '', -- cabin and terminal lights, empty = the same as Accent
+}
+
+local Garage = {}
+
+-- add_ace group.admin evolent.garage.manage allow
+Garage.ManageAce = 'evolent.garage.manage'
+
+Garage.RaiseDuration = 8000
+Garage.LowerDuration = 8000
+Garage.PrepareDuration = 2000
+
+Garage.Gate = { Duration = 2500 }
+
+Garage.Movement = {
+    BlockTimeout = 20000,
+    PickupTimeout = 180000,
+    ParkingTimeout = 180000,
+    ClearDistance = 6.5, -- a collected car counts as gone at this distance
+    AbandonedTimeout = 60000,
+    ReturnCooldown = 10000,
+}
+
+-- 'impound' or 'last'. Vehicles your own impound script holds (state 2) are never touched
+Garage.LostVehicles = { Enabled = true, Garage = 'impound' }
+
+-- Pad values are half the size of the platform itself, which the store list leaves out
+Garage.StoreNearby = {
+    Lift = 18.0,
+    PadHalfX = 0.9,
+    PadHalfY = 1.35,
+    BikePadHalfX = 0.45,
+    BikePadHalfY = 0.7,
+}
+
+-- sprite and colour numbers: docs.fivem.net/docs/game-references/blips
+Garage.Blips = {
+    Enabled = true,
+    Sprite = 357,
+    Colour = 3,
+    Scale = 0.6,
+    ImpoundSprite = 67,
+    ImpoundColour = 1,
+}
+
+Garage.CabinLighting = { Enabled = true, Range = 4.2, Intensity = 1.35, Radius = 95.0, Shadows = false }
+
+Garage.SpawnProtection = { Enabled = true, Margin = 3.0, Range = 200.0 }
+
+Garage.Audio = { Enabled = true, HearDistance = 35.0 }
+
+Garage.MaxGroundDifference = 0.18
+Garage.PlacementSurface = { MaxDifference = 0.05 }
+Garage.GroundClearance = 0.18
+
+Garage.UseMappedShaft = false
+
+EvolentGarageConfig.Garage = Garage
+
+local Terminal = {}
+
+Terminal.InteractDistance = 4.5
+
+Terminal.Interact = 'auto' -- 'auto', 'key' or 'target'
+-- key ids: docs.fivem.net/docs/game-references/controls
+Terminal.InteractKey = 38 -- 38 = E
+Terminal.DrawDistance = 22.0
+Terminal.OpenSettleMs = 350
+
+Terminal.Lighting = { Enabled = true, Distance = 16.0, Range = 1.1, Intensity = 1.6 }
+
+EvolentGarageConfig.Terminal = Terminal
+```
+
+## Options
+
+### General
+| Option | Default | Description |
+| :--- | :--- | :--- |
+| `Framework` | `'auto'` | `auto`, `qbox`, `qbcore`, `esx` or `oxcore`. `auto` picks the framework that is running. |
+| `Locale` | `'en'` | Language file from `locales/` used for player texts. Takes effect after a restart. |
+| `Debug` | `false` | Extra console output and the developer commands. **Keep off on a live server.** |
+| `ErrorNotifications` | `false` | Show error notifications to players. Off: errors only go to the server console. |
+| `FailureHint` | `true` | Show a short *try again* line when a collect or store stops halfway. |
+
+### Brand
+The colour, logo and name shown on every terminal and in the Garage Manager. These can also be changed in game under `/evgarage` > **Brand**.
+
+| Option | Default | Description |
+| :--- | :--- | :--- |
+| `Accent` | `'#00BFFF'` | Brand colour, `#RGB` or `#RRGGBB`. |
+| `Logo` | `'web/shared/evolent-logo.png'` | A file inside the resource or an `https://` link. |
+| `Name` | `'Evolent Parking'` | Text next to the logo. Wrap a word in `**` to make it bold. |
+| `Light` | `''` | Colour of the cabin and terminal lights. Empty uses the `Accent` colour. |
+
+### Garage
+| Option | Default | Description |
+| :--- | :--- | :--- |
+| `ManageAce` | `'evolent.garage.manage'` | ACE permission required to open the Garage Manager. |
+| `RaiseDuration` | `8000` | Time the lift takes to rise (2000 - 60000). |
+| `LowerDuration` | `8000` | Time the lift takes to lower (2000 - 60000). |
+| `PrepareDuration` | `2000` | Quiet moment after the shutters begin to move, before the lift starts (0 - 30000). |
+| `Gate.Duration` | `2500` | Time the shutters take to open or close (500 - 30000). |
+| `MaxGroundDifference` | `0.18` | How uneven the ground under a lift may be when placing it. |
+| `PlacementSurface.MaxDifference` | `0.05` | Allowed surface difference when placing a lift. |
+| `GroundClearance` | `0.18` | Ground clearance used when placing a lift. |
+| `UseMappedShaft` | `false` | Only for maps that have a real open shaft under the lift. |
+
+<Callout type="warn">
+    Raise the placement values only if a spot you need is refused. Large values let lifts float or sink.
+</Callout>
+
+### Movement
+| Option | Default | Description |
+| :--- | :--- | :--- |
+| `BlockTimeout` | `20000` | How long a blocked cabin waits before the cycle gives up. The car is always kept safe. |
+| `PickupTimeout` | `180000` | Time to drive a collected car off the lift. After that it goes back into storage. |
+| `ParkingTimeout` | `180000` | Time to drive onto the lift when storing. After that the lift lowers empty. |
+| `ClearDistance` | `6.5` | Distance at which a collected car counts as gone from the lift. |
+| `AbandonedTimeout` | `60000` | A raised lift nobody uses lowers after this time (15000 - 300000). |
+| `ReturnCooldown` | `10000` | Cooldown after **Return vehicle** before the lift can be called again. |
+
+### Lost Vehicles
+| Option | Default | Description |
+| :--- | :--- | :--- |
+| `Enabled` | `true` | Bring back vehicles lost to a despawn, a crash or a restart. Off: such a car stays marked as out. |
+| `Garage` | `'impound'` | `impound` sends lost cars to your impound garage. `last` returns them to the garage they were taken from. |
+
+See [Lost vehicles](/garage/Usage#lost-vehicles) for exactly when a car counts as lost.
+
+### Store Nearby
+| Option | Default | Description |
+| :--- | :--- | :--- |
+| `Lift` | `18.0` | Owned cars within this distance of the lift can be picked in the **Store vehicle** list. |
+| `PadHalfX` / `PadHalfY` | `0.9` / `1.35` | Half size of the lift platform area for cars. |
+| `BikePadHalfX` / `BikePadHalfY` | `0.45` / `0.7` | Half size of the lift platform area for motorbikes. |
+
+### Blips
+Sprite and colour numbers can be found in the [FiveM blip list](https://docs.fivem.net/docs/game-references/blips/).
+
+| Option | Default | Description |
+| :--- | :--- | :--- |
+| `Enabled` | `true` | Show garages on the map. A single garage can still switch its own blip off. |
+| `Sprite` / `Colour` | `357` / `3` | Blip for regular garages. |
+| `ImpoundSprite` / `ImpoundColour` | `67` / `1` | Blip for impound garages. |
+| `Scale` | `0.6` | Blip size. |
+
+### Lighting, Audio & Traffic
+| Option | Default | Description |
+| :--- | :--- | :--- |
+| `CabinLighting.Enabled` | `true` | Lights the car while it rides the lift. |
+| `CabinLighting.Range` / `Intensity` | `4.2` / `1.35` | Range and strength of the cabin light. |
+| `CabinLighting.Radius` | `95.0` | Spread of the cabin light. |
+| `CabinLighting.Shadows` | `false` | Cast shadows from the cabin light. Costs frames. |
+| `Audio.Enabled` | `true` | Motor sound for the lift and the shutters. |
+| `Audio.HearDistance` | `35.0` | Distance the motor can be heard from. |
+| `SpawnProtection.Enabled` | `true` | Stops GTA spawning parked traffic on a lift platform. |
+| `SpawnProtection.Margin` | `3.0` | Extra margin around the lift kept free of traffic. |
+| `SpawnProtection.Range` | `200.0` | Distance from a lift at which the protection is active. |
+
+### Terminal
+| Option | Default | Description |
+| :--- | :--- | :--- |
+| `Interact` | `'auto'` | `auto` uses ox_target when it runs and the key prompt when it does not. `key` or `target` forces one. |
+| `InteractKey` | `38` (E) | [Control id](https://docs.fivem.net/docs/game-references/controls/) for the key prompt. |
+| `InteractDistance` | `4.5` | How close a player must stand to use the terminal. |
+| `DrawDistance` | `22.0` | Further away the terminal screen is not rendered at all. |
+| `OpenSettleMs` | `350` | Pause between the camera arriving and the menu showing. |
+| `Lighting.Enabled` | `true` | Light strips on the terminal. They take the brand colour. |
+| `Lighting.Distance` | `16.0` | Distance the strips are lit from. |
+| `Lighting.Range` / `Intensity` | `1.1` / `1.6` | Range and strength of the terminal light. |
+## Locales
+
+Every text a player sees can be translated. The English text is the key, and `locales/<Locale>.json` maps it to your language. Texts you leave out stay in English.
+
+<Steps>
+<Step>
+
+### Copy the English file
+
+Copy `locales/en.json` to a new file named after your language code, e.g. `locales/de.json`.
+
+</Step>
+<Step>
+
+### Translate the values
+
+Only change the text on the **right** side. Keep placeholders such as `%d` and `%s` in your translation.
+
+```json title="locales/de.json"
+{
+    "Move closer to your garage terminal.": "Geh näher an dein Garagenterminal.",
+    "The lift is resetting. Try again in %d sec.": "Der Lift setzt sich zurück. Versuche es in %d Sek. erneut."
+}
+```
+
+</Step>
+<Step>
+
+### Select the language
+
+Set `EvolentGarageConfig.Locale = 'de'` in `config.lua`, or pick it in `/evgarage` > **Settings** > **Messages**, then restart the resource.
+
+</Step>
+</Steps>
+
+## Notifications
+
+All notifications go through `client/notify.lua`, which is left open so you can point it at your own notification resource. By default it uses `ox_lib`.
+
+```lua title="client/notify.lua"
+-- data = { title, description, type = 'inform' | 'success' | 'error', duration = ms or nil }
+function EvolentGarageNotify(data)
+if type(data) ~= 'table' then
+    return lib.notify(data)
+end
+data.title = EvolentGarageText(data.title)
+data.description = EvolentGarageText(data.description)
+
+-- your own resource instead of the line below, for example:
+-- return TriggerEvent('myNotify', data.type, data.description, data.duration or 5000)
+return lib.notify(data)
+end
+```
+
+<Callout type="info">
+A few messages sent by the server (for example *A vehicle of yours was recovered and taken to the impound*) use the `ox_lib:notify` client event directly, so keep ox_lib installed even when you use your own notifications.
+</Callout>

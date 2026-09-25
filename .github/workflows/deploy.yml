@@ -3,38 +3,32 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Replace with your branch name if it's different
+      - main
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18.12'  # Update Node.js version
+      - uses: actions/checkout@v4
 
-    - name: Install pnpm
-      run: npm install -g pnpm  # Install pnpm globally
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
 
-    - name: Install Dependencies
-      run: pnpm install --frozen-lockfile  # Install project dependencies
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Clean previous builds
-      run: rm -rf .next out
+      # next.config.mjs uses output: 'export', so the static site ends up in ./out
+      # (public/CNAME is copied into it automatically)
+      - name: Build
+        run: npm run build
 
-    - name: Build and Export
-      run: pnpm run build && pnpm run export
-
-    - name: Copy CNAME to output
-      run: cp CNAME ./out/CNAME
-
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./out
-        force_orphan: true
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out
+          force_orphan: true

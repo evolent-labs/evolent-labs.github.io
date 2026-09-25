@@ -1,0 +1,33 @@
+---
+title: Commands
+description: All console and in-game commands.
+icon: Terminal
+---
+
+## Administrator commands
+
+These commands are restricted to users with the right permissions.
+
+| Command | Usage example | Parameters | Description |
+| :--- | :--- | :--- | :--- |
+| **`/generatecontracts`** | `/generatecontracts 123` | `[id]` (player ID / source) | Generates or regenerates all available contracts for the given player. *(Console / RCON only)* |
+| **`/boosting:addXp`** | `/boosting:addXp 123 500` | `<targetId>`, `<amount>` | Adds `amount` XP (ELO) to a player's profile. |
+| **`/boosting:removeXp`** | `/boosting:removeXp 123 100` | `<targetId>`, `<amount>` | Removes `amount` XP (ELO) from a player's profile. |
+| **`/boosting:addLevel`** | `/boosting:addLevel 123 1` | `<targetId>`, `<levels>` | Grants a number of **levels** to a player's profile. |
+| **`/boosting:removeLevel`** | `/boosting:removeLevel 123 5` | `<targetId>`, `<levels>` | Removes a number of **levels** from a player's profile. |
+| **`/boosting:addRep`** | `/boosting:addRep 123 25` | `<targetId>`, `<amount>` | Adds `amount` reputation to a player's profile. |
+| **`/boosting:removeRep`** | `/boosting:removeRep 123 5` | `<targetId>`, `<amount>` | Removes `amount` reputation from a player's profile. |
+
+<Callout>
+  For the `boosting:*` commands, `<targetId>` is the in-game **source ID** or the system's `playerId`.
+</Callout>
+
+## Player commands
+
+| Command | Usage example | Description | Permissions |
+| :--- | :--- | :--- | :--- |
+| **`/opentablet`** | `/opentablet` | Opens the Boosting UI with the available contracts. | All players |
+
+<Callout type="warn">
+  `/opentablet` only works when the script is configured to open the UI with a command instead of an inventory item.
+</Callout>

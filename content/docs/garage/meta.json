@@ -1,0 +1,7 @@
+{
+  "title": "Garage",
+  "description": "Underground lifts & terminals",
+  "icon": "Warehouse",
+  "root": true,
+  "pages": ["index", "Config", "Manager", "Usage", "---Reference---", "Commands", "Exports", "Frameworks"]
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Skills",
+  "description": "Player skill progression",
+  "icon": "Sparkles",
+  "root": true,
+  "pages": ["index", "---Exports---", "Functions/Server", "Functions/Client"]
+}

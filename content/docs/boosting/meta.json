@@ -1,0 +1,7 @@
+{
+  "title": "Boosting",
+  "description": "Vehicle boosting contracts",
+  "icon": "Car",
+  "root": true,
+  "pages": ["index", "Config", "Missions", "Commands", "Exports", "Types", "---Integrations---", "...Integrations"]
+}

@@ -1,0 +1,123 @@
+---
+title: Garage Manager
+description: Create and manage garages, the brand and the settings in game.
+icon: LayoutDashboard
+---
+
+The Garage Manager is where you build and look after your garages. There is no garage list in `config.lua`: every garage is created in game and saved instantly, **no restart needed**.
+
+Open it with `/evgarage`. You need the ACE permission set in `Garage.ManageAce`:
+
+```bash title="server.cfg"
+add_ace group.admin evolent.garage.manage allow
+```
+
+The start screen lists **Your Garages** and gives you three buttons: **Add new garage**, **Brand** and **Settings**.
+
+## Create a Garage
+
+<Steps>
+<Step>
+
+### Garage Details
+* **Display name**: the name players see on the terminal and the map blip (2 to 60 characters).
+* **Vehicle storage**: which stored vehicles the terminal shows. See [Vehicle Storage](#vehicle-storage) below.
+* **Impound garage**: tick this to turn the garage into an impound. See [Impound Garages](#impound-garages) below.
+
+</Step>
+<Step>
+
+### Place in the World
+Press **Place lift**, then **Place terminal**. A free camera opens so you can put each part exactly where you want it, with a live preview.
+
+| Key | Action |
+| :--- | :--- |
+| `W` `A` `S` `D` | Move camera |
+| `Q` / `E` | Camera down / up |
+| `Mouse` | Look around |
+| `Shift` | Move faster |
+| `Mouse Wheel` | Rotate preview |
+| `Alt` | Fine rotation |
+| `PgUp` / `PgDn` | Preview height |
+| `Enter` | Confirm position |
+| `Esc` | Cancel |
+
+<Callout type="info">
+    Keep the **blue exit arrow** clear when placing the lift. That is the way the car drives out, so point it at an open parking area and aim at level ground.
+</Callout>
+
+Below the placement you can also switch on:
+* **Rear lift door**: adds a second shutter at the back. Both doors open and close together.
+* **Map blip**: show this garage on the map.
+
+</Step>
+<Step>
+
+### Who Can Use It
+* With **no jobs** in the list, the garage is **public** and everyone can use it.
+* Press **Add job** to restrict it. Each job has its own **minimum grade**, and a garage can list up to 12 jobs.
+* Tick **On duty only** to require players to be on duty for one of the listed jobs.
+
+</Step>
+<Step>
+
+### Save
+Press **Save garage**. The lift and terminal appear for every player straight away.
+
+</Step>
+</Steps>
+
+### Placement Rules
+
+A garage is refused when it breaks one of these rules. The manager tells you which one.
+
+* The terminal must be **2.5 to 20 metres** from the lift centre, and **outside** the lift footprint and its safety margin.
+* Lift centres must be at least **9 metres** apart.
+* The ground under the lift must be level. The allowed difference can be raised under **Settings** > **Advanced**, see [Configuration](/garage/Config#garage).
+* A server can have up to **50 garages**.
+* A garage can't be edited or deleted while its lift is running a cycle.
+
+## Vehicle Storage
+
+Every garage stores its vehicles under a **storage name**, which is written to the `garage` column of your framework's vehicle table.
+
+* **Leave it empty** to give the garage its own dedicated storage (`evolent:<garage id>`).
+* **Pick an existing garage** from the suggestions to share its vehicles. The lift then shows every car parked in, for example, `pillboxgarage` of your current garage script, and cars stored at the lift show up there too.
+* **Use the same name on several lifts** to let them share one storage.
+
+<Callout type="info">
+Suggestions come from `qbx_garages` on Qbox and from `QBCore.Shared.Garages` on QBCore. On ESX and ox_core you can type any storage name yourself.
+</Callout>
+
+## Impound Garages
+
+Tick **Impound garage** and set a **Release fee** to turn a garage into an impound.
+
+* An impound **hands vehicles back for a fee** and **takes none in**. The *Store vehicle* option is not offered at an impound terminal.
+* The fee is taken from the player's **bank**, and from their **cash** when the bank can't cover it. On ox_core it is taken as the `money` item. The car only leaves once the fee is paid.
+* An impound gets its own map blip (`Blips.ImpoundSprite` / `Blips.ImpoundColour`).
+* When `LostVehicles.Garage` is `'impound'`, lost vehicles are sent here. With more than one impound garage, the first one by garage ID is used.
+
+<Callout type="warn">
+Vehicles your own impound or police script has impounded (state `2` on QB / Qbox) are **never touched** by this script.
+</Callout>
+
+## Brand
+
+Press **Brand** to change the look of every terminal and of the manager itself. Saving applies it to all players at once.
+
+* **Colour**: the accent colour of the terminal and manager.
+* **Lights in the garage and on the terminal**: a separate colour for the cabin light and the terminal strips, or *Same as the brand colour*.
+* **Logo**: upload a picture or use an `https://` link. **Use the default logo** puts the original back.
+* **Text next to the logo**: your garage brand name. Select letters and pick a weight (Regular, Medium, Semibold, Bold), italic or underline.
+
+**Reset to config.lua** throws the in-game brand away and uses the `Brand` section of `config.lua` again.
+
+## Settings
+
+Press **Settings** to change how the garages behave. Values are grouped in **Terminal**, **Lift**, **Vehicles**, **Map & sound**, **Lights**, **Messages** and **Advanced**, and every row explains what it does.
+
+* **Save settings** applies the changes to every player straight away. Only the language needs a restart.
+* **Reset** on a single row, or **Reset everything to config.lua**, puts the `config.lua` value back.
+
+The meaning, default and limits of each value are listed on the [Configuration](/garage/Config) page.

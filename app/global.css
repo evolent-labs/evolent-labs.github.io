@@ -1,0 +1,81 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+/* Evolent palette: cool slate greys with the periwinkle brand colour (#AFC1FF) */
+@theme {
+  --color-fd-background: hsl(228, 33%, 99%);
+  --color-fd-foreground: hsl(230, 25%, 14%);
+  --color-fd-card: hsl(228, 33%, 100%);
+  --color-fd-card-foreground: hsl(230, 25%, 14%);
+  --color-fd-popover: hsl(228, 33%, 100%);
+  --color-fd-popover-foreground: hsl(230, 25%, 14%);
+  --color-fd-primary: hsl(228, 70%, 56%);
+  --color-fd-primary-foreground: hsl(0, 0%, 100%);
+  --color-fd-secondary: hsl(228, 30%, 96%);
+  --color-fd-secondary-foreground: hsl(230, 25%, 18%);
+  --color-fd-muted: hsl(228, 30%, 96%);
+  --color-fd-muted-foreground: hsl(229, 12%, 44%);
+  --color-fd-accent: hsl(228, 60%, 95%);
+  --color-fd-accent-foreground: hsl(228, 50%, 30%);
+  --color-fd-border: hsl(228, 25%, 90%);
+  --color-fd-ring: hsl(228, 70%, 56%);
+
+  --color-brand: #afc1ff;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+}
+
+.dark {
+  --color-fd-background: hsl(230, 22%, 6%);
+  --color-fd-foreground: hsl(228, 25%, 90%);
+  --color-fd-card: hsl(230, 20%, 9%);
+  --color-fd-card-foreground: hsl(228, 25%, 90%);
+  --color-fd-popover: hsl(230, 20%, 8%);
+  --color-fd-popover-foreground: hsl(228, 25%, 90%);
+  --color-fd-primary: hsl(227, 100%, 84%);
+  --color-fd-primary-foreground: hsl(230, 40%, 10%);
+  --color-fd-secondary: hsl(230, 18%, 13%);
+  --color-fd-secondary-foreground: hsl(228, 25%, 90%);
+  --color-fd-muted: hsl(230, 18%, 12%);
+  --color-fd-muted-foreground: hsl(228, 12%, 62%);
+  --color-fd-accent: hsl(229, 30%, 15%);
+  --color-fd-accent-foreground: hsl(227, 100%, 90%);
+  --color-fd-border: hsl(230, 16%, 15%);
+  --color-fd-ring: hsl(227, 100%, 84%);
+}
+
+.dark #nd-sidebar {
+  --color-fd-muted: hsl(230, 18%, 12%);
+  --color-fd-secondary: hsl(230, 18%, 14%);
+  --color-fd-muted-foreground: hsl(228, 12%, 66%);
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html > body[data-scroll-locked] {
+  margin-right: 0px !important;
+  --removed-body-scroll-bar-size: 0px !important;
+}
+
+/* soft brand glow behind the top of every page */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 420px;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(60% 100% at 50% 0%, color-mix(in oklab, var(--color-brand) 16%, transparent), transparent 70%);
+}
+
+.dark body::before {
+  background: radial-gradient(60% 100% at 50% 0%, color-mix(in oklab, var(--color-brand) 10%, transparent), transparent 70%);
+}
+
+/* tables in the docs read better with a little breathing room */
+.prose table code {
+  white-space: nowrap;
+}

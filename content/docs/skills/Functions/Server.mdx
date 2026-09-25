@@ -1,0 +1,143 @@
+---
+title: Server Exports
+description: Add, remove and read player skill XP and levels.
+icon: Server
+---
+
+## addXp
+
+Adds XP to one of a player's skills.
+
+```lua
+exports.evolent_skills:addXp(playerId, skill, xpAmount)
+```
+
+| Parameter | Type |
+| :--- | :--- |
+| `playerId` | `number` |
+| `skill` | `string` |
+| `xpAmount` | `number` |
+
+```lua title="Example"
+RegisterCommand('addshootingskill', function(source, args)
+    local target = args[1]
+    exports.evolent_skills:addXp(target, 'shooting', 50)
+end)
+```
+
+## removeXp
+
+Removes XP from one of a player's skills.
+
+```lua
+exports.evolent_skills:removeXp(playerId, skill, xpAmount)
+```
+
+| Parameter | Type |
+| :--- | :--- |
+| `playerId` | `number` |
+| `skill` | `string` |
+| `xpAmount` | `number` |
+
+```lua title="Example"
+RegisterCommand('removedrivingskill', function(source, args)
+    local target = args[1]
+    exports.evolent_skills:removeXp(target, 'driving', 20)
+end)
+```
+
+## getSkillLevel
+
+Gets the current level of one of a player's skills.
+
+```lua
+exports.evolent_skills:getSkillLevel(playerId, skill)
+```
+
+| Parameter | Type |
+| :--- | :--- |
+| `playerId` | `number` |
+| `skill` | `string` |
+
+```lua title="Example"
+local skillLevel = exports.evolent_skills:getSkillLevel(1, 'driving')
+if skillLevel > 10 then
+    print('Player is above level 10!')
+end
+```
+
+## getSkillXp
+
+Gets the current XP of one of a player's skills.
+
+```lua
+exports.evolent_skills:getSkillXp(playerId, skill)
+```
+
+| Parameter | Type |
+| :--- | :--- |
+| `playerId` | `number` |
+| `skill` | `string` |
+
+```lua title="Example"
+local skillXp = exports.evolent_skills:getSkillXp(1, 'shooting')
+print(skillXp) -- 182
+```
+
+## setSkillLevel
+
+Sets the level of one of a player's skills. The XP is recalculated from the level.
+
+```lua
+exports.evolent_skills:setSkillLevel(playerId, skill, level)
+```
+
+| Parameter | Type |
+| :--- | :--- |
+| `playerId` | `number` |
+| `skill` | `string` |
+| `level` | `number` |
+
+```lua title="Example"
+if isTooDumb(source) then
+    exports.evolent_skills:setSkillLevel(source, 'driving', 50)
+end
+```
+
+## resetSkill
+
+Resets one of a player's skills to level 1 with 0 XP.
+
+```lua
+exports.evolent_skills:resetSkill(playerId, skill)
+```
+
+| Parameter | Type |
+| :--- | :--- |
+| `playerId` | `number` |
+| `skill` | `string` |
+
+```lua title="Example"
+if isExploiting(source) then
+    exports.evolent_skills:resetSkill(source, 'sales')
+end
+```
+
+## getAllSkills
+
+Gets all of a player's skills with their levels and XP.
+
+```lua
+exports.evolent_skills:getAllSkills(playerId)
+```
+
+| Parameter | Type |
+| :--- | :--- |
+| `playerId` | `number` |
+
+```lua title="Example"
+local skills = exports.evolent_skills:getAllSkills(source)
+for skillName, skillData in pairs(skills) do
+    print(skillName, skillData.level, skillData.xp)
+end
+```

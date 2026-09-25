@@ -1,0 +1,7 @@
+{
+  "title": "Fleamarket",
+  "description": "Player driven marketplace",
+  "icon": "Store",
+  "root": true,
+  "pages": ["index", "Config"]
+}
